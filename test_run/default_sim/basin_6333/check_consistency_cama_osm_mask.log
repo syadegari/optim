@@ -1,0 +1,9 @@
+Reading: ./inpmat.nc
+Reading: ./surfclim
+#active pixel in surfclim: 56
+#active pixels in inpmat: 6
+#matching active OSM & CaMa (1): 6 %area: 100.000
+#matching not active OSM & CaMa (0): 25 %area:  0.000
+#land/lake in OSM not used in CaMa (2): 50 %area:  0.000
+#no land/lake in OSM but used in CaMa (3): 0 %area:  0.000
+Saving to: ./surfclim

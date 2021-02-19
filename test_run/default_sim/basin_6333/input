@@ -1,0 +1,355 @@
+&NAM1S
+    CFFORC = 'netcdf'
+    CFINIT = 'netcdf'
+    CFOUT = 'netcdf'
+    CFSURF = 'netcdf'
+    CMODID = 'HTESSEL'
+    CVERID = 'CY45R1'
+    IDBGS1 = 2
+    LACCUMW = .true.
+    LDBGS1 = .false.
+    LNCSNC = .false.
+    LRESET = .true.
+    LSEMISS = .false.
+    LWRBIO = .false.
+    LWRCLD = .false.
+    LWRCLM = .false.
+    LWRCO2 = .false.
+    LWRD2M = .false.
+    LWREFL = .false.
+    LWREVA = .false.
+    LWREXT = .false.
+    LWRFOR = .false.
+    LWRFRA = .false.
+    LWRGG = .false.
+    LWRGGD = .false.
+    LWRSUS = .false.
+    LWRTIL = .false.
+    LWRVEG = .false.
+    LWRVTY = .false.
+    LWRWAT = .true.
+    NACCUR = 1
+    NCDFTYPE = 4
+    NDIMCDF = 2
+    NDLEVEL = 0
+/
+
+&NAMCT01S
+    CNMEXP = 'forwardrun'
+    LNF = .false.
+    NCYCLE = 1
+    NFRPOS = 3
+    NFRRES = 0
+    NSTART = 0
+    NSTOP = 87681
+/
+
+&NAMDIM
+    NCSS = 4
+    NDFORC = 87682
+    NLAT = 9
+    NLON = 9
+    NPROMA = 240
+    NSLAB = 0
+/
+
+&NAMDYN1S
+    LFLXINT = .false.
+    LPREINT = .false.
+    LSWINT = .true.
+    NACCTYPE = 2
+    TSTEP = 3600
+    TCOUPFREQ = 10800
+/
+
+&NAMFORC
+    CFORCLW = '/work-local/yadegari/optim_Eve/forcings/basin_6333/LWdown_1999_2008.nc'
+    CFORCP = '/work-local/yadegari/optim_Eve/forcings/basin_6333/PSurf_1999_2008.nc'
+    CFORCQ = '/work-local/yadegari/optim_Eve/forcings/basin_6333/Qair_1999_2008.nc'
+    CFORCRAIN = '/work-local/yadegari/optim_Eve/forcings/basin_6333/Rainf_1999_2008.nc'
+    CFORCSNOW = '/work-local/yadegari/optim_Eve/forcings/basin_6333/Snowf_1999_2008.nc'
+    CFORCSW = '/work-local/yadegari/optim_Eve/forcings/basin_6333/SWdown_1999_2008.nc'
+    CFORCT = '/work-local/yadegari/optim_Eve/forcings/basin_6333/Tair_1999_2008.nc'
+    CFORCU = '/work-local/yadegari/optim_Eve/forcings/basin_6333/Wind_1999_2008.nc'
+    CFORCV = 'forcing'
+    IFDD = 1
+    IFMM = 1
+    IFTIM = 0
+    IFYYYY = 1999
+    INSTFC = 0
+    LOADIAB = .false.
+    NDIMFORC = 2
+    ZDTFORC = 3600
+    ZPHISTA = 10.0
+    ZUV = 10.0
+/
+
+&NAMPHY
+    LECLIM10D = .false.
+    LECTESSEL = .false.
+    LEFLAKE = .true.
+    LEINTWIND = .true.
+    LELAIV = .true.
+    LESN09 = .true.
+    LESSRO = .true.
+    LEVGEN = .true.
+    LECMF1WAY = .true.
+/
+
+&NAMPHYOFF
+    LEWBCHECK = .true.
+    LEWBCHECKABORT = .true.
+/
+
+&NAMRIP
+    NINDAT = 19990101
+    NSSSSS = 0
+/
+
+&NAMPARAGS
+    RANFMINIT = 1e-08
+    RASW = 2.8
+    RAW = 4.7
+    RBW = 7.0
+    RCA_1X_CO2_NIT = 0.38
+    RCA_2X_CO2_NIT = 0.52
+    RCC_NIT = 0.753846
+    RCC_NIT_BASE_DIL = 10.0
+    RCNS_NIT = 0.8
+    RCO2FRAC = 0.000353
+    RCONDCTMIN = 0.0002
+    RCONDSTMIN = 1e-05
+    RDIFRACF = 0.251
+    RDMAXN = 0.03
+    RDMAXX = 0.3
+    RDSPOPT = 0.0
+    REPS_COEF = 2.0
+    RESPBSTR_COEF = 2.0
+    RGSC_COEF = 2.0
+    RIAOPT = 500.0
+    RLAIB_NITROA = 5.76
+    RLAIB_NITROB = 0.64
+    RLAIB_NITROMIN = 3.8
+    RMAXFZERO = 0.95
+    RPARCF = 0.48
+    RPCCO2 = 0.4
+    RRDCF = 0.111111
+    RRESPFACTOR_NIT = 1.16e-07
+    RSHP1AMMAX = 0.3
+    RSHP1GMES = 0.3
+    RSHP2AMMAX = 0.3
+    RSHP2GMES = 0.3
+    RVGMES_FLDEXP = 0.321
+    RXBOMEGA = 0.9442719
+    RXGT = 0.5
+/
+
+&NAMPAREXC
+    RACDZ0WN = 0.0008
+    RAZ0ICE = 0.00605
+    RBCDZ0WN = 8e-05
+    RBLENDSNVEG = 0.25
+    RBLENDWMO = 40.0
+    RBLENDZ0 = 10.0
+    RBZ0ICE = 17.0
+    RCDFC = 0.002
+    RCHAR = 0.0155
+    RCZ0ICE = 0.00093
+    RDZ0ICE = 0.5
+    REPDU2 = 0.01
+    REPUST = 0.0001
+    RETACONV = 0.5
+    REZ0ICE = 2
+    RGUSTEXP = 3.0
+    RITZ0WN = 15
+    RKAP = 0.4
+    RNUHINI = 0.4
+    RNUINI = 1.5e-05
+    RNUMINI = 0.11
+    RNUQINI = 0.62
+    RPARZIINI = 1000.0
+    RPCHARMAXZ0WN = 0.1
+    RSALIN = 0.98
+    RSSRFLTIMAX = 700.0
+    RUGN = 7.71
+    RUGNA = 0.5
+    RUGNB = 12.0
+    RUSTEXP = 3.0
+    RUSTMINZ0WN = 1e-06
+    RWSTEXP = 3.0
+    RXEPSZ0WN = 1e-05
+    RZ0FGZ0WN = 0.01
+    RZ0ICEINI = 0.001
+    RZ0MWMO = 0.03
+/
+
+&NAMPARFLAKE
+    RC_B1 = 0.6666666666666666
+    RC_B2 = 0.6
+    RC_CBL_1 = 0.17
+    RC_CBL_2 = 1.0
+    RC_I_FLK_A = 1.0
+    RC_I_LIN = 0.5
+    RC_I_MR = 0.08333333333333333
+    RC_OC_MAXDEPTH = 50.0
+    RC_OC_MAXICEZ = 0.1
+    RC_RELAX_C = 0.03
+    RC_RELAX_H = 0.03
+    RC_S_LIN = 0.5
+    RC_SBL_ZM_I = 20.0
+    RC_SBL_ZM_N = 0.5
+    RC_SBL_ZM_S = 10.0
+    RC_SHAPE = 0.65
+    RC_T_MAX = 0.8
+    RC_T_MIN = 0.5
+    RC_TT_1 = 0.6111111111111112
+    RC_TT_2 = 0.15555555555555556
+    RCONV_EQUIL_A = 6.0
+    RCONV_EQUIL_B = 2.0
+    RCONV_EQUIL_C = 1.0
+    RD_C_T_DT_MAX_A = 30.0
+    RDEPTH_W_MAX = 50.0
+    RDEPTH_W_MIN = 2.0
+    RH_ICE_FUSION_A = 2.0
+    RH_ICE_FUSION_B = 0.9
+    RH_ICE_MAX = 3.0
+    ROPT_BICE_EXTC1_REF = 8.4
+    ROPT_ICE_EXTC1_OP = 10000000.0
+    ROPT_WAT_EXTC1_REF = 3.0
+    ROPT_WAT_EXTC1_TRANS = 2.0
+    ROPT_WAT_EXTC2_TRANS = 0.2
+    ROPT_WAT_FRAC1_TRANS = 0.1
+    ROPT_WICE_EXTC1_REF = 17.1
+    RPHI_I_AST_MR = 2.0
+    RPHI_I_PR0_LIN = 1.0
+    RPHI_I_PR1_LIN = 1.0
+    RPHI_S_PR0_LIN = 1.0
+    RPHI_T_PR0_1 = 13.333333333333334
+    RPHI_T_PR0_2 = 6.666666666666667
+    RT_ICE_MIN_FLK = 73.15
+    RTPL_A_T = 1.6509e-05
+    RW_STAR_EXP = 0.3333333333333333
+/
+
+&NAMPARSNOW
+    FSNTCONDA = 0.024
+    FSNTCONDB = -0.000123
+    FSNTCONDC = 2.5e-06
+    RALAMSN = 1.88
+    RALFMAXSN = 0.85
+    RALFMINSN = 0.5
+    RCONDSICE = 2.03
+    RDANSICE = 1.5
+    RDARSICE = 1.5
+    RDSNMAX = 1.0
+    RHODELTASN = 200.0
+    RHOMAXSN_NEW = 450.0
+    RHOMINSN = 100.0
+    RHOMINSNA = 109.0
+    RHOMINSNB = 6.0
+    RHOMINSNC = 26.0
+    RHOMINSND = 50.0
+    RLEVSNMAX = -1.0
+    RLEVSNMIN = 0.0
+    RLICE = 0.3
+    RLWCSWEA = 200.0
+    RLWCSWEB = 0.03
+    RLWCSWEC = 0.1
+    RQSNCRINV = 10.0
+    RRCSICE = 1884000.0
+    RSFRESH = 0.0002777777777777778
+    RSMINZ = 0.01
+    RSNDAMOB = 1.25
+    RSNDATAUW = 10.0
+    RSNDAW = 2.868
+    RSNDBTAUW = 3.25
+    RSNDBW = 0.085
+    RSNDKV = 1.0
+    RSNDMOB = 295.0
+    RSNDTDESTA = 2.8e-06
+    RSNDTDESTB = 0.042
+    RSNDTDESTC = 460.0
+    RSNDTDESTROI = 150.0
+    RSNDTOVERA = 37000000.0
+    RSNDTOVERB = 0.081
+    RSNDTOVERC = 0.018
+    RSNDWCOMPMAX = 350.0
+    RSNGLC = 10000.0
+    RSNLARGE = 10000000000.0
+    RSNLARGESN = 50.0
+    RSNLARGEWT = 20.0
+    RSNPER = 1000.0
+    RSNPERT = 9000.0
+    RSNRTTEMP = 272.96
+    RSNSNOW = 7.0
+    RSNSNOWHVEG = 20.0
+    RTAUA = 0.008
+    RTAUF = 0.24
+    RTEMPAMP = 4.0
+    SNHCONDAV = -0.06023
+    SNHCONDBV = 2.5425
+    SNHCONDCV = 289.99
+    SNHCONDPOV = 100000.0
+    SSAG1 = 0.00016
+    SSAG2 = 0.0
+    SSAG3 = 1.1e-13
+    SSAGSNSMIN = 0.002796
+    SSASNEXTCNST = 0.0038
+    SSASNEXTMAX = 50.0
+    SSASNEXTMIN = 5.0
+/
+
+&NAMPARSOIL
+    RBARCAP = -0.33
+    RBARPWP = -15.0
+    RCLU = 50.0
+    RKERST1 = 0.1
+    RKERST2 = 1.0
+    RKERST3 = 1.0
+    RLAMBDAICE = 2.2
+    RLAMBDAMAX = 2.0
+    RLAMBDAMIN = 0.19
+    RLAMBDAO = 2.0
+    RLAMBDAQ = 7.7
+    RLAMBDAWAT = 0.57
+    RLAMBDRYMA = 0.135
+    RLAMBDRYMB = 64.7
+    RLAMBDRYMC = 0.947
+    RPSFR = 2.0
+    RQEXP = 0.4
+    RQWSBCRMA = 1.6
+    RRHOSM = 2700.0
+    RRSF1A = 0.81
+    RRSF1B = 250.0
+    RRSF1C = 0.05
+    RSIGORMAX = 1000.0
+    RSIGORMIN = 100.0
+    RSMINB = 50.0
+    RSRDEP = 0.5
+    RTF1 = 274.16
+    RTF2 = 270.16
+    RTFREEZSICECEL = -1.7
+    RTMELTSICECEL = 0.0
+    RVGBARCAP = -0.1
+    RWLMAX = 0.2
+/
+
+&NAMPARVEG
+    RCEPSW = 0.001
+    RLHAERO = 15.0
+    RLHAEROS = 10.0
+    RVINTER = 0.5
+    RVLAMSK_DESERT = 15.0
+    RVLAMSK_SNOW = 58.0
+    RVLAMSKS_DESERT = 15.0
+    RVLAMSKS_SNOW = 58.0
+    RVQ10A = 2.5665
+    RVQ10B = 0.05308
+    RVQ10C = 0.00238
+    RVQ10D = 4e-05
+    RVQ10MIN = 0.0001
+    RVZ0H_BARE = 0.00013
+    RVZ0H_SNOW = 0.00013
+    RVZ0M_BARE = 0.013
+    RVZ0M_SNOW = 0.0013
+/

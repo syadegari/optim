@@ -1,0 +1,1 @@
+/work-local/yadegari/soilgrids/basin_6333/SNDPPT_M.nc

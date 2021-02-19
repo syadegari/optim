@@ -1,0 +1,1 @@
+0 5 npath, nlev, (ix,iy), (jx,jy), length, elevtn, depth, (width1, width2, ... wodth_nlev), (lon,lat))

@@ -1,0 +1,5 @@
+ NX           5
+ NY           3
+ NLFP          10
+ REGIONALL           1
+ NSEQMAX           3

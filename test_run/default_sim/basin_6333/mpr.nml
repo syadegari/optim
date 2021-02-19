@@ -1,0 +1,581 @@
+&coordinates
+    coord_from_file = './surfclim', './surfclim'
+    coord_from_values(:,3) = 0.07, 0.28, 1.0, 2.0, , , ,
+    coord_from_values(:,4) = 0.0, 0.15, 0.3, 0.6, 1.0, 2.0, 2.89
+    coord_from_values(:,5) = 0.07
+    coord_from_values(:,6) = 0.28
+    coord_from_values(:,7) = 1.0
+    coord_from_values(:,8) = 2.0
+    coord_from_values(:,9) = 2.0
+    coord_from_values_bound(3:9) = 0.0, -0.1, 0.0, 0.07, 0.28, 1.0, 0.0
+    coord_name = 'lon', 'lat', 'nlevs', 'depth', 'lev1', 'lev2', 'lev3',
+                 'lev4', 'nlevs_all'
+    coord_stagger = 'center', 'center', 'end', 'end', 'end', 'end', 'end',
+                    'end', 'end'
+/
+
+&data_arrays
+    from_data_arrays(:,1) = ,
+    from_data_arrays(:,2) = ,
+    from_data_arrays(:,3) = ,
+    from_data_arrays(:,4) = ,
+    from_data_arrays(:,5) = ,
+    from_data_arrays(:,6) = ,
+    from_data_arrays(:,7) = 'CLYPPT_M', 'BLDFIE_M', 'SNDPPT_M'
+    from_data_arrays(:,8) = 'CLYPPT_M', 'BLDFIE_M', 'SNDPPT_M'
+    from_data_arrays(:,9) = 'CLYPPT_M', 'SNDPPT_M', ,
+    from_data_arrays(:,10) = 'CLYPPT_M'
+    from_data_arrays(:,11) = 'wsatm_onelayer'
+    from_data_arrays(:,12) = 'rwrst_onelayer'
+    from_data_arrays(:,13) = 'vgalpha_onelayer'
+    from_data_arrays(:,14) = 'nfac_onelayer'
+    from_data_arrays(:,15) = 'tvl', , , ,
+    from_data_arrays(:,16) = 'tvh', , , ,
+    from_data_arrays(:,17) = 'tvl', , , ,
+    from_data_arrays(:,18) = 'tvh', , , ,
+    from_data_arrays(:,19) = 'tvl', , , ,
+    from_data_arrays(:,20) = 'tvh', , , ,
+    from_data_arrays(:,21) = 'tvl', , , ,
+    from_data_arrays(:,22) = 'tvh', , , ,
+    from_data_arrays(:,23) = 'tvl', , , ,
+    from_data_arrays(:,24) = 'tvh', , , ,
+    from_data_arrays(:,25) = 'tvl', , , ,
+    from_data_arrays(:,26) = 'tvh', , , ,
+    from_data_arrays(:,27) = 'tvl', , , ,
+    from_data_arrays(:,28) = 'tvh', , , ,
+    from_data_arrays(:,29) = 'sotype', , , ,
+    from_data_arrays(:,30) = 'sotype', , , ,
+    from_data_arrays(:,31) = 'sotype', , , ,
+    from_data_arrays(:,32) = 'tvl', , , ,
+    from_data_arrays(:,33) = 'tvl', , , ,
+    from_data_arrays(:,34) = 'tvl', , , ,
+    from_data_arrays(:,35) = 'tvl', , , ,
+    from_data_arrays(:,36) = 'lrootfrl1', 'lrootfrl2', 'lrootfrl3', 'lrootfrl4'
+    from_data_arrays(:,37) = 'lrootfrall', , , ,
+    from_data_arrays(:,38) = 'tvh', , , ,
+    from_data_arrays(:,39) = 'tvh', , , ,
+    from_data_arrays(:,40) = 'tvh', , , ,
+    from_data_arrays(:,41) = 'tvh', , , ,
+    from_data_arrays(:,42) = 'hrootfrl1', 'hrootfrl2', 'hrootfrl3', 'hrootfrl4'
+    from_data_arrays(:,43) = 'hrootfrall', , , ,
+    from_data_arrays(:,44) = 'tvl', , , ,
+    from_data_arrays(:,45) = 'tvh', , , ,
+    from_data_arrays(:,46) = 'tvl', , , ,
+    from_data_arrays(:,47) = 'tvh', , , ,
+    from_data_arrays(:,48) = 'tvl', , , ,
+    from_data_arrays(:,49) = 'tvh', , , ,
+    from_data_arrays(:,50) = 'tvl', , , ,
+    from_data_arrays(:,51) = 'tvh', , , ,
+    from_data_arrays(:,52) = 'tvl', , , ,
+    from_data_arrays(:,53) = 'tvh', , , ,
+    from_data_arrays(:,54) = 'tvl', , , ,
+    from_data_arrays(:,55) = 'tvh', , , ,
+    from_data_arrays(:,56) = 'tvl', , , ,
+    from_data_arrays(:,57) = 'tvh', , , ,
+    from_data_arrays(:,58) = 'tvl', , , ,
+    from_data_arrays(:,59) = 'tvh', , , ,
+    from_data_arrays(:,60) = 'tvl', , , ,
+    from_data_arrays(:,61) = 'tvh', , , ,
+    from_data_arrays(:,62) = 'tvl', , , ,
+    from_data_arrays(:,63) = 'tvh', , , ,
+    from_data_arrays(:,64) = 'tvl', , , ,
+    from_data_arrays(:,65) = 'tvh', , , ,
+    from_data_arrays(:,66) = 'tvl', , , ,
+    from_data_arrays(:,67) = 'tvh', , , ,
+    from_data_arrays(:,68) = 'tvl', , , ,
+    from_data_arrays(:,69) = 'tvh', , , ,
+    from_data_arrays(:,70) = 'tvl', , , ,
+    from_data_arrays(:,71) = 'tvh', , , ,
+    from_data_arrays(:,72) = 'tvl', , , ,
+    from_data_arrays(:,73) = 'tvh', , , ,
+    from_data_arrays(:,74) = 'tvl', , , ,
+    from_data_arrays(:,75) = 'tvh', , , ,
+    from_data_arrays(:,76) = 'tvl', , , ,
+    from_data_arrays(:,77) = 'tvh', , , ,
+    from_data_arrays(:,78) = 'tvl', , , ,
+    from_data_arrays(:,79) = 'tvh', , , ,
+    from_data_arrays(:,80) = 'tvl', , , ,
+    from_data_arrays(:,81) = 'tvh', , , ,
+    from_data_arrays(:,82) = 'tvl', , , ,
+    from_data_arrays(:,83) = 'tvh', , , ,
+    from_data_arrays(:,84) = 'tvl', , , ,
+    from_data_arrays(:,85) = 'tvh', , , ,
+    from_data_arrays(:,86) = 'tvl', , , ,
+    from_data_arrays(:,87) = 'tvh', , , ,
+    from_data_arrays(:,88) = 'tvl', , , ,
+    from_data_arrays(:,89) = 'tvh', , , ,
+    from_data_arrays(:,90) = 'tvl', , , ,
+    from_data_arrays(:,91) = 'tvh', , , ,
+    from_data_arrays(:,92) = 'tvl', , , ,
+    from_data_arrays(:,93) = 'tvh', , , ,
+    from_data_arrays(:,94) = 'tvl', , , ,
+    from_data_arrays(:,95) = 'tvh', , , ,
+    from_data_arrays(:,96) = 'tvl', , , ,
+    from_data_arrays(:,97) = 'tvh', , , ,
+    from_data_arrays(:,98) = 'tvl', , , ,
+    from_data_arrays(:,99) = 'tvh', , , ,
+    from_data_arrays(:,100) = 'tvl', , , ,
+    from_data_arrays(:,101) = 'tvh', , , ,
+    from_data_arrays(:,102) = 'tvl', , , ,
+    from_data_arrays(:,103) = 'tvh', , , ,
+    from_file = './surfclim', './surfclim', './surfclim', './SNDPPT_M.nc',
+                './CLYPPT_M.nc', './BLDFIE_M.nc', , , , , , , , , , , ,
+                , , , , , , , , , , , , , , , , , , , , , , , , , , , ,
+                , , , , , , , , , , , , , , , , , , , , , , , , , , , ,
+                , , , , , , , , , , , , , , , , , , , , , , , , , , , ,
+                , ,
+    limits(:,1) = ,
+    limits(:,2) = ,
+    limits(:,3) = ,
+    limits(:,4) = 0.1, 99.9
+    limits(:,5) = 0.1, 99.9
+    limits(:,6) = 0.001, 2.7
+    limits(:,7) = 0.1, 0.9
+    limits(:,8) = 0.03, 15.0
+    limits(:,9) = 1.1, 1.8
+    limits(:,10) = 0.001, 0.2
+    limits(:,11) = ,
+    limits(:,12) = ,
+    limits(:,13) = ,
+    limits(:,14) = ,
+    limits(:,15) = ,
+    limits(:,16) = ,
+    limits(:,17) = ,
+    limits(:,18) = ,
+    limits(:,19) = ,
+    limits(:,20) = ,
+    limits(:,21) = ,
+    limits(:,22) = ,
+    limits(:,23) = ,
+    limits(:,24) = ,
+    limits(:,25) = ,
+    limits(:,26) = ,
+    limits(:,27) = ,
+    limits(:,28) = ,
+    limits(:,29) = ,
+    limits(:,30) = ,
+    limits(:,31) = ,
+    limits(:,32) = ,
+    limits(:,33) = ,
+    limits(:,34) = ,
+    limits(:,35) = ,
+    limits(:,36) = ,
+    limits(:,37) = ,
+    limits(:,38) = ,
+    limits(:,39) = ,
+    limits(:,40) = ,
+    limits(:,41) = ,
+    limits(:,42) = ,
+    limits(:,43) = ,
+    limits(:,44) = ,
+    limits(:,45) = ,
+    limits(:,46) = ,
+    limits(:,47) = ,
+    limits(:,48) = ,
+    limits(:,49) = ,
+    limits(:,50) = ,
+    limits(:,51) = ,
+    limits(:,52) = ,
+    limits(:,53) = ,
+    limits(:,54) = ,
+    limits(:,55) = ,
+    limits(:,56) = ,
+    limits(:,57) = ,
+    limits(:,58) = ,
+    limits(:,59) = ,
+    limits(:,60) = ,
+    limits(:,61) = ,
+    limits(:,62) = ,
+    limits(:,63) = ,
+    limits(:,64) = ,
+    limits(:,65) = ,
+    limits(:,66) = ,
+    limits(:,67) = ,
+    limits(:,68) = ,
+    limits(:,69) = ,
+    limits(:,70) = ,
+    limits(:,71) = ,
+    limits(:,72) = ,
+    limits(:,73) = ,
+    limits(:,74) = ,
+    limits(:,75) = ,
+    limits(:,76) = ,
+    limits(:,77) = ,
+    limits(:,78) = ,
+    limits(:,79) = ,
+    limits(:,80) = ,
+    limits(:,81) = ,
+    limits(:,82) = ,
+    limits(:,83) = ,
+    limits(:,84) = ,
+    limits(:,85) = ,
+    limits(:,86) = ,
+    limits(:,87) = ,
+    limits(:,88) = ,
+    limits(:,89) = ,
+    limits(:,90) = ,
+    limits(:,91) = ,
+    limits(:,92) = ,
+    limits(:,93) = ,
+    limits(:,94) = ,
+    limits(:,95) = ,
+    limits(:,96) = ,
+    limits(:,97) = ,
+    limits(:,98) = ,
+    limits(:,99) = ,
+    limits(:,100) = ,
+    limits(:,101) = ,
+    limits(:,102) = ,
+    limits(:,103) = ,
+    name = 'tvl', 'tvh', 'sotype', 'SNDPPT_M', 'CLYPPT_M', 'BLDFIE_M', 'wsatm_onelayer',
+           'vgalpha_onelayer', 'nfac_onelayer', 'rwrst_onelayer', 'wsatm',
+           'rwrst', 'vgalpha', 'nfac', 'llamsk', 'hlamsk', 'llamsks', 'hlamsks',
+           'lrvz0m', 'hrvz0m', 'lrvz0h', 'hrvz0h', 'lvegrsm', 'hvegrsm',
+           'lvegstr', 'hvegstr', 'lvegcov', 'hvegcov', 'wcons', 'lambdam',
+           'gdry', 'lrootfrl1', 'lrootfrl2', 'lrootfrl3', 'lrootfrl4', 'lrootfrall',
+           'lrootfr', 'hrootfrl1', 'hrootfrl2', 'hrootfrl3', 'hrootfrl4',
+           'hrootfrall', 'hrootfr', 'lrvr0vt', 'hrvr0vt', 'lminlai', 'hminlai',
+           'lsefold', 'hsefold', 'lvgmes', 'hvgmes', 'lvgc', 'hvgc', 'lvdmax',
+           'hvdmax', 'lvf2i', 'hvf2i', 'lvce', 'hvce', 'lvcf', 'hvcf', 'lvcnal',
+           'hvcnal', 'lvbslai', 'hvbslai', 'lvammax', 'hvammax', 'lvfzerost',
+           'hvfzerost', 'lxomega', 'hxomega', 'ltopt', 'htopt', 'lfzero',
+           'hfzero', 'lfzrost', 'hfzrost', 'lepso', 'hepso', 'lgamm', 'hgamm',
+           'lqdgamm', 'hqdgamm', 'lqdgmes', 'hqdgmes', 'lt1gmes', 'ht1gmes',
+           'lt2gmes', 'ht2gmes', 'lammax', 'hammax', 'lqammax', 'hqammax',
+           'lt1amax', 'ht1amax', 'lt2amax', 'ht2amax', 'lah', 'hah', 'lbh',
+           'hbh', 'itvl', 'itvh'
+    target_coord_names(:,1) = ,
+    target_coord_names(:,2) = ,
+    target_coord_names(:,3) = ,
+    target_coord_names(:,4) = ,
+    target_coord_names(:,5) = ,
+    target_coord_names(:,6) = ,
+    target_coord_names(:,7) = 'nlevs_all', 'lat', 'lon'
+    target_coord_names(:,8) = 'nlevs_all', 'lat', 'lon'
+    target_coord_names(:,9) = 'nlevs_all', 'lat', 'lon'
+    target_coord_names(:,10) = 'nlevs_all', 'lat', 'lon'
+    target_coord_names(:,11) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,12) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,13) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,14) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,15) = 'lat', 'lon'
+    target_coord_names(:,16) = 'lat', 'lon'
+    target_coord_names(:,17) = 'lat', 'lon'
+    target_coord_names(:,18) = 'lat', 'lon'
+    target_coord_names(:,19) = 'lat', 'lon'
+    target_coord_names(:,20) = 'lat', 'lon'
+    target_coord_names(:,21) = 'lat', 'lon'
+    target_coord_names(:,22) = 'lat', 'lon'
+    target_coord_names(:,23) = 'lat', 'lon'
+    target_coord_names(:,24) = 'lat', 'lon'
+    target_coord_names(:,25) = 'lat', 'lon'
+    target_coord_names(:,26) = 'lat', 'lon'
+    target_coord_names(:,27) = 'lat', 'lon'
+    target_coord_names(:,28) = 'lat', 'lon'
+    target_coord_names(:,29) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,30) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,31) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,32) = 'lev1', 'lat', 'lon'
+    target_coord_names(:,33) = 'lev2', 'lat', 'lon'
+    target_coord_names(:,34) = 'lev3', 'lat', 'lon'
+    target_coord_names(:,35) = 'lev4', 'lat', 'lon'
+    target_coord_names(:,36) = ,
+    target_coord_names(:,37) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,38) = 'lev1', 'lat', 'lon'
+    target_coord_names(:,39) = 'lev2', 'lat', 'lon'
+    target_coord_names(:,40) = 'lev3', 'lat', 'lon'
+    target_coord_names(:,41) = 'lev4', 'lat', 'lon'
+    target_coord_names(:,42) = ,
+    target_coord_names(:,43) = 'nlevs', 'lat', 'lon'
+    target_coord_names(:,44) = 'lat', 'lon'
+    target_coord_names(:,45) = 'lat', 'lon'
+    target_coord_names(:,46) = 'lat', 'lon'
+    target_coord_names(:,47) = 'lat', 'lon'
+    target_coord_names(:,48) = 'lat', 'lon'
+    target_coord_names(:,49) = 'lat', 'lon'
+    target_coord_names(:,50) = 'lat', 'lon'
+    target_coord_names(:,51) = 'lat', 'lon'
+    target_coord_names(:,52) = 'lat', 'lon'
+    target_coord_names(:,53) = 'lat', 'lon'
+    target_coord_names(:,54) = 'lat', 'lon'
+    target_coord_names(:,55) = 'lat', 'lon'
+    target_coord_names(:,56) = 'lat', 'lon'
+    target_coord_names(:,57) = 'lat', 'lon'
+    target_coord_names(:,58) = 'lat', 'lon'
+    target_coord_names(:,59) = 'lat', 'lon'
+    target_coord_names(:,60) = 'lat', 'lon'
+    target_coord_names(:,61) = 'lat', 'lon'
+    target_coord_names(:,62) = 'lat', 'lon'
+    target_coord_names(:,63) = 'lat', 'lon'
+    target_coord_names(:,64) = 'lat', 'lon'
+    target_coord_names(:,65) = 'lat', 'lon'
+    target_coord_names(:,66) = 'lat', 'lon'
+    target_coord_names(:,67) = 'lat', 'lon'
+    target_coord_names(:,68) = 'lat', 'lon'
+    target_coord_names(:,69) = 'lat', 'lon'
+    target_coord_names(:,70) = 'lat', 'lon'
+    target_coord_names(:,71) = 'lat', 'lon'
+    target_coord_names(:,72) = 'lat', 'lon'
+    target_coord_names(:,73) = 'lat', 'lon'
+    target_coord_names(:,74) = 'lat', 'lon'
+    target_coord_names(:,75) = 'lat', 'lon'
+    target_coord_names(:,76) = 'lat', 'lon'
+    target_coord_names(:,77) = 'lat', 'lon'
+    target_coord_names(:,78) = 'lat', 'lon'
+    target_coord_names(:,79) = 'lat', 'lon'
+    target_coord_names(:,80) = 'lat', 'lon'
+    target_coord_names(:,81) = 'lat', 'lon'
+    target_coord_names(:,82) = 'lat', 'lon'
+    target_coord_names(:,83) = 'lat', 'lon'
+    target_coord_names(:,84) = 'lat', 'lon'
+    target_coord_names(:,85) = 'lat', 'lon'
+    target_coord_names(:,86) = 'lat', 'lon'
+    target_coord_names(:,87) = 'lat', 'lon'
+    target_coord_names(:,88) = 'lat', 'lon'
+    target_coord_names(:,89) = 'lat', 'lon'
+    target_coord_names(:,90) = 'lat', 'lon'
+    target_coord_names(:,91) = 'lat', 'lon'
+    target_coord_names(:,92) = 'lat', 'lon'
+    target_coord_names(:,93) = 'lat', 'lon'
+    target_coord_names(:,94) = 'lat', 'lon'
+    target_coord_names(:,95) = 'lat', 'lon'
+    target_coord_names(:,96) = 'lat', 'lon'
+    target_coord_names(:,97) = 'lat', 'lon'
+    target_coord_names(:,98) = 'lat', 'lon'
+    target_coord_names(:,99) = 'lat', 'lon'
+    target_coord_names(:,100) = 'lat', 'lon'
+    target_coord_names(:,101) = 'lat', 'lon'
+    target_coord_names(:,102) = 'lat', 'lon'
+    target_coord_names(:,103) = 'lat', 'lon'
+    to_file = .false., .false., .false., .false., .false., .false., .false.,
+              .false., .false., .false., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .false., .false., .false., .false., .false., .true.,
+              .false., .false., .false., .false., .false., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true., .true., .true., .true., .true., .true.,
+              .true., .true., .true.
+    transfer_func = , , , , , 'BLDFIE_M / 1000.0', ' where (SNDPPT_M < sand_threshold )  zach_thetas_1 + zach_thetas_2 * CLYPPT_M + zach_thetas_3 * BLDFIE_M else where ( SNDPPT_M >= sand_threshold ) zach_thetas_4 + zach_thetas_5 * CLYPPT_M + zach_thetas_6 * BLDFIE_M ',
+                    ' where (SNDPPT_M < sand_threshold ) exp(zach_vga_1 + zach_vga_2 * SNDPPT_M + zach_vga_3 * CLYPPT_M + zach_vga_4 * BLDFIE_M) * 100.0 else where ( SNDPPT_M >= sand_threshold ) exp(zach_vga_5 + zach_vga_6 * SNDPPT_M + zach_vga_7 * CLYPPT_M + zach_vga_8 * BLDFIE_M) * 100.0 ',
+                    ' where (SNDPPT_M < sand_threshold ) zach_vgn_1 + zach_vgn_2 * (SNDPPT_M ** (zach_vgn_3)) + zach_vgn_4 * (CLYPPT_M **(zach_vgn_5)) else where ( SNDPPT_M >= sand_threshold ) zach_vgn_6 + zach_vgn_7 * (SNDPPT_M ** (zach_vgn_8)) + zach_vgn_9 * (CLYPPT_M **(zach_vgn_10)) ',
+                    'zach_thetar_1', , , , , 'where (tvl > lut00 .and. tvl < lut01) lamsk00 else where (tvl < lut02) lamsk01 else where (tvl < lut03) lamsk02 else where (tvl < lut04) lamsk03 else where (tvl < lut05) lamsk04 else where (tvl < lut06) lamsk05 else where (tvl < lut07) lamsk06 else where (tvl < lut08) lamsk07 else where (tvl < lut09) lamsk08 else where (tvl < lut10) lamsk09 else where (tvl < lut11) lamsk10 else where (tvl < lut12) lamsk11 else where (tvl < lut13) lamsk12 else where (tvl < lut14) lamsk13 else where (tvl < lut15) lamsk14 else where (tvl < lut16) lamsk15 else where (tvl < lut17) lamsk16 else where (tvl < lut18) lamsk17 else where (tvl < lut19) lamsk18 else where (tvl < lut20) lamsk19 else where (tvl < lut21) lamsk20',
+                    'where (tvh > lut00 .and. tvh < lut01) lamsk00 else where (tvh < lut02) lamsk01 else where (tvh < lut03) lamsk02 else where (tvh < lut04) lamsk03 else where (tvh < lut05) lamsk04 else where (tvh < lut06) lamsk05 else where (tvh < lut07) lamsk06 else where (tvh < lut08) lamsk07 else where (tvh < lut09) lamsk08 else where (tvh < lut10) lamsk09 else where (tvh < lut11) lamsk10 else where (tvh < lut12) lamsk11 else where (tvh < lut13) lamsk12 else where (tvh < lut14) lamsk13 else where (tvh < lut15) lamsk14 else where (tvh < lut16) lamsk15 else where (tvh < lut17) lamsk16 else where (tvh < lut18) lamsk17 else where (tvh < lut19) lamsk18 else where (tvh < lut20) lamsk19 else where (tvh < lut21) lamsk20',
+                    'where (tvl > lut00 .and. tvl < lut01) lamsks00 else where (tvl < lut02) lamsks01 else where (tvl < lut03) lamsks02 else where (tvl < lut04) lamsks03 else where (tvl < lut05) lamsks04 else where (tvl < lut06) lamsks05 else where (tvl < lut07) lamsks06 else where (tvl < lut08) lamsks07 else where (tvl < lut09) lamsks08 else where (tvl < lut10) lamsks09 else where (tvl < lut11) lamsks10 else where (tvl < lut12) lamsks11 else where (tvl < lut13) lamsks12 else where (tvl < lut14) lamsks13 else where (tvl < lut15) lamsks14 else where (tvl < lut16) lamsks15 else where (tvl < lut17) lamsks16 else where (tvl < lut18) lamsks17 else where (tvl < lut19) lamsks18 else where (tvl < lut20) lamsks19 else where (tvl < lut21) lamsks20',
+                    'where (tvh > lut00 .and. tvh < lut01) lamsks00 else where (tvh < lut02) lamsks01 else where (tvh < lut03) lamsks02 else where (tvh < lut04) lamsks03 else where (tvh < lut05) lamsks04 else where (tvh < lut06) lamsks05 else where (tvh < lut07) lamsks06 else where (tvh < lut08) lamsks07 else where (tvh < lut09) lamsks08 else where (tvh < lut10) lamsks09 else where (tvh < lut11) lamsks10 else where (tvh < lut12) lamsks11 else where (tvh < lut13) lamsks12 else where (tvh < lut14) lamsks13 else where (tvh < lut15) lamsks14 else where (tvh < lut16) lamsks15 else where (tvh < lut17) lamsks16 else where (tvh < lut18) lamsks17 else where (tvh < lut19) lamsks18 else where (tvh < lut20) lamsks19 else where (tvh < lut21) lamsks20',
+                    'where (tvl > lut00 .and. tvl < lut01) rvz0m00 else where (tvl < lut02) rvz0m01 else where (tvl < lut03) rvz0m02 else where (tvl < lut04) rvz0m03 else where (tvl < lut05) rvz0m04 else where (tvl < lut06) rvz0m05 else where (tvl < lut07) rvz0m06 else where (tvl < lut08) rvz0m07 else where (tvl < lut09) rvz0m08 else where (tvl < lut10) rvz0m09 else where (tvl < lut11) rvz0m10 else where (tvl < lut12) rvz0m11 else where (tvl < lut13) rvz0m12 else where (tvl < lut14) rvz0m13 else where (tvl < lut15) rvz0m14 else where (tvl < lut16) rvz0m15 else where (tvl < lut17) rvz0m16 else where (tvl < lut18) rvz0m17 else where (tvl < lut19) rvz0m18 else where (tvl < lut20) rvz0m19 else where (tvl < lut21) rvz0m20',
+                    'where (tvh > lut00 .and. tvh < lut01) rvz0m00 else where (tvh < lut02) rvz0m01 else where (tvh < lut03) rvz0m02 else where (tvh < lut04) rvz0m03 else where (tvh < lut05) rvz0m04 else where (tvh < lut06) rvz0m05 else where (tvh < lut07) rvz0m06 else where (tvh < lut08) rvz0m07 else where (tvh < lut09) rvz0m08 else where (tvh < lut10) rvz0m09 else where (tvh < lut11) rvz0m10 else where (tvh < lut12) rvz0m11 else where (tvh < lut13) rvz0m12 else where (tvh < lut14) rvz0m13 else where (tvh < lut15) rvz0m14 else where (tvh < lut16) rvz0m15 else where (tvh < lut17) rvz0m16 else where (tvh < lut18) rvz0m17 else where (tvh < lut19) rvz0m18 else where (tvh < lut20) rvz0m19 else where (tvh < lut21) rvz0m20',
+                    'where (tvl > lut00 .and. tvl < lut01) rvz0h00 else where (tvl < lut02) rvz0h01 else where (tvl < lut03) rvz0h02 else where (tvl < lut04) rvz0h03 else where (tvl < lut05) rvz0h04 else where (tvl < lut06) rvz0h05 else where (tvl < lut07) rvz0h06 else where (tvl < lut08) rvz0h07 else where (tvl < lut09) rvz0h08 else where (tvl < lut10) rvz0h09 else where (tvl < lut11) rvz0h10 else where (tvl < lut12) rvz0h11 else where (tvl < lut13) rvz0h12 else where (tvl < lut14) rvz0h13 else where (tvl < lut15) rvz0h14 else where (tvl < lut16) rvz0h15 else where (tvl < lut17) rvz0h16 else where (tvl < lut18) rvz0h17 else where (tvl < lut19) rvz0h18 else where (tvl < lut20) rvz0h19 else where (tvl < lut21) rvz0h20',
+                    'where (tvh > lut00 .and. tvh < lut01) rvz0h00 else where (tvh < lut02) rvz0h01 else where (tvh < lut03) rvz0h02 else where (tvh < lut04) rvz0h03 else where (tvh < lut05) rvz0h04 else where (tvh < lut06) rvz0h05 else where (tvh < lut07) rvz0h06 else where (tvh < lut08) rvz0h07 else where (tvh < lut09) rvz0h08 else where (tvh < lut10) rvz0h09 else where (tvh < lut11) rvz0h10 else where (tvh < lut12) rvz0h11 else where (tvh < lut13) rvz0h12 else where (tvh < lut14) rvz0h13 else where (tvh < lut15) rvz0h14 else where (tvh < lut16) rvz0h15 else where (tvh < lut17) rvz0h16 else where (tvh < lut18) rvz0h17 else where (tvh < lut19) rvz0h18 else where (tvh < lut20) rvz0h19 else where (tvh < lut21) rvz0h20',
+                    'where (tvl > lut00 .and. tvl < lut01) vegrsm00 else where (tvl < lut02) vegrsm01 else where (tvl < lut03) vegrsm02 else where (tvl < lut04) vegrsm03 else where (tvl < lut05) vegrsm04 else where (tvl < lut06) vegrsm05 else where (tvl < lut07) vegrsm06 else where (tvl < lut08) vegrsm07 else where (tvl < lut09) vegrsm08 else where (tvl < lut10) vegrsm09 else where (tvl < lut11) vegrsm10 else where (tvl < lut12) vegrsm11 else where (tvl < lut13) vegrsm12 else where (tvl < lut14) vegrsm13 else where (tvl < lut15) vegrsm14 else where (tvl < lut16) vegrsm15 else where (tvl < lut17) vegrsm16 else where (tvl < lut18) vegrsm17 else where (tvl < lut19) vegrsm18 else where (tvl < lut20) vegrsm19 else where (tvl < lut21) vegrsm20',
+                    'where (tvh > lut00 .and. tvh < lut01) vegrsm00 else where (tvh < lut02) vegrsm01 else where (tvh < lut03) vegrsm02 else where (tvh < lut04) vegrsm03 else where (tvh < lut05) vegrsm04 else where (tvh < lut06) vegrsm05 else where (tvh < lut07) vegrsm06 else where (tvh < lut08) vegrsm07 else where (tvh < lut09) vegrsm08 else where (tvh < lut10) vegrsm09 else where (tvh < lut11) vegrsm10 else where (tvh < lut12) vegrsm11 else where (tvh < lut13) vegrsm12 else where (tvh < lut14) vegrsm13 else where (tvh < lut15) vegrsm14 else where (tvh < lut16) vegrsm15 else where (tvh < lut17) vegrsm16 else where (tvh < lut18) vegrsm17 else where (tvh < lut19) vegrsm18 else where (tvh < lut20) vegrsm19 else where (tvh < lut21) vegrsm20',
+                    'where (tvl > lut00 .and. tvl < lut01) vegstr00 else where (tvl < lut02) vegstr01 else where (tvl < lut03) vegstr02 else where (tvl < lut04) vegstr03 else where (tvl < lut05) vegstr04 else where (tvl < lut06) vegstr05 else where (tvl < lut07) vegstr06 else where (tvl < lut08) vegstr07 else where (tvl < lut09) vegstr08 else where (tvl < lut10) vegstr09 else where (tvl < lut11) vegstr10 else where (tvl < lut12) vegstr11 else where (tvl < lut13) vegstr12 else where (tvl < lut14) vegstr13 else where (tvl < lut15) vegstr14 else where (tvl < lut16) vegstr15 else where (tvl < lut17) vegstr16 else where (tvl < lut18) vegstr17 else where (tvl < lut19) vegstr18 else where (tvl < lut20) vegstr19 else where (tvl < lut21) vegstr20',
+                    'where (tvh > lut00 .and. tvh < lut01) vegstr00 else where (tvh < lut02) vegstr01 else where (tvh < lut03) vegstr02 else where (tvh < lut04) vegstr03 else where (tvh < lut05) vegstr04 else where (tvh < lut06) vegstr05 else where (tvh < lut07) vegstr06 else where (tvh < lut08) vegstr07 else where (tvh < lut09) vegstr08 else where (tvh < lut10) vegstr09 else where (tvh < lut11) vegstr10 else where (tvh < lut12) vegstr11 else where (tvh < lut13) vegstr12 else where (tvh < lut14) vegstr13 else where (tvh < lut15) vegstr14 else where (tvh < lut16) vegstr15 else where (tvh < lut17) vegstr16 else where (tvh < lut18) vegstr17 else where (tvh < lut19) vegstr18 else where (tvh < lut20) vegstr19 else where (tvh < lut21) vegstr20',
+                    'where (tvl > lut00 .and. tvl < lut01) vegcov00 else where (tvl < lut02) vegcov01 else where (tvl < lut03) vegcov02 else where (tvl < lut04) vegcov03 else where (tvl < lut05) vegcov04 else where (tvl < lut06) vegcov05 else where (tvl < lut07) vegcov06 else where (tvl < lut08) vegcov07 else where (tvl < lut09) vegcov08 else where (tvl < lut10) vegcov09 else where (tvl < lut11) vegcov10 else where (tvl < lut12) vegcov11 else where (tvl < lut13) vegcov12 else where (tvl < lut14) vegcov13 else where (tvl < lut15) vegcov14 else where (tvl < lut16) vegcov15 else where (tvl < lut17) vegcov16 else where (tvl < lut18) vegcov17 else where (tvl < lut19) vegcov18 else where (tvl < lut20) vegcov19 else where (tvl < lut21) vegcov20',
+                    'where (tvh > lut00 .and. tvh < lut01) vegcov00 else where (tvh < lut02) vegcov01 else where (tvh < lut03) vegcov02 else where (tvh < lut04) vegcov03 else where (tvh < lut05) vegcov04 else where (tvh < lut06) vegcov05 else where (tvh < lut07) vegcov06 else where (tvh < lut08) vegcov07 else where (tvh < lut09) vegcov08 else where (tvh < lut10) vegcov09 else where (tvh < lut11) vegcov10 else where (tvh < lut12) vegcov11 else where (tvh < lut13) vegcov12 else where (tvh < lut14) vegcov13 else where (tvh < lut15) vegcov14 else where (tvh < lut16) vegcov15 else where (tvh < lut17) vegcov16 else where (tvh < lut18) vegcov17 else where (tvh < lut19) vegcov18 else where (tvh < lut20) vegcov19 else where (tvh < lut21) vegcov20',
+                    'where (sotype > lut00 .and. sotype < lut01) wcons00 else where (sotype < lut02) wcons01 else where (sotype < lut03) wcons02 else where (sotype < lut04) wcons03 else where (sotype < lut05) wcons04 else where (sotype < lut06) wcons05 else where (sotype < lut07) wcons06 else where (sotype < lut08) wcons07',
+                    'where (sotype > lut00 .and. sotype < lut01) lambdam00 else where (sotype < lut02) lambdam01 else where (sotype < lut03) lambdam02 else where (sotype < lut04) lambdam03 else where (sotype < lut05) lambdam04 else where (sotype < lut06) lambdam05 else where (sotype < lut07) lambdam06 else where (sotype < lut08) lambdam07',
+                    'where (sotype > lut00 .and. sotype < lut01) gdry00 else where (sotype < lut02) gdry01 else where (sotype < lut03) gdry02 else where (sotype < lut04) gdry03 else where (sotype < lut05) gdry04 else where (sotype < lut06) gdry05 else where (sotype < lut07) gdry06 else where (sotype < lut08) gdry07',
+                    'where (tvl > lut00 .and. tvl < lut01) rootfrl100 else where (tvl < lut02) rootfrl101 else where (tvl < lut03) rootfrl102 else where (tvl < lut04) rootfrl103 else where (tvl < lut05) rootfrl104 else where (tvl < lut06) rootfrl105 else where (tvl < lut07) rootfrl106 else where (tvl < lut08) rootfrl107 else where (tvl < lut09) rootfrl108 else where (tvl < lut10) rootfrl109 else where (tvl < lut11) rootfrl110 else where (tvl < lut12) rootfrl111 else where (tvl < lut13) rootfrl112 else where (tvl < lut14) rootfrl113 else where (tvl < lut15) rootfrl114 else where (tvl < lut16) rootfrl115 else where (tvl < lut17) rootfrl116 else where (tvl < lut18) rootfrl117 else where (tvl < lut19) rootfrl118 else where (tvl < lut20) rootfrl119 else where (tvl < lut21) rootfrl120',
+                    'where (tvl > lut00 .and. tvl < lut01) rootfrl200 else where (tvl < lut02) rootfrl201 else where (tvl < lut03) rootfrl202 else where (tvl < lut04) rootfrl203 else where (tvl < lut05) rootfrl204 else where (tvl < lut06) rootfrl205 else where (tvl < lut07) rootfrl206 else where (tvl < lut08) rootfrl207 else where (tvl < lut09) rootfrl208 else where (tvl < lut10) rootfrl209 else where (tvl < lut11) rootfrl210 else where (tvl < lut12) rootfrl211 else where (tvl < lut13) rootfrl212 else where (tvl < lut14) rootfrl213 else where (tvl < lut15) rootfrl214 else where (tvl < lut16) rootfrl215 else where (tvl < lut17) rootfrl216 else where (tvl < lut18) rootfrl217 else where (tvl < lut19) rootfrl218 else where (tvl < lut20) rootfrl219 else where (tvl < lut21) rootfrl220',
+                    'where (tvl > lut00 .and. tvl < lut01) rootfrl300 else where (tvl < lut02) rootfrl301 else where (tvl < lut03) rootfrl302 else where (tvl < lut04) rootfrl303 else where (tvl < lut05) rootfrl304 else where (tvl < lut06) rootfrl305 else where (tvl < lut07) rootfrl306 else where (tvl < lut08) rootfrl307 else where (tvl < lut09) rootfrl308 else where (tvl < lut10) rootfrl309 else where (tvl < lut11) rootfrl310 else where (tvl < lut12) rootfrl311 else where (tvl < lut13) rootfrl312 else where (tvl < lut14) rootfrl313 else where (tvl < lut15) rootfrl314 else where (tvl < lut16) rootfrl315 else where (tvl < lut17) rootfrl316 else where (tvl < lut18) rootfrl317 else where (tvl < lut19) rootfrl318 else where (tvl < lut20) rootfrl319 else where (tvl < lut21) rootfrl320',
+                    'where (tvl > lut00 .and. tvl < lut01) rootfrl400 else where (tvl < lut02) rootfrl401 else where (tvl < lut03) rootfrl402 else where (tvl < lut04) rootfrl403 else where (tvl < lut05) rootfrl404 else where (tvl < lut06) rootfrl405 else where (tvl < lut07) rootfrl406 else where (tvl < lut08) rootfrl407 else where (tvl < lut09) rootfrl408 else where (tvl < lut10) rootfrl409 else where (tvl < lut11) rootfrl410 else where (tvl < lut12) rootfrl411 else where (tvl < lut13) rootfrl412 else where (tvl < lut14) rootfrl413 else where (tvl < lut15) rootfrl414 else where (tvl < lut16) rootfrl415 else where (tvl < lut17) rootfrl416 else where (tvl < lut18) rootfrl417 else where (tvl < lut19) rootfrl418 else where (tvl < lut20) rootfrl419 else where (tvl < lut21) rootfrl420',
+                    , , 'where (tvh > lut00 .and. tvh < lut01) rootfrl100 else where (tvh < lut02) rootfrl101 else where (tvh < lut03) rootfrl102 else where (tvh < lut04) rootfrl103 else where (tvh < lut05) rootfrl104 else where (tvh < lut06) rootfrl105 else where (tvh < lut07) rootfrl106 else where (tvh < lut08) rootfrl107 else where (tvh < lut09) rootfrl108 else where (tvh < lut10) rootfrl109 else where (tvh < lut11) rootfrl110 else where (tvh < lut12) rootfrl111 else where (tvh < lut13) rootfrl112 else where (tvh < lut14) rootfrl113 else where (tvh < lut15) rootfrl114 else where (tvh < lut16) rootfrl115 else where (tvh < lut17) rootfrl116 else where (tvh < lut18) rootfrl117 else where (tvh < lut19) rootfrl118 else where (tvh < lut20) rootfrl119 else where (tvh < lut21) rootfrl120',
+                    'where (tvh > lut00 .and. tvh < lut01) rootfrl200 else where (tvh < lut02) rootfrl201 else where (tvh < lut03) rootfrl202 else where (tvh < lut04) rootfrl203 else where (tvh < lut05) rootfrl204 else where (tvh < lut06) rootfrl205 else where (tvh < lut07) rootfrl206 else where (tvh < lut08) rootfrl207 else where (tvh < lut09) rootfrl208 else where (tvh < lut10) rootfrl209 else where (tvh < lut11) rootfrl210 else where (tvh < lut12) rootfrl211 else where (tvh < lut13) rootfrl212 else where (tvh < lut14) rootfrl213 else where (tvh < lut15) rootfrl214 else where (tvh < lut16) rootfrl215 else where (tvh < lut17) rootfrl216 else where (tvh < lut18) rootfrl217 else where (tvh < lut19) rootfrl218 else where (tvh < lut20) rootfrl219 else where (tvh < lut21) rootfrl220',
+                    'where (tvh > lut00 .and. tvh < lut01) rootfrl300 else where (tvh < lut02) rootfrl301 else where (tvh < lut03) rootfrl302 else where (tvh < lut04) rootfrl303 else where (tvh < lut05) rootfrl304 else where (tvh < lut06) rootfrl305 else where (tvh < lut07) rootfrl306 else where (tvh < lut08) rootfrl307 else where (tvh < lut09) rootfrl308 else where (tvh < lut10) rootfrl309 else where (tvh < lut11) rootfrl310 else where (tvh < lut12) rootfrl311 else where (tvh < lut13) rootfrl312 else where (tvh < lut14) rootfrl313 else where (tvh < lut15) rootfrl314 else where (tvh < lut16) rootfrl315 else where (tvh < lut17) rootfrl316 else where (tvh < lut18) rootfrl317 else where (tvh < lut19) rootfrl318 else where (tvh < lut20) rootfrl319 else where (tvh < lut21) rootfrl320',
+                    'where (tvh > lut00 .and. tvh < lut01) rootfrl400 else where (tvh < lut02) rootfrl401 else where (tvh < lut03) rootfrl402 else where (tvh < lut04) rootfrl403 else where (tvh < lut05) rootfrl404 else where (tvh < lut06) rootfrl405 else where (tvh < lut07) rootfrl406 else where (tvh < lut08) rootfrl407 else where (tvh < lut09) rootfrl408 else where (tvh < lut10) rootfrl409 else where (tvh < lut11) rootfrl410 else where (tvh < lut12) rootfrl411 else where (tvh < lut13) rootfrl412 else where (tvh < lut14) rootfrl413 else where (tvh < lut15) rootfrl414 else where (tvh < lut16) rootfrl415 else where (tvh < lut17) rootfrl416 else where (tvh < lut18) rootfrl417 else where (tvh < lut19) rootfrl418 else where (tvh < lut20) rootfrl419 else where (tvh < lut21) rootfrl420',
+                    , , 'where (tvl > lut00 .and. tvl < lut01) rvr0vt00 else where (tvl < lut02) rvr0vt01 else where (tvl < lut03) rvr0vt02 else where (tvl < lut04) rvr0vt03 else where (tvl < lut05) rvr0vt04 else where (tvl < lut06) rvr0vt05 else where (tvl < lut07) rvr0vt06 else where (tvl < lut08) rvr0vt07 else where (tvl < lut09) rvr0vt08 else where (tvl < lut10) rvr0vt09 else where (tvl < lut11) rvr0vt10 else where (tvl < lut12) rvr0vt11 else where (tvl < lut13) rvr0vt12 else where (tvl < lut14) rvr0vt13 else where (tvl < lut15) rvr0vt14 else where (tvl < lut16) rvr0vt15 else where (tvl < lut17) rvr0vt16 else where (tvl < lut18) rvr0vt17 else where (tvl < lut19) rvr0vt18 else where (tvl < lut20) rvr0vt19 else where (tvl < lut21) rvr0vt20',
+                    'where (tvh > lut00 .and. tvh < lut01) rvr0vt00 else where (tvh < lut02) rvr0vt01 else where (tvh < lut03) rvr0vt02 else where (tvh < lut04) rvr0vt03 else where (tvh < lut05) rvr0vt04 else where (tvh < lut06) rvr0vt05 else where (tvh < lut07) rvr0vt06 else where (tvh < lut08) rvr0vt07 else where (tvh < lut09) rvr0vt08 else where (tvh < lut10) rvr0vt09 else where (tvh < lut11) rvr0vt10 else where (tvh < lut12) rvr0vt11 else where (tvh < lut13) rvr0vt12 else where (tvh < lut14) rvr0vt13 else where (tvh < lut15) rvr0vt14 else where (tvh < lut16) rvr0vt15 else where (tvh < lut17) rvr0vt16 else where (tvh < lut18) rvr0vt17 else where (tvh < lut19) rvr0vt18 else where (tvh < lut20) rvr0vt19 else where (tvh < lut21) rvr0vt20',
+                    'where (tvl > lut00 .and. tvl < lut01) minlai00 else where (tvl < lut02) minlai01 else where (tvl < lut03) minlai02 else where (tvl < lut04) minlai03 else where (tvl < lut05) minlai04 else where (tvl < lut06) minlai05 else where (tvl < lut07) minlai06 else where (tvl < lut08) minlai07 else where (tvl < lut09) minlai08 else where (tvl < lut10) minlai09 else where (tvl < lut11) minlai10 else where (tvl < lut12) minlai11 else where (tvl < lut13) minlai12 else where (tvl < lut14) minlai13 else where (tvl < lut15) minlai14 else where (tvl < lut16) minlai15 else where (tvl < lut17) minlai16 else where (tvl < lut18) minlai17 else where (tvl < lut19) minlai18 else where (tvl < lut20) minlai19 else where (tvl < lut21) minlai20',
+                    'where (tvh > lut00 .and. tvh < lut01) minlai00 else where (tvh < lut02) minlai01 else where (tvh < lut03) minlai02 else where (tvh < lut04) minlai03 else where (tvh < lut05) minlai04 else where (tvh < lut06) minlai05 else where (tvh < lut07) minlai06 else where (tvh < lut08) minlai07 else where (tvh < lut09) minlai08 else where (tvh < lut10) minlai09 else where (tvh < lut11) minlai10 else where (tvh < lut12) minlai11 else where (tvh < lut13) minlai12 else where (tvh < lut14) minlai13 else where (tvh < lut15) minlai14 else where (tvh < lut16) minlai15 else where (tvh < lut17) minlai16 else where (tvh < lut18) minlai17 else where (tvh < lut19) minlai18 else where (tvh < lut20) minlai19 else where (tvh < lut21) minlai20',
+                    'where (tvl > lut00 .and. tvl < lut01) sefold00 else where (tvl < lut02) sefold01 else where (tvl < lut03) sefold02 else where (tvl < lut04) sefold03 else where (tvl < lut05) sefold04 else where (tvl < lut06) sefold05 else where (tvl < lut07) sefold06 else where (tvl < lut08) sefold07 else where (tvl < lut09) sefold08 else where (tvl < lut10) sefold09 else where (tvl < lut11) sefold10 else where (tvl < lut12) sefold11 else where (tvl < lut13) sefold12 else where (tvl < lut14) sefold13 else where (tvl < lut15) sefold14 else where (tvl < lut16) sefold15 else where (tvl < lut17) sefold16 else where (tvl < lut18) sefold17 else where (tvl < lut19) sefold18 else where (tvl < lut20) sefold19 else where (tvl < lut21) sefold20',
+                    'where (tvh > lut00 .and. tvh < lut01) sefold00 else where (tvh < lut02) sefold01 else where (tvh < lut03) sefold02 else where (tvh < lut04) sefold03 else where (tvh < lut05) sefold04 else where (tvh < lut06) sefold05 else where (tvh < lut07) sefold06 else where (tvh < lut08) sefold07 else where (tvh < lut09) sefold08 else where (tvh < lut10) sefold09 else where (tvh < lut11) sefold10 else where (tvh < lut12) sefold11 else where (tvh < lut13) sefold12 else where (tvh < lut14) sefold13 else where (tvh < lut15) sefold14 else where (tvh < lut16) sefold15 else where (tvh < lut17) sefold16 else where (tvh < lut18) sefold17 else where (tvh < lut19) sefold18 else where (tvh < lut20) sefold19 else where (tvh < lut21) sefold20',
+                    'where (tvl > lut00 .and. tvl < lut01) vgmes00 else where (tvl < lut02) vgmes01 else where (tvl < lut03) vgmes02 else where (tvl < lut04) vgmes03 else where (tvl < lut05) vgmes04 else where (tvl < lut06) vgmes05 else where (tvl < lut07) vgmes06 else where (tvl < lut08) vgmes07 else where (tvl < lut09) vgmes08 else where (tvl < lut10) vgmes09 else where (tvl < lut11) vgmes10 else where (tvl < lut12) vgmes11 else where (tvl < lut13) vgmes12 else where (tvl < lut14) vgmes13 else where (tvl < lut15) vgmes14 else where (tvl < lut16) vgmes15 else where (tvl < lut17) vgmes16 else where (tvl < lut18) vgmes17 else where (tvl < lut19) vgmes18 else where (tvl < lut20) vgmes19 else where (tvl < lut21) vgmes20',
+                    'where (tvh > lut00 .and. tvh < lut01) vgmes00 else where (tvh < lut02) vgmes01 else where (tvh < lut03) vgmes02 else where (tvh < lut04) vgmes03 else where (tvh < lut05) vgmes04 else where (tvh < lut06) vgmes05 else where (tvh < lut07) vgmes06 else where (tvh < lut08) vgmes07 else where (tvh < lut09) vgmes08 else where (tvh < lut10) vgmes09 else where (tvh < lut11) vgmes10 else where (tvh < lut12) vgmes11 else where (tvh < lut13) vgmes12 else where (tvh < lut14) vgmes13 else where (tvh < lut15) vgmes14 else where (tvh < lut16) vgmes15 else where (tvh < lut17) vgmes16 else where (tvh < lut18) vgmes17 else where (tvh < lut19) vgmes18 else where (tvh < lut20) vgmes19 else where (tvh < lut21) vgmes20',
+                    'where (tvl > lut00 .and. tvl < lut01) vgc00 else where (tvl < lut02) vgc01 else where (tvl < lut03) vgc02 else where (tvl < lut04) vgc03 else where (tvl < lut05) vgc04 else where (tvl < lut06) vgc05 else where (tvl < lut07) vgc06 else where (tvl < lut08) vgc07 else where (tvl < lut09) vgc08 else where (tvl < lut10) vgc09 else where (tvl < lut11) vgc10 else where (tvl < lut12) vgc11 else where (tvl < lut13) vgc12 else where (tvl < lut14) vgc13 else where (tvl < lut15) vgc14 else where (tvl < lut16) vgc15 else where (tvl < lut17) vgc16 else where (tvl < lut18) vgc17 else where (tvl < lut19) vgc18 else where (tvl < lut20) vgc19 else where (tvl < lut21) vgc20',
+                    'where (tvh > lut00 .and. tvh < lut01) vgc00 else where (tvh < lut02) vgc01 else where (tvh < lut03) vgc02 else where (tvh < lut04) vgc03 else where (tvh < lut05) vgc04 else where (tvh < lut06) vgc05 else where (tvh < lut07) vgc06 else where (tvh < lut08) vgc07 else where (tvh < lut09) vgc08 else where (tvh < lut10) vgc09 else where (tvh < lut11) vgc10 else where (tvh < lut12) vgc11 else where (tvh < lut13) vgc12 else where (tvh < lut14) vgc13 else where (tvh < lut15) vgc14 else where (tvh < lut16) vgc15 else where (tvh < lut17) vgc16 else where (tvh < lut18) vgc17 else where (tvh < lut19) vgc18 else where (tvh < lut20) vgc19 else where (tvh < lut21) vgc20',
+                    'where (tvl > lut00 .and. tvl < lut01) vdmax00 else where (tvl < lut02) vdmax01 else where (tvl < lut03) vdmax02 else where (tvl < lut04) vdmax03 else where (tvl < lut05) vdmax04 else where (tvl < lut06) vdmax05 else where (tvl < lut07) vdmax06 else where (tvl < lut08) vdmax07 else where (tvl < lut09) vdmax08 else where (tvl < lut10) vdmax09 else where (tvl < lut11) vdmax10 else where (tvl < lut12) vdmax11 else where (tvl < lut13) vdmax12 else where (tvl < lut14) vdmax13 else where (tvl < lut15) vdmax14 else where (tvl < lut16) vdmax15 else where (tvl < lut17) vdmax16 else where (tvl < lut18) vdmax17 else where (tvl < lut19) vdmax18 else where (tvl < lut20) vdmax19 else where (tvl < lut21) vdmax20',
+                    'where (tvh > lut00 .and. tvh < lut01) vdmax00 else where (tvh < lut02) vdmax01 else where (tvh < lut03) vdmax02 else where (tvh < lut04) vdmax03 else where (tvh < lut05) vdmax04 else where (tvh < lut06) vdmax05 else where (tvh < lut07) vdmax06 else where (tvh < lut08) vdmax07 else where (tvh < lut09) vdmax08 else where (tvh < lut10) vdmax09 else where (tvh < lut11) vdmax10 else where (tvh < lut12) vdmax11 else where (tvh < lut13) vdmax12 else where (tvh < lut14) vdmax13 else where (tvh < lut15) vdmax14 else where (tvh < lut16) vdmax15 else where (tvh < lut17) vdmax16 else where (tvh < lut18) vdmax17 else where (tvh < lut19) vdmax18 else where (tvh < lut20) vdmax19 else where (tvh < lut21) vdmax20',
+                    'where (tvl > lut00 .and. tvl < lut01) vf2i00 else where (tvl < lut02) vf2i01 else where (tvl < lut03) vf2i02 else where (tvl < lut04) vf2i03 else where (tvl < lut05) vf2i04 else where (tvl < lut06) vf2i05 else where (tvl < lut07) vf2i06 else where (tvl < lut08) vf2i07 else where (tvl < lut09) vf2i08 else where (tvl < lut10) vf2i09 else where (tvl < lut11) vf2i10 else where (tvl < lut12) vf2i11 else where (tvl < lut13) vf2i12 else where (tvl < lut14) vf2i13 else where (tvl < lut15) vf2i14 else where (tvl < lut16) vf2i15 else where (tvl < lut17) vf2i16 else where (tvl < lut18) vf2i17 else where (tvl < lut19) vf2i18 else where (tvl < lut20) vf2i19 else where (tvl < lut21) vf2i20',
+                    'where (tvh > lut00 .and. tvh < lut01) vf2i00 else where (tvh < lut02) vf2i01 else where (tvh < lut03) vf2i02 else where (tvh < lut04) vf2i03 else where (tvh < lut05) vf2i04 else where (tvh < lut06) vf2i05 else where (tvh < lut07) vf2i06 else where (tvh < lut08) vf2i07 else where (tvh < lut09) vf2i08 else where (tvh < lut10) vf2i09 else where (tvh < lut11) vf2i10 else where (tvh < lut12) vf2i11 else where (tvh < lut13) vf2i12 else where (tvh < lut14) vf2i13 else where (tvh < lut15) vf2i14 else where (tvh < lut16) vf2i15 else where (tvh < lut17) vf2i16 else where (tvh < lut18) vf2i17 else where (tvh < lut19) vf2i18 else where (tvh < lut20) vf2i19 else where (tvh < lut21) vf2i20',
+                    'where (tvl > lut00 .and. tvl < lut01) vce00 else where (tvl < lut02) vce01 else where (tvl < lut03) vce02 else where (tvl < lut04) vce03 else where (tvl < lut05) vce04 else where (tvl < lut06) vce05 else where (tvl < lut07) vce06 else where (tvl < lut08) vce07 else where (tvl < lut09) vce08 else where (tvl < lut10) vce09 else where (tvl < lut11) vce10 else where (tvl < lut12) vce11 else where (tvl < lut13) vce12 else where (tvl < lut14) vce13 else where (tvl < lut15) vce14 else where (tvl < lut16) vce15 else where (tvl < lut17) vce16 else where (tvl < lut18) vce17 else where (tvl < lut19) vce18 else where (tvl < lut20) vce19 else where (tvl < lut21) vce20',
+                    'where (tvh > lut00 .and. tvh < lut01) vce00 else where (tvh < lut02) vce01 else where (tvh < lut03) vce02 else where (tvh < lut04) vce03 else where (tvh < lut05) vce04 else where (tvh < lut06) vce05 else where (tvh < lut07) vce06 else where (tvh < lut08) vce07 else where (tvh < lut09) vce08 else where (tvh < lut10) vce09 else where (tvh < lut11) vce10 else where (tvh < lut12) vce11 else where (tvh < lut13) vce12 else where (tvh < lut14) vce13 else where (tvh < lut15) vce14 else where (tvh < lut16) vce15 else where (tvh < lut17) vce16 else where (tvh < lut18) vce17 else where (tvh < lut19) vce18 else where (tvh < lut20) vce19 else where (tvh < lut21) vce20',
+                    'where (tvl > lut00 .and. tvl < lut01) vcf00 else where (tvl < lut02) vcf01 else where (tvl < lut03) vcf02 else where (tvl < lut04) vcf03 else where (tvl < lut05) vcf04 else where (tvl < lut06) vcf05 else where (tvl < lut07) vcf06 else where (tvl < lut08) vcf07 else where (tvl < lut09) vcf08 else where (tvl < lut10) vcf09 else where (tvl < lut11) vcf10 else where (tvl < lut12) vcf11 else where (tvl < lut13) vcf12 else where (tvl < lut14) vcf13 else where (tvl < lut15) vcf14 else where (tvl < lut16) vcf15 else where (tvl < lut17) vcf16 else where (tvl < lut18) vcf17 else where (tvl < lut19) vcf18 else where (tvl < lut20) vcf19 else where (tvl < lut21) vcf20',
+                    'where (tvh > lut00 .and. tvh < lut01) vcf00 else where (tvh < lut02) vcf01 else where (tvh < lut03) vcf02 else where (tvh < lut04) vcf03 else where (tvh < lut05) vcf04 else where (tvh < lut06) vcf05 else where (tvh < lut07) vcf06 else where (tvh < lut08) vcf07 else where (tvh < lut09) vcf08 else where (tvh < lut10) vcf09 else where (tvh < lut11) vcf10 else where (tvh < lut12) vcf11 else where (tvh < lut13) vcf12 else where (tvh < lut14) vcf13 else where (tvh < lut15) vcf14 else where (tvh < lut16) vcf15 else where (tvh < lut17) vcf16 else where (tvh < lut18) vcf17 else where (tvh < lut19) vcf18 else where (tvh < lut20) vcf19 else where (tvh < lut21) vcf20',
+                    'where (tvl > lut00 .and. tvl < lut01) vcnal00 else where (tvl < lut02) vcnal01 else where (tvl < lut03) vcnal02 else where (tvl < lut04) vcnal03 else where (tvl < lut05) vcnal04 else where (tvl < lut06) vcnal05 else where (tvl < lut07) vcnal06 else where (tvl < lut08) vcnal07 else where (tvl < lut09) vcnal08 else where (tvl < lut10) vcnal09 else where (tvl < lut11) vcnal10 else where (tvl < lut12) vcnal11 else where (tvl < lut13) vcnal12 else where (tvl < lut14) vcnal13 else where (tvl < lut15) vcnal14 else where (tvl < lut16) vcnal15 else where (tvl < lut17) vcnal16 else where (tvl < lut18) vcnal17 else where (tvl < lut19) vcnal18 else where (tvl < lut20) vcnal19 else where (tvl < lut21) vcnal20',
+                    'where (tvh > lut00 .and. tvh < lut01) vcnal00 else where (tvh < lut02) vcnal01 else where (tvh < lut03) vcnal02 else where (tvh < lut04) vcnal03 else where (tvh < lut05) vcnal04 else where (tvh < lut06) vcnal05 else where (tvh < lut07) vcnal06 else where (tvh < lut08) vcnal07 else where (tvh < lut09) vcnal08 else where (tvh < lut10) vcnal09 else where (tvh < lut11) vcnal10 else where (tvh < lut12) vcnal11 else where (tvh < lut13) vcnal12 else where (tvh < lut14) vcnal13 else where (tvh < lut15) vcnal14 else where (tvh < lut16) vcnal15 else where (tvh < lut17) vcnal16 else where (tvh < lut18) vcnal17 else where (tvh < lut19) vcnal18 else where (tvh < lut20) vcnal19 else where (tvh < lut21) vcnal20',
+                    'where (tvl > lut00 .and. tvl < lut01) vbslai00 else where (tvl < lut02) vbslai01 else where (tvl < lut03) vbslai02 else where (tvl < lut04) vbslai03 else where (tvl < lut05) vbslai04 else where (tvl < lut06) vbslai05 else where (tvl < lut07) vbslai06 else where (tvl < lut08) vbslai07 else where (tvl < lut09) vbslai08 else where (tvl < lut10) vbslai09 else where (tvl < lut11) vbslai10 else where (tvl < lut12) vbslai11 else where (tvl < lut13) vbslai12 else where (tvl < lut14) vbslai13 else where (tvl < lut15) vbslai14 else where (tvl < lut16) vbslai15 else where (tvl < lut17) vbslai16 else where (tvl < lut18) vbslai17 else where (tvl < lut19) vbslai18 else where (tvl < lut20) vbslai19 else where (tvl < lut21) vbslai20',
+                    'where (tvh > lut00 .and. tvh < lut01) vbslai00 else where (tvh < lut02) vbslai01 else where (tvh < lut03) vbslai02 else where (tvh < lut04) vbslai03 else where (tvh < lut05) vbslai04 else where (tvh < lut06) vbslai05 else where (tvh < lut07) vbslai06 else where (tvh < lut08) vbslai07 else where (tvh < lut09) vbslai08 else where (tvh < lut10) vbslai09 else where (tvh < lut11) vbslai10 else where (tvh < lut12) vbslai11 else where (tvh < lut13) vbslai12 else where (tvh < lut14) vbslai13 else where (tvh < lut15) vbslai14 else where (tvh < lut16) vbslai15 else where (tvh < lut17) vbslai16 else where (tvh < lut18) vbslai17 else where (tvh < lut19) vbslai18 else where (tvh < lut20) vbslai19 else where (tvh < lut21) vbslai20',
+                    'where (tvl > lut00 .and. tvl < lut01) vammax00 else where (tvl < lut02) vammax01 else where (tvl < lut03) vammax02 else where (tvl < lut04) vammax03 else where (tvl < lut05) vammax04 else where (tvl < lut06) vammax05 else where (tvl < lut07) vammax06 else where (tvl < lut08) vammax07 else where (tvl < lut09) vammax08 else where (tvl < lut10) vammax09 else where (tvl < lut11) vammax10 else where (tvl < lut12) vammax11 else where (tvl < lut13) vammax12 else where (tvl < lut14) vammax13 else where (tvl < lut15) vammax14 else where (tvl < lut16) vammax15 else where (tvl < lut17) vammax16 else where (tvl < lut18) vammax17 else where (tvl < lut19) vammax18 else where (tvl < lut20) vammax19 else where (tvl < lut21) vammax20',
+                    'where (tvh > lut00 .and. tvh < lut01) vammax00 else where (tvh < lut02) vammax01 else where (tvh < lut03) vammax02 else where (tvh < lut04) vammax03 else where (tvh < lut05) vammax04 else where (tvh < lut06) vammax05 else where (tvh < lut07) vammax06 else where (tvh < lut08) vammax07 else where (tvh < lut09) vammax08 else where (tvh < lut10) vammax09 else where (tvh < lut11) vammax10 else where (tvh < lut12) vammax11 else where (tvh < lut13) vammax12 else where (tvh < lut14) vammax13 else where (tvh < lut15) vammax14 else where (tvh < lut16) vammax15 else where (tvh < lut17) vammax16 else where (tvh < lut18) vammax17 else where (tvh < lut19) vammax18 else where (tvh < lut20) vammax19 else where (tvh < lut21) vammax20',
+                    'where (tvl > lut00 .and. tvl < lut01) vfzerost00 else where (tvl < lut02) vfzerost01 else where (tvl < lut03) vfzerost02 else where (tvl < lut04) vfzerost03 else where (tvl < lut05) vfzerost04 else where (tvl < lut06) vfzerost05 else where (tvl < lut07) vfzerost06 else where (tvl < lut08) vfzerost07 else where (tvl < lut09) vfzerost08 else where (tvl < lut10) vfzerost09 else where (tvl < lut11) vfzerost10 else where (tvl < lut12) vfzerost11 else where (tvl < lut13) vfzerost12 else where (tvl < lut14) vfzerost13 else where (tvl < lut15) vfzerost14 else where (tvl < lut16) vfzerost15 else where (tvl < lut17) vfzerost16 else where (tvl < lut18) vfzerost17 else where (tvl < lut19) vfzerost18 else where (tvl < lut20) vfzerost19 else where (tvl < lut21) vfzerost20',
+                    'where (tvh > lut00 .and. tvh < lut01) vfzerost00 else where (tvh < lut02) vfzerost01 else where (tvh < lut03) vfzerost02 else where (tvh < lut04) vfzerost03 else where (tvh < lut05) vfzerost04 else where (tvh < lut06) vfzerost05 else where (tvh < lut07) vfzerost06 else where (tvh < lut08) vfzerost07 else where (tvh < lut09) vfzerost08 else where (tvh < lut10) vfzerost09 else where (tvh < lut11) vfzerost10 else where (tvh < lut12) vfzerost11 else where (tvh < lut13) vfzerost12 else where (tvh < lut14) vfzerost13 else where (tvh < lut15) vfzerost14 else where (tvh < lut16) vfzerost15 else where (tvh < lut17) vfzerost16 else where (tvh < lut18) vfzerost17 else where (tvh < lut19) vfzerost18 else where (tvh < lut20) vfzerost19 else where (tvh < lut21) vfzerost20',
+                    'where (tvl > lut00 .and. tvl < lut01) xomega00 else where (tvl < lut02) xomega01 else where (tvl < lut03) xomega02 else where (tvl < lut04) xomega03 else where (tvl < lut05) xomega04 else where (tvl < lut06) xomega05 else where (tvl < lut07) xomega06 else where (tvl < lut08) xomega07 else where (tvl < lut09) xomega08 else where (tvl < lut10) xomega09 else where (tvl < lut11) xomega10 else where (tvl < lut12) xomega11 else where (tvl < lut13) xomega12 else where (tvl < lut14) xomega13 else where (tvl < lut15) xomega14 else where (tvl < lut16) xomega15 else where (tvl < lut17) xomega16 else where (tvl < lut18) xomega17 else where (tvl < lut19) xomega18 else where (tvl < lut20) xomega19 else where (tvl < lut21) xomega20',
+                    'where (tvh > lut00 .and. tvh < lut01) xomega00 else where (tvh < lut02) xomega01 else where (tvh < lut03) xomega02 else where (tvh < lut04) xomega03 else where (tvh < lut05) xomega04 else where (tvh < lut06) xomega05 else where (tvh < lut07) xomega06 else where (tvh < lut08) xomega07 else where (tvh < lut09) xomega08 else where (tvh < lut10) xomega09 else where (tvh < lut11) xomega10 else where (tvh < lut12) xomega11 else where (tvh < lut13) xomega12 else where (tvh < lut14) xomega13 else where (tvh < lut15) xomega14 else where (tvh < lut16) xomega15 else where (tvh < lut17) xomega16 else where (tvh < lut18) xomega17 else where (tvh < lut19) xomega18 else where (tvh < lut20) xomega19 else where (tvh < lut21) xomega20',
+                    'where (tvl > lut00 .and. tvl < lut01) topt00 else where (tvl < lut02) topt01 else where (tvl < lut03) topt02 else where (tvl < lut04) topt03 else where (tvl < lut05) topt04 else where (tvl < lut06) topt05 else where (tvl < lut07) topt06 else where (tvl < lut08) topt07 else where (tvl < lut09) topt08 else where (tvl < lut10) topt09 else where (tvl < lut11) topt10 else where (tvl < lut12) topt11 else where (tvl < lut13) topt12 else where (tvl < lut14) topt13 else where (tvl < lut15) topt14 else where (tvl < lut16) topt15 else where (tvl < lut17) topt16 else where (tvl < lut18) topt17 else where (tvl < lut19) topt18 else where (tvl < lut20) topt19 else where (tvl < lut21) topt20',
+                    'where (tvh > lut00 .and. tvh < lut01) topt00 else where (tvh < lut02) topt01 else where (tvh < lut03) topt02 else where (tvh < lut04) topt03 else where (tvh < lut05) topt04 else where (tvh < lut06) topt05 else where (tvh < lut07) topt06 else where (tvh < lut08) topt07 else where (tvh < lut09) topt08 else where (tvh < lut10) topt09 else where (tvh < lut11) topt10 else where (tvh < lut12) topt11 else where (tvh < lut13) topt12 else where (tvh < lut14) topt13 else where (tvh < lut15) topt14 else where (tvh < lut16) topt15 else where (tvh < lut17) topt16 else where (tvh < lut18) topt17 else where (tvh < lut19) topt18 else where (tvh < lut20) topt19 else where (tvh < lut21) topt20',
+                    'where (tvl > lut00 .and. tvl < lut01) fzero00 else where (tvl < lut02) fzero01 else where (tvl < lut03) fzero02 else where (tvl < lut04) fzero03 else where (tvl < lut05) fzero04 else where (tvl < lut06) fzero05 else where (tvl < lut07) fzero06 else where (tvl < lut08) fzero07 else where (tvl < lut09) fzero08 else where (tvl < lut10) fzero09 else where (tvl < lut11) fzero10 else where (tvl < lut12) fzero11 else where (tvl < lut13) fzero12 else where (tvl < lut14) fzero13 else where (tvl < lut15) fzero14 else where (tvl < lut16) fzero15 else where (tvl < lut17) fzero16 else where (tvl < lut18) fzero17 else where (tvl < lut19) fzero18 else where (tvl < lut20) fzero19 else where (tvl < lut21) fzero20',
+                    'where (tvh > lut00 .and. tvh < lut01) fzero00 else where (tvh < lut02) fzero01 else where (tvh < lut03) fzero02 else where (tvh < lut04) fzero03 else where (tvh < lut05) fzero04 else where (tvh < lut06) fzero05 else where (tvh < lut07) fzero06 else where (tvh < lut08) fzero07 else where (tvh < lut09) fzero08 else where (tvh < lut10) fzero09 else where (tvh < lut11) fzero10 else where (tvh < lut12) fzero11 else where (tvh < lut13) fzero12 else where (tvh < lut14) fzero13 else where (tvh < lut15) fzero14 else where (tvh < lut16) fzero15 else where (tvh < lut17) fzero16 else where (tvh < lut18) fzero17 else where (tvh < lut19) fzero18 else where (tvh < lut20) fzero19 else where (tvh < lut21) fzero20',
+                    'where (tvl > lut00 .and. tvl < lut01) fzrost00 else where (tvl < lut02) fzrost01 else where (tvl < lut03) fzrost02 else where (tvl < lut04) fzrost03 else where (tvl < lut05) fzrost04 else where (tvl < lut06) fzrost05 else where (tvl < lut07) fzrost06 else where (tvl < lut08) fzrost07 else where (tvl < lut09) fzrost08 else where (tvl < lut10) fzrost09 else where (tvl < lut11) fzrost10 else where (tvl < lut12) fzrost11 else where (tvl < lut13) fzrost12 else where (tvl < lut14) fzrost13 else where (tvl < lut15) fzrost14 else where (tvl < lut16) fzrost15 else where (tvl < lut17) fzrost16 else where (tvl < lut18) fzrost17 else where (tvl < lut19) fzrost18 else where (tvl < lut20) fzrost19 else where (tvl < lut21) fzrost20',
+                    'where (tvh > lut00 .and. tvh < lut01) fzrost00 else where (tvh < lut02) fzrost01 else where (tvh < lut03) fzrost02 else where (tvh < lut04) fzrost03 else where (tvh < lut05) fzrost04 else where (tvh < lut06) fzrost05 else where (tvh < lut07) fzrost06 else where (tvh < lut08) fzrost07 else where (tvh < lut09) fzrost08 else where (tvh < lut10) fzrost09 else where (tvh < lut11) fzrost10 else where (tvh < lut12) fzrost11 else where (tvh < lut13) fzrost12 else where (tvh < lut14) fzrost13 else where (tvh < lut15) fzrost14 else where (tvh < lut16) fzrost15 else where (tvh < lut17) fzrost16 else where (tvh < lut18) fzrost17 else where (tvh < lut19) fzrost18 else where (tvh < lut20) fzrost19 else where (tvh < lut21) fzrost20',
+                    'where (tvl > lut00 .and. tvl < lut01) epso00 else where (tvl < lut02) epso01 else where (tvl < lut03) epso02 else where (tvl < lut04) epso03 else where (tvl < lut05) epso04 else where (tvl < lut06) epso05 else where (tvl < lut07) epso06 else where (tvl < lut08) epso07 else where (tvl < lut09) epso08 else where (tvl < lut10) epso09 else where (tvl < lut11) epso10 else where (tvl < lut12) epso11 else where (tvl < lut13) epso12 else where (tvl < lut14) epso13 else where (tvl < lut15) epso14 else where (tvl < lut16) epso15 else where (tvl < lut17) epso16 else where (tvl < lut18) epso17 else where (tvl < lut19) epso18 else where (tvl < lut20) epso19 else where (tvl < lut21) epso20',
+                    'where (tvh > lut00 .and. tvh < lut01) epso00 else where (tvh < lut02) epso01 else where (tvh < lut03) epso02 else where (tvh < lut04) epso03 else where (tvh < lut05) epso04 else where (tvh < lut06) epso05 else where (tvh < lut07) epso06 else where (tvh < lut08) epso07 else where (tvh < lut09) epso08 else where (tvh < lut10) epso09 else where (tvh < lut11) epso10 else where (tvh < lut12) epso11 else where (tvh < lut13) epso12 else where (tvh < lut14) epso13 else where (tvh < lut15) epso14 else where (tvh < lut16) epso15 else where (tvh < lut17) epso16 else where (tvh < lut18) epso17 else where (tvh < lut19) epso18 else where (tvh < lut20) epso19 else where (tvh < lut21) epso20',
+                    'where (tvl > lut00 .and. tvl < lut01) gamm00 else where (tvl < lut02) gamm01 else where (tvl < lut03) gamm02 else where (tvl < lut04) gamm03 else where (tvl < lut05) gamm04 else where (tvl < lut06) gamm05 else where (tvl < lut07) gamm06 else where (tvl < lut08) gamm07 else where (tvl < lut09) gamm08 else where (tvl < lut10) gamm09 else where (tvl < lut11) gamm10 else where (tvl < lut12) gamm11 else where (tvl < lut13) gamm12 else where (tvl < lut14) gamm13 else where (tvl < lut15) gamm14 else where (tvl < lut16) gamm15 else where (tvl < lut17) gamm16 else where (tvl < lut18) gamm17 else where (tvl < lut19) gamm18 else where (tvl < lut20) gamm19 else where (tvl < lut21) gamm20',
+                    'where (tvh > lut00 .and. tvh < lut01) gamm00 else where (tvh < lut02) gamm01 else where (tvh < lut03) gamm02 else where (tvh < lut04) gamm03 else where (tvh < lut05) gamm04 else where (tvh < lut06) gamm05 else where (tvh < lut07) gamm06 else where (tvh < lut08) gamm07 else where (tvh < lut09) gamm08 else where (tvh < lut10) gamm09 else where (tvh < lut11) gamm10 else where (tvh < lut12) gamm11 else where (tvh < lut13) gamm12 else where (tvh < lut14) gamm13 else where (tvh < lut15) gamm14 else where (tvh < lut16) gamm15 else where (tvh < lut17) gamm16 else where (tvh < lut18) gamm17 else where (tvh < lut19) gamm18 else where (tvh < lut20) gamm19 else where (tvh < lut21) gamm20',
+                    'where (tvl > lut00 .and. tvl < lut01) qdgamm00 else where (tvl < lut02) qdgamm01 else where (tvl < lut03) qdgamm02 else where (tvl < lut04) qdgamm03 else where (tvl < lut05) qdgamm04 else where (tvl < lut06) qdgamm05 else where (tvl < lut07) qdgamm06 else where (tvl < lut08) qdgamm07 else where (tvl < lut09) qdgamm08 else where (tvl < lut10) qdgamm09 else where (tvl < lut11) qdgamm10 else where (tvl < lut12) qdgamm11 else where (tvl < lut13) qdgamm12 else where (tvl < lut14) qdgamm13 else where (tvl < lut15) qdgamm14 else where (tvl < lut16) qdgamm15 else where (tvl < lut17) qdgamm16 else where (tvl < lut18) qdgamm17 else where (tvl < lut19) qdgamm18 else where (tvl < lut20) qdgamm19 else where (tvl < lut21) qdgamm20',
+                    'where (tvh > lut00 .and. tvh < lut01) qdgamm00 else where (tvh < lut02) qdgamm01 else where (tvh < lut03) qdgamm02 else where (tvh < lut04) qdgamm03 else where (tvh < lut05) qdgamm04 else where (tvh < lut06) qdgamm05 else where (tvh < lut07) qdgamm06 else where (tvh < lut08) qdgamm07 else where (tvh < lut09) qdgamm08 else where (tvh < lut10) qdgamm09 else where (tvh < lut11) qdgamm10 else where (tvh < lut12) qdgamm11 else where (tvh < lut13) qdgamm12 else where (tvh < lut14) qdgamm13 else where (tvh < lut15) qdgamm14 else where (tvh < lut16) qdgamm15 else where (tvh < lut17) qdgamm16 else where (tvh < lut18) qdgamm17 else where (tvh < lut19) qdgamm18 else where (tvh < lut20) qdgamm19 else where (tvh < lut21) qdgamm20',
+                    'where (tvl > lut00 .and. tvl < lut01) qdgmes00 else where (tvl < lut02) qdgmes01 else where (tvl < lut03) qdgmes02 else where (tvl < lut04) qdgmes03 else where (tvl < lut05) qdgmes04 else where (tvl < lut06) qdgmes05 else where (tvl < lut07) qdgmes06 else where (tvl < lut08) qdgmes07 else where (tvl < lut09) qdgmes08 else where (tvl < lut10) qdgmes09 else where (tvl < lut11) qdgmes10 else where (tvl < lut12) qdgmes11 else where (tvl < lut13) qdgmes12 else where (tvl < lut14) qdgmes13 else where (tvl < lut15) qdgmes14 else where (tvl < lut16) qdgmes15 else where (tvl < lut17) qdgmes16 else where (tvl < lut18) qdgmes17 else where (tvl < lut19) qdgmes18 else where (tvl < lut20) qdgmes19 else where (tvl < lut21) qdgmes20',
+                    'where (tvh > lut00 .and. tvh < lut01) qdgmes00 else where (tvh < lut02) qdgmes01 else where (tvh < lut03) qdgmes02 else where (tvh < lut04) qdgmes03 else where (tvh < lut05) qdgmes04 else where (tvh < lut06) qdgmes05 else where (tvh < lut07) qdgmes06 else where (tvh < lut08) qdgmes07 else where (tvh < lut09) qdgmes08 else where (tvh < lut10) qdgmes09 else where (tvh < lut11) qdgmes10 else where (tvh < lut12) qdgmes11 else where (tvh < lut13) qdgmes12 else where (tvh < lut14) qdgmes13 else where (tvh < lut15) qdgmes14 else where (tvh < lut16) qdgmes15 else where (tvh < lut17) qdgmes16 else where (tvh < lut18) qdgmes17 else where (tvh < lut19) qdgmes18 else where (tvh < lut20) qdgmes19 else where (tvh < lut21) qdgmes20',
+                    'where (tvl > lut00 .and. tvl < lut01) t1gmes00 else where (tvl < lut02) t1gmes01 else where (tvl < lut03) t1gmes02 else where (tvl < lut04) t1gmes03 else where (tvl < lut05) t1gmes04 else where (tvl < lut06) t1gmes05 else where (tvl < lut07) t1gmes06 else where (tvl < lut08) t1gmes07 else where (tvl < lut09) t1gmes08 else where (tvl < lut10) t1gmes09 else where (tvl < lut11) t1gmes10 else where (tvl < lut12) t1gmes11 else where (tvl < lut13) t1gmes12 else where (tvl < lut14) t1gmes13 else where (tvl < lut15) t1gmes14 else where (tvl < lut16) t1gmes15 else where (tvl < lut17) t1gmes16 else where (tvl < lut18) t1gmes17 else where (tvl < lut19) t1gmes18 else where (tvl < lut20) t1gmes19 else where (tvl < lut21) t1gmes20',
+                    'where (tvh > lut00 .and. tvh < lut01) t1gmes00 else where (tvh < lut02) t1gmes01 else where (tvh < lut03) t1gmes02 else where (tvh < lut04) t1gmes03 else where (tvh < lut05) t1gmes04 else where (tvh < lut06) t1gmes05 else where (tvh < lut07) t1gmes06 else where (tvh < lut08) t1gmes07 else where (tvh < lut09) t1gmes08 else where (tvh < lut10) t1gmes09 else where (tvh < lut11) t1gmes10 else where (tvh < lut12) t1gmes11 else where (tvh < lut13) t1gmes12 else where (tvh < lut14) t1gmes13 else where (tvh < lut15) t1gmes14 else where (tvh < lut16) t1gmes15 else where (tvh < lut17) t1gmes16 else where (tvh < lut18) t1gmes17 else where (tvh < lut19) t1gmes18 else where (tvh < lut20) t1gmes19 else where (tvh < lut21) t1gmes20',
+                    'where (tvl > lut00 .and. tvl < lut01) t2gmes00 else where (tvl < lut02) t2gmes01 else where (tvl < lut03) t2gmes02 else where (tvl < lut04) t2gmes03 else where (tvl < lut05) t2gmes04 else where (tvl < lut06) t2gmes05 else where (tvl < lut07) t2gmes06 else where (tvl < lut08) t2gmes07 else where (tvl < lut09) t2gmes08 else where (tvl < lut10) t2gmes09 else where (tvl < lut11) t2gmes10 else where (tvl < lut12) t2gmes11 else where (tvl < lut13) t2gmes12 else where (tvl < lut14) t2gmes13 else where (tvl < lut15) t2gmes14 else where (tvl < lut16) t2gmes15 else where (tvl < lut17) t2gmes16 else where (tvl < lut18) t2gmes17 else where (tvl < lut19) t2gmes18 else where (tvl < lut20) t2gmes19 else where (tvl < lut21) t2gmes20',
+                    'where (tvh > lut00 .and. tvh < lut01) t2gmes00 else where (tvh < lut02) t2gmes01 else where (tvh < lut03) t2gmes02 else where (tvh < lut04) t2gmes03 else where (tvh < lut05) t2gmes04 else where (tvh < lut06) t2gmes05 else where (tvh < lut07) t2gmes06 else where (tvh < lut08) t2gmes07 else where (tvh < lut09) t2gmes08 else where (tvh < lut10) t2gmes09 else where (tvh < lut11) t2gmes10 else where (tvh < lut12) t2gmes11 else where (tvh < lut13) t2gmes12 else where (tvh < lut14) t2gmes13 else where (tvh < lut15) t2gmes14 else where (tvh < lut16) t2gmes15 else where (tvh < lut17) t2gmes16 else where (tvh < lut18) t2gmes17 else where (tvh < lut19) t2gmes18 else where (tvh < lut20) t2gmes19 else where (tvh < lut21) t2gmes20',
+                    'where (tvl > lut00 .and. tvl < lut01) ammax00 else where (tvl < lut02) ammax01 else where (tvl < lut03) ammax02 else where (tvl < lut04) ammax03 else where (tvl < lut05) ammax04 else where (tvl < lut06) ammax05 else where (tvl < lut07) ammax06 else where (tvl < lut08) ammax07 else where (tvl < lut09) ammax08 else where (tvl < lut10) ammax09 else where (tvl < lut11) ammax10 else where (tvl < lut12) ammax11 else where (tvl < lut13) ammax12 else where (tvl < lut14) ammax13 else where (tvl < lut15) ammax14 else where (tvl < lut16) ammax15 else where (tvl < lut17) ammax16 else where (tvl < lut18) ammax17 else where (tvl < lut19) ammax18 else where (tvl < lut20) ammax19 else where (tvl < lut21) ammax20',
+                    'where (tvh > lut00 .and. tvh < lut01) ammax00 else where (tvh < lut02) ammax01 else where (tvh < lut03) ammax02 else where (tvh < lut04) ammax03 else where (tvh < lut05) ammax04 else where (tvh < lut06) ammax05 else where (tvh < lut07) ammax06 else where (tvh < lut08) ammax07 else where (tvh < lut09) ammax08 else where (tvh < lut10) ammax09 else where (tvh < lut11) ammax10 else where (tvh < lut12) ammax11 else where (tvh < lut13) ammax12 else where (tvh < lut14) ammax13 else where (tvh < lut15) ammax14 else where (tvh < lut16) ammax15 else where (tvh < lut17) ammax16 else where (tvh < lut18) ammax17 else where (tvh < lut19) ammax18 else where (tvh < lut20) ammax19 else where (tvh < lut21) ammax20',
+                    'where (tvl > lut00 .and. tvl < lut01) qammax00 else where (tvl < lut02) qammax01 else where (tvl < lut03) qammax02 else where (tvl < lut04) qammax03 else where (tvl < lut05) qammax04 else where (tvl < lut06) qammax05 else where (tvl < lut07) qammax06 else where (tvl < lut08) qammax07 else where (tvl < lut09) qammax08 else where (tvl < lut10) qammax09 else where (tvl < lut11) qammax10 else where (tvl < lut12) qammax11 else where (tvl < lut13) qammax12 else where (tvl < lut14) qammax13 else where (tvl < lut15) qammax14 else where (tvl < lut16) qammax15 else where (tvl < lut17) qammax16 else where (tvl < lut18) qammax17 else where (tvl < lut19) qammax18 else where (tvl < lut20) qammax19 else where (tvl < lut21) qammax20',
+                    'where (tvh > lut00 .and. tvh < lut01) qammax00 else where (tvh < lut02) qammax01 else where (tvh < lut03) qammax02 else where (tvh < lut04) qammax03 else where (tvh < lut05) qammax04 else where (tvh < lut06) qammax05 else where (tvh < lut07) qammax06 else where (tvh < lut08) qammax07 else where (tvh < lut09) qammax08 else where (tvh < lut10) qammax09 else where (tvh < lut11) qammax10 else where (tvh < lut12) qammax11 else where (tvh < lut13) qammax12 else where (tvh < lut14) qammax13 else where (tvh < lut15) qammax14 else where (tvh < lut16) qammax15 else where (tvh < lut17) qammax16 else where (tvh < lut18) qammax17 else where (tvh < lut19) qammax18 else where (tvh < lut20) qammax19 else where (tvh < lut21) qammax20',
+                    'where (tvl > lut00 .and. tvl < lut01) t1amax00 else where (tvl < lut02) t1amax01 else where (tvl < lut03) t1amax02 else where (tvl < lut04) t1amax03 else where (tvl < lut05) t1amax04 else where (tvl < lut06) t1amax05 else where (tvl < lut07) t1amax06 else where (tvl < lut08) t1amax07 else where (tvl < lut09) t1amax08 else where (tvl < lut10) t1amax09 else where (tvl < lut11) t1amax10 else where (tvl < lut12) t1amax11 else where (tvl < lut13) t1amax12 else where (tvl < lut14) t1amax13 else where (tvl < lut15) t1amax14 else where (tvl < lut16) t1amax15 else where (tvl < lut17) t1amax16 else where (tvl < lut18) t1amax17 else where (tvl < lut19) t1amax18 else where (tvl < lut20) t1amax19 else where (tvl < lut21) t1amax20',
+                    'where (tvh > lut00 .and. tvh < lut01) t1amax00 else where (tvh < lut02) t1amax01 else where (tvh < lut03) t1amax02 else where (tvh < lut04) t1amax03 else where (tvh < lut05) t1amax04 else where (tvh < lut06) t1amax05 else where (tvh < lut07) t1amax06 else where (tvh < lut08) t1amax07 else where (tvh < lut09) t1amax08 else where (tvh < lut10) t1amax09 else where (tvh < lut11) t1amax10 else where (tvh < lut12) t1amax11 else where (tvh < lut13) t1amax12 else where (tvh < lut14) t1amax13 else where (tvh < lut15) t1amax14 else where (tvh < lut16) t1amax15 else where (tvh < lut17) t1amax16 else where (tvh < lut18) t1amax17 else where (tvh < lut19) t1amax18 else where (tvh < lut20) t1amax19 else where (tvh < lut21) t1amax20',
+                    'where (tvl > lut00 .and. tvl < lut01) t2amax00 else where (tvl < lut02) t2amax01 else where (tvl < lut03) t2amax02 else where (tvl < lut04) t2amax03 else where (tvl < lut05) t2amax04 else where (tvl < lut06) t2amax05 else where (tvl < lut07) t2amax06 else where (tvl < lut08) t2amax07 else where (tvl < lut09) t2amax08 else where (tvl < lut10) t2amax09 else where (tvl < lut11) t2amax10 else where (tvl < lut12) t2amax11 else where (tvl < lut13) t2amax12 else where (tvl < lut14) t2amax13 else where (tvl < lut15) t2amax14 else where (tvl < lut16) t2amax15 else where (tvl < lut17) t2amax16 else where (tvl < lut18) t2amax17 else where (tvl < lut19) t2amax18 else where (tvl < lut20) t2amax19 else where (tvl < lut21) t2amax20',
+                    'where (tvh > lut00 .and. tvh < lut01) t2amax00 else where (tvh < lut02) t2amax01 else where (tvh < lut03) t2amax02 else where (tvh < lut04) t2amax03 else where (tvh < lut05) t2amax04 else where (tvh < lut06) t2amax05 else where (tvh < lut07) t2amax06 else where (tvh < lut08) t2amax07 else where (tvh < lut09) t2amax08 else where (tvh < lut10) t2amax09 else where (tvh < lut11) t2amax10 else where (tvh < lut12) t2amax11 else where (tvh < lut13) t2amax12 else where (tvh < lut14) t2amax13 else where (tvh < lut15) t2amax14 else where (tvh < lut16) t2amax15 else where (tvh < lut17) t2amax16 else where (tvh < lut18) t2amax17 else where (tvh < lut19) t2amax18 else where (tvh < lut20) t2amax19 else where (tvh < lut21) t2amax20',
+                    'where (tvl > lut00 .and. tvl < lut01) ah00 else where (tvl < lut02) ah01 else where (tvl < lut03) ah02 else where (tvl < lut04) ah03 else where (tvl < lut05) ah04 else where (tvl < lut06) ah05 else where (tvl < lut07) ah06 else where (tvl < lut08) ah07 else where (tvl < lut09) ah08 else where (tvl < lut10) ah09 else where (tvl < lut11) ah10 else where (tvl < lut12) ah11 else where (tvl < lut13) ah12 else where (tvl < lut14) ah13 else where (tvl < lut15) ah14 else where (tvl < lut16) ah15 else where (tvl < lut17) ah16 else where (tvl < lut18) ah17 else where (tvl < lut19) ah18 else where (tvl < lut20) ah19 else where (tvl < lut21) ah20',
+                    'where (tvh > lut00 .and. tvh < lut01) ah00 else where (tvh < lut02) ah01 else where (tvh < lut03) ah02 else where (tvh < lut04) ah03 else where (tvh < lut05) ah04 else where (tvh < lut06) ah05 else where (tvh < lut07) ah06 else where (tvh < lut08) ah07 else where (tvh < lut09) ah08 else where (tvh < lut10) ah09 else where (tvh < lut11) ah10 else where (tvh < lut12) ah11 else where (tvh < lut13) ah12 else where (tvh < lut14) ah13 else where (tvh < lut15) ah14 else where (tvh < lut16) ah15 else where (tvh < lut17) ah16 else where (tvh < lut18) ah17 else where (tvh < lut19) ah18 else where (tvh < lut20) ah19 else where (tvh < lut21) ah20',
+                    'where (tvl > lut00 .and. tvl < lut01) bh00 else where (tvl < lut02) bh01 else where (tvl < lut03) bh02 else where (tvl < lut04) bh03 else where (tvl < lut05) bh04 else where (tvl < lut06) bh05 else where (tvl < lut07) bh06 else where (tvl < lut08) bh07 else where (tvl < lut09) bh08 else where (tvl < lut10) bh09 else where (tvl < lut11) bh10 else where (tvl < lut12) bh11 else where (tvl < lut13) bh12 else where (tvl < lut14) bh13 else where (tvl < lut15) bh14 else where (tvl < lut16) bh15 else where (tvl < lut17) bh16 else where (tvl < lut18) bh17 else where (tvl < lut19) bh18 else where (tvl < lut20) bh19 else where (tvl < lut21) bh20',
+                    'where (tvh > lut00 .and. tvh < lut01) bh00 else where (tvh < lut02) bh01 else where (tvh < lut03) bh02 else where (tvh < lut04) bh03 else where (tvh < lut05) bh04 else where (tvh < lut06) bh05 else where (tvh < lut07) bh06 else where (tvh < lut08) bh07 else where (tvh < lut09) bh08 else where (tvh < lut10) bh09 else where (tvh < lut11) bh10 else where (tvh < lut12) bh11 else where (tvh < lut13) bh12 else where (tvh < lut14) bh13 else where (tvh < lut15) bh14 else where (tvh < lut16) bh15 else where (tvh < lut17) bh16 else where (tvh < lut18) bh17 else where (tvh < lut19) bh18 else where (tvh < lut20) bh19 else where (tvh < lut21) bh20',
+                    'where (tvl > lut00 .and. tvl < lut01) tvl00 else where (tvl < lut02) tvl01 else where (tvl < lut03) tvl02 else where (tvl < lut04) tvl03 else where (tvl < lut05) tvl04 else where (tvl < lut06) tvl05 else where (tvl < lut07) tvl06 else where (tvl < lut08) tvl07 else where (tvl < lut09) tvl08 else where (tvl < lut10) tvl09 else where (tvl < lut11) tvl10 else where (tvl < lut12) tvl11 else where (tvl < lut13) tvl12 else where (tvl < lut14) tvl13 else where (tvl < lut15) tvl14 else where (tvl < lut16) tvl15 else where (tvl < lut17) tvl16 else where (tvl < lut18) tvl17 else where (tvl < lut19) tvl18 else where (tvl < lut20) tvl19 else where (tvl < lut21) tvl20',
+                    'where (tvh > lut00 .and. tvh < lut01) tvh00 else where (tvh < lut02) tvh01 else where (tvh < lut03) tvh02 else where (tvh < lut04) tvh03 else where (tvh < lut05) tvh04 else where (tvh < lut06) tvh05 else where (tvh < lut07) tvh06 else where (tvh < lut08) tvh07 else where (tvh < lut09) tvh08 else where (tvh < lut10) tvh09 else where (tvh < lut11) tvh10 else where (tvh < lut12) tvh11 else where (tvh < lut13) tvh12 else where (tvh < lut14) tvh13 else where (tvh < lut15) tvh14 else where (tvh < lut16) tvh15 else where (tvh < lut17) tvh16 else where (tvh < lut18) tvh17 else where (tvh < lut19) tvh18 else where (tvh < lut20) tvh19 else where (tvh < lut21) tvh20'
+    transfer_func_label = , , , , , , 'zach_wess_2007 theta_s [cm3 cm-3]',
+                          'zach_wess_2007 alpha [m-1]', 'zach_wess_2007 n [-]',
+                          'zach_wess_2007 theta_r [cm3 cm-3]', , , , , ,
+                          , , , , , , , , , , , , , , , , , , , , , , ,
+                          , , , , , , , , , , , , , , , , , , , , , , ,
+                          , , , , , , , , , , , , , , , , , , , , , , ,
+                          , , , , , , , , , , , , , , , , , , ,
+    upscale_ops(:,1) = ,
+    upscale_ops(:,2) = ,
+    upscale_ops(:,3) = ,
+    upscale_ops(:,4) = ,
+    upscale_ops(:,5) = ,
+    upscale_ops(:,6) = ,
+    upscale_ops(:,7) = '1.0', '1.0', '1.0'
+    upscale_ops(:,8) = '1.0', '1.0', '1.0'
+    upscale_ops(:,9) = '1.0', '1.0', '1.0'
+    upscale_ops(:,10) = '1.0', '1.0', '1.0'
+    upscale_ops(:,11) = '1.0', '1.0', '1.0'
+    upscale_ops(:,12) = '1.0', '1.0', '1.0'
+    upscale_ops(:,13) = '1.0', '1.0', '1.0'
+    upscale_ops(:,14) = '1.0', '1.0', '1.0'
+    upscale_ops(:,15) = '1.0', '1.0'
+    upscale_ops(:,16) = '1.0', '1.0'
+    upscale_ops(:,17) = '1.0', '1.0'
+    upscale_ops(:,18) = '1.0', '1.0'
+    upscale_ops(:,19) = '1.0', '1.0'
+    upscale_ops(:,20) = '1.0', '1.0'
+    upscale_ops(:,21) = '1.0', '1.0'
+    upscale_ops(:,22) = '1.0', '1.0'
+    upscale_ops(:,23) = '1.0', '1.0'
+    upscale_ops(:,24) = '1.0', '1.0'
+    upscale_ops(:,25) = '1.0', '1.0'
+    upscale_ops(:,26) = '1.0', '1.0'
+    upscale_ops(:,27) = '1.0', '1.0'
+    upscale_ops(:,28) = '1.0', '1.0'
+    upscale_ops(:,29) = '1.0', '1.0', '1.0'
+    upscale_ops(:,30) = '1.0', '1.0', '1.0'
+    upscale_ops(:,31) = '1.0', '1.0', '1.0'
+    upscale_ops(:,32) = '1.0', '1.0', '1.0'
+    upscale_ops(:,33) = '1.0', '1.0', '1.0'
+    upscale_ops(:,34) = '1.0', '1.0', '1.0'
+    upscale_ops(:,35) = '1.0', '1.0', '1.0'
+    upscale_ops(:,36) = ,
+    upscale_ops(:,37) = '1.0', '1.0', '1.0'
+    upscale_ops(:,38) = '1.0', '1.0', '1.0'
+    upscale_ops(:,39) = '1.0', '1.0', '1.0'
+    upscale_ops(:,40) = '1.0', '1.0', '1.0'
+    upscale_ops(:,41) = '1.0', '1.0', '1.0'
+    upscale_ops(:,42) = ,
+    upscale_ops(:,43) = '1.0', '1.0', '1.0'
+    upscale_ops(:,44) = '1.0', '1.0'
+    upscale_ops(:,45) = '1.0', '1.0'
+    upscale_ops(:,46) = '1.0', '1.0'
+    upscale_ops(:,47) = '1.0', '1.0'
+    upscale_ops(:,48) = '1.0', '1.0'
+    upscale_ops(:,49) = '1.0', '1.0'
+    upscale_ops(:,50) = '1.0', '1.0'
+    upscale_ops(:,51) = '1.0', '1.0'
+    upscale_ops(:,52) = '1.0', '1.0'
+    upscale_ops(:,53) = '1.0', '1.0'
+    upscale_ops(:,54) = '1.0', '1.0'
+    upscale_ops(:,55) = '1.0', '1.0'
+    upscale_ops(:,56) = '1.0', '1.0'
+    upscale_ops(:,57) = '1.0', '1.0'
+    upscale_ops(:,58) = '1.0', '1.0'
+    upscale_ops(:,59) = '1.0', '1.0'
+    upscale_ops(:,60) = '1.0', '1.0'
+    upscale_ops(:,61) = '1.0', '1.0'
+    upscale_ops(:,62) = '1.0', '1.0'
+    upscale_ops(:,63) = '1.0', '1.0'
+    upscale_ops(:,64) = '1.0', '1.0'
+    upscale_ops(:,65) = '1.0', '1.0'
+    upscale_ops(:,66) = '1.0', '1.0'
+    upscale_ops(:,67) = '1.0', '1.0'
+    upscale_ops(:,68) = '1.0', '1.0'
+    upscale_ops(:,69) = '1.0', '1.0'
+    upscale_ops(:,70) = '1.0', '1.0'
+    upscale_ops(:,71) = '1.0', '1.0'
+    upscale_ops(:,72) = '1.0', '1.0'
+    upscale_ops(:,73) = '1.0', '1.0'
+    upscale_ops(:,74) = '1.0', '1.0'
+    upscale_ops(:,75) = '1.0', '1.0'
+    upscale_ops(:,76) = '1.0', '1.0'
+    upscale_ops(:,77) = '1.0', '1.0'
+    upscale_ops(:,78) = '1.0', '1.0'
+    upscale_ops(:,79) = '1.0', '1.0'
+    upscale_ops(:,80) = '1.0', '1.0'
+    upscale_ops(:,81) = '1.0', '1.0'
+    upscale_ops(:,82) = '1.0', '1.0'
+    upscale_ops(:,83) = '1.0', '1.0'
+    upscale_ops(:,84) = '1.0', '1.0'
+    upscale_ops(:,85) = '1.0', '1.0'
+    upscale_ops(:,86) = '1.0', '1.0'
+    upscale_ops(:,87) = '1.0', '1.0'
+    upscale_ops(:,88) = '1.0', '1.0'
+    upscale_ops(:,89) = '1.0', '1.0'
+    upscale_ops(:,90) = '1.0', '1.0'
+    upscale_ops(:,91) = '1.0', '1.0'
+    upscale_ops(:,92) = '1.0', '1.0'
+    upscale_ops(:,93) = '1.0', '1.0'
+    upscale_ops(:,94) = '1.0', '1.0'
+    upscale_ops(:,95) = '1.0', '1.0'
+    upscale_ops(:,96) = '1.0', '1.0'
+    upscale_ops(:,97) = '1.0', '1.0'
+    upscale_ops(:,98) = '1.0', '1.0'
+    upscale_ops(:,99) = '1.0', '1.0'
+    upscale_ops(:,100) = '1.0', '1.0'
+    upscale_ops(:,101) = '1.0', '1.0'
+    upscale_ops(:,102) = '1.0', '1.0'
+    upscale_ops(:,103) = '1.0', '1.0'
+/
+
+&main
+    coordinate_aliases(:,1) = 'depth', 'nlevs', 'lev1', 'lev2', 'lev3',
+                              'lev4', 'nlevs_all', 'z'
+    coordinate_aliases(:,2) = 'lat', 'y'
+    coordinate_aliases(:,3) = 'lon', 'x'
+    out_filename = './mprin'
+/
+
+&parameters
+    parameter_names = 'lut00', 'lut01', 'lut02', 'lut03', 'lut04', 'lut05',
+                      'lut06', 'lut07', 'lut08', 'lut09', 'lut10', 'lut11',
+                      'lut12', 'lut13', 'lut14', 'lut15', 'lut16', 'lut17',
+                      'lut18', 'lut19', 'lut20', 'lut21', 'sand_threshold',
+                      '100.0', '1000.0'
+    parameter_values = -0.5, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5,
+                       9.5, 10.5, 11.5, 12.5, 13.5, 14.5, 15.5, 16.5, 17.5,
+                       18.5, 19.5, 20.5, 66.5, 100.0, 1000.0
+/

@@ -1,0 +1,85 @@
+&NDIMTIME
+    CDIMINFO = './diminfo.txt'
+    DT = 3600
+    IFRQ_INP = 3
+/
+
+&NFORCE
+    CINPMAT = 'inpmat.nc'
+    CROFCDF = 'runoff.nc'
+    CVNROF = 'Runoff'
+    DROFUNIT = 10800.0
+    LINPCDF = .FALSE.
+    LINTERP = .TRUE.
+    LITRPCDF = .TRUE.
+    SDAYIN = 1
+    SHOURIN = 0
+    SMONIN = 01
+    SYEARIN = 1979
+/
+
+&NMAP
+    CPTHOUT = 'bifprm.txt'
+    CRIVCLINC = 'rivclim.nc'
+    CRIVPARNC = 'rivpar.nc'
+    LMAPCDF = .TRUE.
+/
+
+&NOUTPUT
+    COUTDIR = './'
+    CVARSOUT = 'rivout,totout'
+    IFRQ_OUT = 24
+    LOUTCDF = .TRUE.
+    LOUTVEC = .FALSE.
+    NDLEVEL = 0
+/
+
+&NPARAM
+    PCADP = 0.7
+    PDSTMTH = 25000
+    PGRV = 9.8
+    PMANFLD = 0.1
+    PMANRIV = 0.03
+    PMINSLP = 1e-05
+/
+
+&NRESTART
+    CRESTDIR = './'
+    CRESTSTO = './restartcmf.nc'
+    LRESTCDF = .TRUE.
+/
+
+&NRUNVER
+    LADPSTP = .FALSE.
+    LBITSAFE = .TRUE.
+    LDAMOUT = .FALSE.
+    LFLDOUT = .FALSE.
+    LFPLAIN = .FALSE.
+    LGDWDLY = .FALSE.
+    LGRIDMAP = .TRUE.
+    LKINE = .TRUE.
+    LLEAPYR = .TRUE.
+    LMAPEND = .FALSE.
+    LMEANSL = .FALSE.
+    LOUTPUT = .TRUE.
+    LPTHOUT = .FALSE.
+    LRESTART = .false.
+    LROSPLIT = .TRUE.
+    LSEALEV = .FALSE.
+    LSLOPEMOUTH = .FALSE.
+    LSLPMIX = .FALSE.
+    LSTOONLY = .FALSE.
+    LWEVAP = .FALSE.
+    LWEVAPFIX = .FALSE.
+/
+
+&NSIMTIME
+    EDAY = 01
+    EHOUR = 0
+    EMON = 02
+    EYEAR = 1979
+    SDAY = 01
+    SHOUR = 0
+    SMON = 01
+    SYEAR = 1979
+/
