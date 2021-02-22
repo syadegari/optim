@@ -1,0 +1,10 @@
+
+Prototype optimization routine using spotpy package
+
+* Requirements
+* How to run
+* Todos
+** TODO Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
+** TODO enable restart option
+** TODO enable csv report from spotpy
+** TODO add parameter constraints option
