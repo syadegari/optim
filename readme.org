@@ -8,3 +8,4 @@ Prototype optimization routine using spotpy package
 ** TODO enable restart option
 ** TODO enable csv report from spotpy
 ** TODO add parameter constraints option
+** TODO Move the paths from control file to a central location

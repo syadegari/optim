@@ -1,1 +1,0 @@
-/work-local/yadegari/soilgrids/basin_3269/TEXMHT_M.nc

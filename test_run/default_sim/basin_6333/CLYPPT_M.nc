@@ -1,1 +1,0 @@
-/work-local/yadegari/soilgrids/basin_6333/CLYPPT_M.nc
