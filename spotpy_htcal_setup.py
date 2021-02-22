@@ -26,19 +26,14 @@ from subprocess import Popen
 from postproc import *
 
 
-def get_dir(path):
-    return [x for x in os.listdir(path) if os.path.isdir(f'{path}/{x}')]
 
 # path -+
 #       |-> run/ [sim_1, sim_2, ...] +
 #                                    |-> [basin_1, basin_2, ...]
 # path/run/sim_13/basin_4999
 
-
-
-   
-
-
+def get_dir(path):
+    return [x for x in os.listdir(path) if os.path.isdir(f'{path}/{x}')]
 
 
 def write_params_file(sim_path, x):
@@ -48,27 +43,25 @@ def write_params_file(sim_path, x):
     fh.close()
 
 
-def create_basin_run_directory(path, basin_names):
+def create_basin_run_directory(path_root, path_sim, basins):
     """copies the default simulation into the sim folder"""
-    for basin_name in basin_names:
-        _, name = ntpath.split(basin_name)
-        # currently we are in aux folder, should go up one folder to get the control file path
-        shutil.copytree(f"../{name}", f"{path}/{basin_name}")
+    for basin_nr in basins:
+        shutil.copytree(f"{path_root}/default_sim/basin_{basin_nr}",
+                        f"{path_sim}/basin_{basin_nr}", symlinks=True)
 
 
 def modify_basin_with_new_params(sim_path, basins, x):
-    for basin_name in basins:
+    for basin_nr in basins:
         # open the htessel in the sim_path
-        _, name = ntpath.split(basin_name)
         # change to basin directory
         parent_dir = os.getcwd()
-        os.chdir(f"{sim_path}/{name}/")
+        os.chdir(f"{sim_path}/basin_{basin_nr}")
         #
         htessel = HTESSELNameList(nml.read("input"))
         mpr = MPRNameList(nml.read("mpr_global_parameter.nml"))
         htessel.read_only = False
         mpr.read_only = False
-        # modify_forcing_path(htessel, sim_path, basin_name)
+        # modify_forcing_path(htessel, sim_path, basin_nr)
         modify_params(htessel, mpr, dict(zip(x.name, [v for v in x])))
         special_treatments(htessel)
         htessel.read_only = True
@@ -121,7 +114,6 @@ class spot_setup_htcal(object):
         #
         self.control_file_path = control_file_path
         self.control_file = control_file 
-        self.warmup = control_file.warmup_day
         self.params = []
         for param_name, param_values in self.control_file.params.items():
             lower, upper, defulat = param_values
@@ -139,7 +131,8 @@ class spot_setup_htcal(object):
 
     def create_param_run_directory(self, path):
         # get all the simulation direcotories
-        sim_folders = [f'{path}/runs/{x}' for x in get_dir(f'{path}/{runs}') if x.find('sim_') != -1]    
+        # import pdb;pdb.set_trace()
+        sim_folders = [f'{path}/runs/{x}' for x in get_dir(f'{path}/runs') if x.find('sim_') != -1]    
 
         if sim_folders == []:
             sim_number = 1
@@ -147,8 +140,8 @@ class spot_setup_htcal(object):
             # get the last sim folder
             sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders]) + 1
 
-        Path(f'{path}/{runs}/sim_{sim_number}').mkdir()
-        return f'{path}/{runs}/sim_{sim_number}'
+        Path(f'{path}/runs/sim_{sim_number}').mkdir()
+        return f'{path}/runs/sim_{sim_number}'
 
         
     def parameters(self):
@@ -157,27 +150,32 @@ class spot_setup_htcal(object):
 
     def simulation(self, x):
         # TODO: replace this after fixing the csv-file problem
-        with open(f"../{runs}/res.txt", 'a') as res_file:
+        # import pdb; pdb.set_trace()
+        with open(f"{self.control_file_path}/runs/res.txt", 'a') as res_file:
             print("parameters: ", [_ for _ in x], file=res_file)
         print("parameters: ", [_ for _ in x])
         #
         sim_path = self.create_param_run_directory(self.control_file_path)
         write_params_file(sim_path, x)
-        create_basin_run_directory(sim_path, self.basins)
+        create_basin_run_directory(self.control_file_path, sim_path, self.basins)
         modify_basin_with_new_params(sim_path, self.basins, x)
-
-        for basin in self.basins:
-            _, basin_folder = ntpath.split(basin)
-            run_simulation(f"{sim_path}/{basin_folder}", num_threads=4)
+        #
+        for basin_nr in self.basins:
+            print(f'running basin_{basin_nr} with updated parameters ...')
+            run_simulation(f"{sim_path}/basin_{basin_nr}", num_threads=4)
+        #
         return {
-            k : get_river_output(nc.Dataset(f"{sim_folder}/o_rivout_cmf.nc"), k) for k in self.basins
+            basin_nr : get_river_output(nc.Dataset(f"{sim_path}/basin_{basin_nr}/o_rivout_cmf.nc"), basin_nr) \
+            for basin_nr in self.basins
         }
 
+        
 
     def objectivefunction(self, simulations, evaluations):
         for basin in self.basins:
             obs, mod = get_discharge(evaluations[basin], simulations[basin])
-            kge(obs[self.warmup : ], mod[self.warmup : ])
+            warmup = self.control_file.training[basin]['warmup']
+            kge(obs[warmup : ], mod[warmup : ])
 
 
 
