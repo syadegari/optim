@@ -17,9 +17,11 @@ parser.add_argument('-n', '--num-sample',
     help="number of samples")
 args = parser.parse_args()
 
-assert os.path.isfile(f"{args.control_file}.py")
+control_file_path, _ = os.path.splitext(args.control_file)
+assert os.path.isfile(f"{control_file_path}.py"),\
+    f"Control file {control_file_path}.py was not found"
 
-spot_setup = spotpy_htcal_setup.spot_setup_htcal(args.control_file)
+spot_setup = spotpy_htcal_setup.spot_setup_htcal(control_file_path)
 
 sampler = dds(spot_setup, dbname="htcal", save_sim=False)
 sampler.sample(int(args.num_sample))
