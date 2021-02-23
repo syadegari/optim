@@ -54,16 +54,6 @@ def get_discharge(df_obs, df_mod, date_begin=None, date_end=None) -> List[pd.Ser
     return df_obs['discharge'].iloc[idx1_obs: idx2_obs + 1], df_mod['riv_output'].iloc[idx1_mod:idx2_mod + 1]
 
 
-# def kge(y_obs, y_mod, components=True) -> Union[list, float]:
-#     r = np.corrcoef(y_obs, y_mod)[0, 1]
-#     alpha = np.std(y_mod) / np.std(y_obs)
-#     beta = np.mean(y_mod) / np.mean(y_obs)
-#     if components:
-#         return 1. - np.sqrt((1 - r)**2 + (1 - beta)**2 + (1 - alpha)**2), r, alpha, beta
-#     else:
-#         return 1. - np.sqrt((1 - r)**2 + (1 - beta)**2 + (1 - alpha)**2)
-
-
 def kge(obs, sim, components=True):
     def __kge__(y_obs, y_mod, components=True) -> Union[list, float]:
         r = np.corrcoef(y_obs, y_mod)[0, 1]

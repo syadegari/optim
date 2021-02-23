@@ -21,5 +21,5 @@ assert os.path.isfile(f"{args.control_file}.py")
 
 spot_setup = spotpy_htcal_setup.spot_setup_htcal(args.control_file)
 
-sampler = dds(spot_setup, dbname="htcal", dbformat="csv")
+sampler = dds(spot_setup, dbname="htcal", save_sim=False)
 sampler.sample(int(args.num_sample))
