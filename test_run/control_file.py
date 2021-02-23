@@ -12,8 +12,8 @@ path_execs = "/work-local/yadegari/optim_Eve/execs"
 mpr_tf = 'zacharias'
 
 training = {
-    3269: {'year_begin': 1982, 'year_end': 1983, 'warmup': 180},
-    6333: {'year_begin': 1982, 'year_end': 1983, 'warmup': 180}
+    3269: {'year_begin': 1999, 'year_end': 2000, 'warmup': 60},
+    6333: {'year_begin': 1999, 'year_end': 2000, 'warmup': 60}
 }
 
 validation = {}
