@@ -5,7 +5,7 @@ path_forcing = "/work-local/yadegari/optim_Eve/forcings"
 path_static = "/data/htcal/data/processed/static/15min/ini_data"
 
 path_aux_dir = "/work-local/yadegari/optim_Eve/aux"
-path_soilgrid = "/work-local/yadegari/soilgrids"
+path_soilgrid = "/data/htcal/data/processed/mpr_in_data"
 
 path_execs = "/work-local/yadegari/optim_Eve/execs"
 
