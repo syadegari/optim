@@ -9,6 +9,7 @@ import f90nml as nml
 import netCDF4 as nc
 import os
 import subprocess as sp
+import argparse
 
 eve_run_cmd="""#!/bin/bash
 
@@ -45,9 +46,17 @@ def get_forcing_files(cf, basin_id):
         raise Exception
 
 
-# must contains the control file name itself but without .py
-control_file_path = sys.argv[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--control-file', 
+    help="control file")
+args = parser.parse_args()
 # control_file_path = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/EEE/examples/mpr-htessel/agu_runs/control_file"
+control_file_path, _ = os.path.splitext(args.control_file)
+assert os.path.isfile(f"{control_file_path}.py"),\
+    f"Control file {control_file_path}.py was not found"
+
+
+control_file_path, _ = os.path.splitext(args.control_file)
 cf_path, cf_file = ntpath.split(control_file_path)
 sys.path.insert(0, cf_path)
 control_file = __import__(cf_file)
