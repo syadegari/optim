@@ -9,3 +9,7 @@ Prototype optimization routine using spotpy package
 ** TODO enable csv report from spotpy
 ** TODO add parameter constraints option
 ** TODO Move the paths from control file to a central location
+** TODO check the duration for valid grdc measures.
+** TODO Regenerate the default_sim folder at the beginning of the optimization
+   - Has to be called from driver.py
+   - Maybe make a function out of prepare_domain so we can call it either via cmdline or inside python

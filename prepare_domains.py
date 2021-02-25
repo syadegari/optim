@@ -61,6 +61,8 @@ htessel_exe = glob.glob(f'{cf.path_execs}/master1s*')[0]
 
 
 """
+Some overall notes on what is used and how things are organized for development only
+
 Repositories:
 mprpy
 mpr 

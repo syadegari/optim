@@ -108,9 +108,7 @@ class spot_setup_htcal(object):
         control_file_path, control_file = ntpath.split(control_file)
         sys.path.insert(0, control_file_path)
         control_file = __import__(control_file)
-        print()
-        print(f"Using control file: {control_file}")
-        print()
+        print(f"\nUsing control file: {control_file}\n")
         #
         self.control_file_path = control_file_path
         self.control_file = control_file 
@@ -150,7 +148,6 @@ class spot_setup_htcal(object):
 
     def simulation(self, x):
         # TODO: replace this after fixing the csv-file problem
-        # import pdb; pdb.set_trace()
         with open(f"{self.control_file_path}/runs/res.txt", 'a') as res_file:
             print("parameters: ", [_ for _ in x], file=res_file)
         print("parameters: ", [_ for _ in x])
@@ -161,46 +158,35 @@ class spot_setup_htcal(object):
         modify_basin_with_new_params(sim_path, self.basins, x)
         #
         for basin_nr in self.basins:
-            print(f'running basin_{basin_nr} with updated parameters ...')
+            print(f'running basin_{basin_nr} in {sim_path} with updated parameters ...')
             run_simulation(f"{sim_path}/basin_{basin_nr}", num_threads=4)
         #
         return {
             basin_nr : get_river_output(nc.Dataset(f"{sim_path}/basin_{basin_nr}/o_rivout_cmf.nc"), basin_nr) \
             for basin_nr in self.basins
         }
-
         
 
-    def objectivefunction(self, simulations, evaluations):
-        for basin in self.basins:
-            obs, mod = get_discharge(evaluations[basin], simulations[basin])
-            warmup = self.control_file.training[basin]['warmup']
-            kge(obs[warmup : ], mod[warmup : ])
-
-
-
-    # def simulation(self, x):
-    #     # TODO: replace this after fixing the csv-file problem
-    #     with open(f"../{runs}/res.txt", 'a') as res_file:
-    #         print("parameters: ", [_ for _ in x], file=res_file)
-    #     print("parameters: ", [_ for _ in x])
-    #     #
-    #     sim_path = self.create_param_run_directory(self.control_file_path)
-    #     write_params_file(sim_path, x)
-    #     create_basin_run_directory(sim_path, self.basins)
-    #     modify_basin_with_new_params(sim_path, self.basins, x)
-    #     for basin in self.basins:
-    #         # run the basins
-    #         _, basin_folder = ntpath.split(basin)
-    #         run_simulation(f"{sim_path}/{basin_folder}", num_threads=4)
-            
-        
-            
+    def objectivefunction(self, simulation, evaluation):
+        sim_folders = [f'{self.control_file_path}/runs/{x}' \
+                       for x in get_dir(f'{self.control_file_path}/runs') if x.find('sim_') != -1]
+        sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders])
+        kges = {}
+        for basin_nr in self.basins:
+            obs, mod = get_discharge(evaluation[basin_nr], simulation[basin_nr])
+            warmup = self.control_file.training[basin_nr]['warmup']
+            kges[basin_nr] = kge(obs[warmup : ], mod[warmup : ], components=True)
+        # compute all the components of kge and write them into log but only return the kge itself
+        kge_means = np.array(list(kges.values())).mean(axis=0)
+        print(f"kge: {kge_means}")
+        with open(f"{self.control_file_path}/runs/res.txt", 'a') as res_file:
+            res_file.write(f"{kge_means}\n")
+        return kge_means[0]
 
 
     def evaluation(self):
         return {
-            k : get_grdc_discharge(k) for k in self.basins
+            basin_nr : get_grdc_discharge(basin_nr) for basin_nr in self.basins
         }
 
 
