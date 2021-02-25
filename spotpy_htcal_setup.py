@@ -15,7 +15,7 @@ import os.path
 import re
 import shutil
 #
-sys.path.insert(0, "/work-local/yadegari/optim_Eve/aux/")
+sys.path.insert(0, "/work-local/kelbling/optim/")
 # sys.path.insert(0, "/Users/yadegari/Documents/code/optim/aux")
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList

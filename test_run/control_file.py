@@ -30,6 +30,7 @@ path_soilgrid = "/data/htcal/data/processed/mpr_in_data"
 # --------------------------------------------------
 mpr_tf = 'zacharias'
 
+# TODO: consider making 'warmup' optional (i.e. equal 0 on default)
 training = {
     3269: {'year_begin': 1982, 'year_end': 1983, 'warmup': 180},
     6333: {'year_begin': 1982, 'year_end': 1983, 'warmup': 180}
@@ -42,6 +43,10 @@ validation = {}
 forcing_files = 'single'
 assert forcing_files == 'single' or forcing_files == 'multiple'
 
+#
+#                    lower             upper             default
+#
+
 params = {
     "zach_thetar_1"   :   [ 0.00,    1.00,    0.50],
     "zach_thetas_1"   :   [ 0.00,    1.00,    0.50],
@@ -50,7 +55,7 @@ params = {
     "zach_thetas_4"   :   [ 0.00,    1.00,    0.50],
     "zach_thetas_5"   :   [-0.01,    0.01,    0.00],
     "zach_thetas_6"   :   [-0.50,    0.50,    0.00],
-    "rtf2"            :   [269.0,    270.0,   271.0]          
+    "rtf2"            :   [269.0,    271.0,   270.0]
 }
 
 

@@ -1,7 +1,8 @@
 """list of paths needed to construct simulations"""
+path_grdc_data = "/data/esm/global_mod/data/processed/GRDC_time_series"
+path_grdc_alloc = "/data/htcal/data/processed/luts"
 
-forcing_path = '/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/forcings'
-static_path = '/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/dbase/static/15min/ini_data'
+forcing_path = "/data/htcal/data/processed//forcings"
+static_path = "/data/htcal/data/processed/static/15min/ini_data"
 
-path_grdc_data = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/GRDC"
-path_grdc_alloc = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/ecfpy/suites/htcal/luts"
+path_soilgrid = "/data/htcal/data/processed/mpr_in_data"
