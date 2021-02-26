@@ -4,6 +4,7 @@ Prototype optimization routine using spotpy package
 * Requirements
 * How to run
 * Todos
+** TODO make sure that the reference time of the forcings is equal among all basins (i.e. th 31.12.LASTYEAR 18:00 h)
 ** TODO Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
 ** TODO enable restart option
 ** TODO enable csv report from spotpy

@@ -20,8 +20,9 @@ path_execs = "/work-local/kelbling/optim_htcal_exes"
 path_grdc_data = "/data/esm/global_mod/data/processed/GRDC_time_series"
 path_grdc_alloc = "/data/htcal/data/processed/luts"
 
-path_forcing = "/data/htcal/data/processed//forcings"
+path_forcing = "/data/htcal/data/processed/forcings"
 path_static = "/data/htcal/data/processed/static/15min/ini_data"
+path_misc = "/data/htcal/data/processed/misc"
 
 path_soilgrid = "/data/htcal/data/processed/mpr_in_data"
 
@@ -32,8 +33,8 @@ mpr_tf = 'zacharias'
 
 # TODO: consider making 'warmup' optional (i.e. equal 0 on default)
 training = {
-    3269: {'year_begin': 1982, 'year_end': 1983, 'warmup': 180},
-    6333: {'year_begin': 1982, 'year_end': 1983, 'warmup': 180}
+    3269: {'year_begin': 1982, 'year_end': 1984, 'warmup': 180},
+    6333: {'year_begin': 1982, 'year_end': 1984, 'warmup': 180}
 }
 
 validation = {}
