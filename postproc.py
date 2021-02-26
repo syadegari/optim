@@ -7,7 +7,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from typing import Union, List
-from htcal_path import path_grdc_data, path_grdc_alloc
+# from htcal_path import path_grdc_data, path_grdc_alloc
+import htcal_path
+
+htpath = htcal_path.get_paths()
 
 def get_forcing_date(force) -> datetime:
     return datetime.datetime.strptime(re.findall(r"since\s+([\w\-]+)", force['time'].units)[0], '%Y-%m-%d')
@@ -124,8 +127,8 @@ def dates_are_continuous(df) -> bool:
 
 
 def extract_river_gauge_location(basin_id, nc_file) -> List[int]:
-    grdc_id = get_grdc_id(path_grdc_alloc, basin_id)
-    df = pd.read_csv(f"{path_grdc_alloc}/GRDC_alloc_15min.txt", sep="\s+")
+    grdc_id = get_grdc_id(htpath.path_grdc_alloc, basin_id)
+    df = pd.read_csv(f"{htpath.path_grdc_alloc}/GRDC_alloc_15min.txt", sep="\s+")
     #
     ulc_lon = nc_file['lon'][...].min()  # upper left corner
     ulc_lat = nc_file['lat'][...].max()  # upper left corner
@@ -145,10 +148,10 @@ def get_grdc_discharge(basin_id) -> pd.DataFrame:
         i1, i2, i3, i4, i5, i6 = line.split()
         return([datetime.date(int(i1), int(i2), int(i3)), int(i4), int(i5), float(i6)])
         
-    grdc_id = get_grdc_id(path_grdc_alloc, basin_id)
+    grdc_id = get_grdc_id(htpath.path_grdc_alloc, basin_id)
     
     # build a dataframe for query the date
-    lines = open(f'{path_grdc_data}/{grdc_id}.day', 'r').readlines()[5:]
+    lines = open(f'{htpath.path_grdc_data}/{grdc_id}.day', 'r').readlines()[5:]
     lines_data = [get_line(line) for line in lines]
 
     df = pd.DataFrame(lines_data)

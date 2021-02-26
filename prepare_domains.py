@@ -10,6 +10,7 @@ import netCDF4 as nc
 import os
 import subprocess as sp
 import argparse
+import htcal_path
 
 eve_run_cmd="""#!/bin/bash
 
@@ -62,11 +63,14 @@ sys.path.insert(0, cf_path)
 control_file = __import__(cf_file)
 cf = control_file
 
+# all the global paths we need
+htpath = htcal_path.get_paths()
+
 # get direcotry of the control file
 path, _ = ntpath.split(cf.__file__)
 os.chdir(path)
-mpr_exe = glob.glob(f'{cf.path_execs}/mpr/{cf.mpr_tf}/MPR-*')[0]
-htessel_exe = glob.glob(f'{cf.path_execs}/master1s*')[0]
+mpr_exe = glob.glob(f'{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*')[0]
+htessel_exe = glob.glob(f'{htpath.path_execs}/master1s*')[0]
 
 
 """
@@ -114,25 +118,26 @@ for basin_id in cf.training:
     shutil.copyfile("../../input_cmf.nam", "input_cmf.nam")
 
     # copy executables and mpr files
-    shutil.copy(f"{cf.path_execs}/master1s.exe", f"master1s.exe")
-    shutil.copy(glob.glob(f"{cf.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0], ntpath.split(glob.glob(f"{cf.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0])[1])
-    shutil.copyfile(f"{cf.path_execs}/mpr/{cf.mpr_tf}/mpr.nml", f"mpr.nml")
-    shutil.copyfile(f"{cf.path_execs}/mpr/{cf.mpr_tf}/mpr_global_parameter.nml", f"mpr_global_parameter.nml")
+    shutil.copy(f"{htpath.path_execs}/master1s.exe", f"master1s.exe")
+    shutil.copy(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0],
+                ntpath.split(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0])[1])
+    shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr.nml", f"mpr.nml")
+    shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr_global_parameter.nml", f"mpr_global_parameter.nml")
 
     # soil symlinks
     os.symlink("surfclim", "surfclim.nc")
     os.symlink("mprin.nc", "mprin")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/BLDFIE_M.nc", "BLDFIE_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/SNDPPT_M.nc", "SNDPPT_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/CLYPPT_M.nc", "CLYPPT_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/ORCDRC_M.nc", "ORCDRC_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/SLTPPT_M.nc", "SLTPPT_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/TEXMHT_M.nc", "TEXMHT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/BLDFIE_M.nc", "BLDFIE_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SNDPPT_M.nc", "SNDPPT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/CLYPPT_M.nc", "CLYPPT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/ORCDRC_M.nc", "ORCDRC_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SLTPPT_M.nc", "SLTPPT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/TEXMHT_M.nc", "TEXMHT_M.nc")
 
     #
     # copy the static files
     #
-    for f in glob.glob(f"{cf.path_static}/basin_{basin_id}/*"):
+    for f in glob.glob(f"{htpath.path_static}/basin_{basin_id}/*"):
         _, file_name = ntpath.split(f)
         shutil.copyfile(f, f"{file_name}")
     #
@@ -168,7 +173,7 @@ for basin_id in cf.training:
                     "CFORCT", "CFORCU"]:
         _, force_name = ntpath.split(htessel[forcing])
         force_name = re.findall("(.+?)_", force_name)[0]
-        htessel[forcing] = f"{cf.path_forcing}/basin_{basin_id}/{force_name}_{forcing_name_years}.nc"
+        htessel[forcing] = f"{htpath.path_forcing}/basin_{basin_id}/{force_name}_{forcing_name_years}.nc"
     #
     
     # change the timing and dates in htessel and cama input files
@@ -178,7 +183,7 @@ for basin_id in cf.training:
     htessel['IFTIM'] = 0
     #
     # we need one of the forcing files for the dimension
-    ncfile = nc.Dataset(f"{cf.path_forcing}/basin_{basin_id}/Tair_{forcing_name_years}.nc")
+    ncfile = nc.Dataset(f"{htpath.path_forcing}/basin_{basin_id}/Tair_{forcing_name_years}.nc")
     #
     htessel['NINDAT'] = int(f"{cf.training[basin_id]['year_begin']}{htessel['IFMM']:02}{htessel['IFDD']:02}")
     #

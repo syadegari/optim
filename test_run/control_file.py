@@ -1,13 +1,3 @@
-path_grdc_data = "/data/esm/global_mod/data/processed/GRDC_time_series/"
-path_grdc_alloc = "/work-local/yadegari/optim_Eve/ecfpy/suites/htcal/luts"
-
-path_forcing = "/work-local/yadegari/optim_Eve/forcings"
-path_static = "/data/htcal/data/processed/static/15min/ini_data"
-
-path_aux_dir = "/work-local/yadegari/optim_Eve/aux"
-path_soilgrid = "/data/htcal/data/processed/mpr_in_data"
-
-path_execs = "/work-local/yadegari/optim_Eve/execs"
 
 mpr_tf = 'zacharias'
 

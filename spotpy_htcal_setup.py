@@ -1,12 +1,7 @@
-import sys
-sys.path.insert(0, "/work-local/yadegari/optim_Eve/spotpy")
-# sys.path.insert(0, "/Users/yadegari/Documents/code/optim/spotpy")
 import spotpy
-#
 import numpy as np
 import pandas as pd
 import netCDF4 as nc
-# import matplotlib.pyplot as plt
 #
 import ntpath
 import sys
@@ -15,8 +10,6 @@ import os.path
 import re
 import shutil
 #
-sys.path.insert(0, "/work-local/yadegari/optim_Eve/aux/")
-# sys.path.insert(0, "/Users/yadegari/Documents/code/optim/aux")
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList
 import f90nml as nml
@@ -189,8 +182,4 @@ class spot_setup_htcal(object):
             basin_nr : get_grdc_discharge(basin_nr) for basin_nr in self.basins
         }
 
-
-        
-
 # setup = spot_setup_htcal("/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/self.control_file.py")
-

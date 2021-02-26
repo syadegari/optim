@@ -2,9 +2,6 @@
 
 import argparse
 import os.path
-import sys
-sys.path.insert(0, "/work-local/yadegari/optim_Eve/spotpy")
-# sys.path.insert(0, "/Users/yadegari/Documents/code/optim/spotpy")
 import spotpy
 from spotpy.algorithms import dds
 import spotpy_htcal_setup

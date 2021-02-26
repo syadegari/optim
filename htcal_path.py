@@ -1,7 +1,11 @@
-"""list of paths needed to construct simulations"""
+import socket
 
-forcing_path = '/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/forcings'
-static_path = '/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/dbase/static/15min/ini_data'
 
-path_grdc_data = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/GRDC"
-path_grdc_alloc = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/ecfpy/suites/htcal/luts"
+def get_paths():
+    if any([x in socket.gethostname() for x in ['datascience', 'frontend']]):
+        import htcal_path_eve as htpath
+    elif any([x in socket.gethostname() for x in ['juwels']]):
+        import htcal_path_juwels as htpath
+    else:
+        raise Error('cannot import paths, check if running')
+    return htpath

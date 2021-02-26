@@ -4,7 +4,7 @@ Prototype optimization routine using spotpy package
 * Requirements
 * How to run
 * Todos
-** TODO Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
+** DONE Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
 ** TODO enable restart option
 ** TODO enable csv report from spotpy
 ** TODO add parameter constraints option
@@ -18,7 +18,7 @@ Prototype optimization routine using spotpy package
 ** TODO Add submission script
    - both juwels and eve work with slurm
    - for ecmwf use qsub
-** TODO Add all the paths to htcal_path (for eve, juwels and ecmwf). Separate files for each cluster.
+** DONE Add all the paths to htcal_path (for eve, juwels and ecmwf). Separate files for each cluster.
 * basins filtering for optimization
   these basins have very little data in grdc (between 1985 ~ 2014). Dot not use them for optimization.
   basin name     valid data points (days)
