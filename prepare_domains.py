@@ -10,7 +10,11 @@ import netCDF4 as nc
 import os
 import subprocess as sp
 from numpy import mod
+import argparse
+import htcal_path
 
+# all the global paths we need
+htpath = htcal_path.get_paths()
 
 # TODO: delete, or needed for Jules setup?
 # def get_forcing_file_single(y1, y2):
@@ -69,17 +73,17 @@ echo 'JULES RUN COMMAND STILL MISSING'
     return(run_cmd)
 
 class basin_setup():
-    def __init__(self, syear, cf, basin_id):
+    def __init__(self, syear, cf, htpath, basin_id):
         # read cama and htessel sp. info
-        cama_clips    = [int(x) for x in open(f"{cf.path_static}/basin_{basin_id}/cdo_clip_cama.txt").readlines()[0].split(',')]
-        htessel_clips = [int(x) for x in open(f"{cf.path_static}/basin_{basin_id}/cdo_clip_htessel.txt").readlines()[0].split(',')]
+        cama_clips    = [int(x) for x in open(f"{htpath.path_static}/basin_{basin_id}/cdo_clip_cama.txt").readlines()[0].split(',')]
+        htessel_clips = [int(x) for x in open(f"{htpath.path_static}/basin_{basin_id}/cdo_clip_htessel.txt").readlines()[0].split(',')]
         #
         self.cama_nx      = cama_clips[1] - cama_clips[0] + 1
         self.cama_ny      = cama_clips[3] - cama_clips[2] + 1
-        self.cama_nlfp    = nc.Dataset(f"{cf.path_static}/basin_{basin_id}/rivclim.nc")['lev'].shape[0]
+        self.cama_nlfp    = nc.Dataset(f"{htpath.path_static}/basin_{basin_id}/rivclim.nc")['lev'].shape[0]
         self.htessel_nx   = htessel_clips[1] - htessel_clips[0] + 1
         self.htessel_ny   = htessel_clips[3] - htessel_clips[2] + 1
-        self.htessel_inpn = nc.Dataset(f"{cf.path_static}/basin_{basin_id}/inpmat.nc")['lev'].shape[0]
+        self.htessel_inpn = nc.Dataset(f"{htpath.path_static}/basin_{basin_id}/inpmat.nc")['lev'].shape[0]
 
         self.current_year = syear
         self.syear        = syear
@@ -104,52 +108,52 @@ class basin_setup():
         else:
             self.htessel_nstop  += 8760
 
-def setup_mpr(cf, basin_id, basin_path, dir_names):
+def setup_mpr(cf, htpath, basin_id, basin_path, dir_names):
     mpr_path = os.path.join(basin_path, dir_names['mpr'])
     os.makedirs(mpr_path)
     # executable
-    # shutil.copy(glob.glob(f"{cf.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0], ntpath.split(glob.glob(f"{cf.path_execs}/mpr/{cf.mpr_tf}/mpr")[0])[1])
-    shutil.copy(glob.glob(f"{cf.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0], f"{mpr_path}/mpr")
+    # shutil.copy(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0], ntpath.split(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr")[0])[1])
+    shutil.copy(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0], f"{mpr_path}/mpr")
     # namelists
-    shutil.copyfile(f"{cf.path_execs}/mpr/{cf.mpr_tf}/mpr.nml", f"{mpr_path}/mpr.nml")
-    shutil.copyfile(f"{cf.path_execs}/mpr/{cf.mpr_tf}/mpr_global_parameter.nml", f"{mpr_path}/mpr_global_parameter.nml")
+    shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr.nml", f"{mpr_path}/mpr.nml")
+    shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr_global_parameter.nml", f"{mpr_path}/mpr_global_parameter.nml")
     # input
-    os.symlink(f"{cf.path_static}/basin_{basin_id}/surfclim",      f"{mpr_path}/surfclim")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/BLDFIE_M.nc", f"{mpr_path}/BLDFIE_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/SNDPPT_M.nc", f"{mpr_path}/SNDPPT_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/CLYPPT_M.nc", f"{mpr_path}/CLYPPT_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/ORCDRC_M.nc", f"{mpr_path}/ORCDRC_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/SLTPPT_M.nc", f"{mpr_path}/SLTPPT_M.nc")
-    os.symlink(f"{cf.path_soilgrid}/basin_{basin_id}/TEXMHT_M.nc", f"{mpr_path}/TEXMHT_M.nc")
+    os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim",      f"{mpr_path}/surfclim")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/BLDFIE_M.nc", f"{mpr_path}/BLDFIE_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SNDPPT_M.nc", f"{mpr_path}/SNDPPT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/CLYPPT_M.nc", f"{mpr_path}/CLYPPT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/ORCDRC_M.nc", f"{mpr_path}/ORCDRC_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SLTPPT_M.nc", f"{mpr_path}/SLTPPT_M.nc")
+    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/TEXMHT_M.nc", f"{mpr_path}/TEXMHT_M.nc")
 
-def setup_htessel(cf, basin_id, basin_path, dir_names):
+def setup_htessel(cf, htpath, basin_id, basin_path, dir_names):
     year_begin = cf.training[basin_id]['year_begin']
     year_end   = cf.training[basin_id]['year_end']
-    b_setup = basin_setup(year_begin, cf, basin_id)
+    b_setup = basin_setup(year_begin, cf, htpath, basin_id)
     # diminfo file
     b_setup.write_diminfo(basin_path)
     for yy in range(year_begin, year_end + 1):
         # print(f'        setting up year {yy}')
-        _setup_htessel_yy_dir(b_setup, cf, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
-        _update_htessel_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
-        _update_cama_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
+        _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
+        _update_htessel_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
+        _update_cama_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
         b_setup.next_leg()
 
-def _setup_htessel_yy_dir(b_setup, cf, basin_id, basin_path, dir_names, yy, init = True):
+def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = True):
     yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy))
     mpr_path = os.path.join(basin_path, dir_names['mpr'])
     # print(f'        preparing directory: {yy_path}')
     os.makedirs(yy_path)
     # executable
-    shutil.copy(f"{cf.path_execs}/master1s.exe", f"{yy_path}/htessel")
+    shutil.copy(f"{htpath.path_execs}/master1s.exe", f"{yy_path}/htessel")
     # namelists
-    shutil.copyfile(f"{cf.path_misc}/input_htessel", f"{yy_path}/input")
-    shutil.copyfile(f"{cf.path_misc}/input_cmf.nam", f"{yy_path}/input_cmf.nam")
+    shutil.copyfile(f"{htpath.path_misc}/input_htessel", f"{yy_path}/input")
+    shutil.copyfile(f"{htpath.path_misc}/input_cmf.nam", f"{yy_path}/input_cmf.nam")
     # input htessel
-    os.symlink(f"{cf.path_static}/basin_{basin_id}/surfclim", f"{yy_path}/surfclim")
+    os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim", f"{yy_path}/surfclim")
     os.symlink(f"{mpr_path}/mprin", f"{yy_path}/mprin")
     if init:
-        os.symlink(f"{cf.path_static}/basin_{basin_id}/soilinit", f"{yy_path}/soilinit")
+        os.symlink(f"{htpath.path_static}/basin_{basin_id}/soilinit", f"{yy_path}/soilinit")
     else:
         prev_yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy - 1))
         os.symlink(f"{prev_yy_path}/restartout.nc", f"{yy_path}/restartin.nc")
@@ -157,11 +161,11 @@ def _setup_htessel_yy_dir(b_setup, cf, basin_id, basin_path, dir_names, yy, init
         os.symlink(f"{prev_yy_path}/restart{yy}010100.nc", f"{yy_path}/restartcmf.nc")
     # input cama
     for ff in [ 'rivpar.nc', 'rivclim.nc', 'inpmat.nc' ]:
-        os.symlink(f"{cf.path_static}/basin_{basin_id}/{ff}", f"{yy_path}/{ff}")
+        os.symlink(f"{htpath.path_static}/basin_{basin_id}/{ff}", f"{yy_path}/{ff}")
     # diminfo
     os.symlink(f"{basin_path}/diminfo.txt", f"{yy_path}/diminfo.txt")
 
-def _update_htessel_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init = True):
+def _update_htessel_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = True):
     yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy))
     htessel = HTESSELNameList(nml.read(f"{yy_path}/input"))
 
@@ -171,7 +175,7 @@ def _update_htessel_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init =
                     "CFORCT", "CFORCU"]:
         _, force_name = ntpath.split(htessel[forcing])
         force_name = re.findall("(.+?)_", force_name)[0]
-        htessel[forcing] = f"{cf.path_forcing}/basin_{basin_id}/{force_name}_{yy}.nc"
+        htessel[forcing] = f"{htpath.path_forcing}/basin_{basin_id}/{force_name}_{yy}.nc"
 
     # start or restart
     htessel['LNF'] = init
@@ -193,7 +197,7 @@ def _update_htessel_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init =
     htessel.read_only = True
     htessel.write(f"{yy_path}")
 
-def _update_cama_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init = True):
+def _update_cama_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = True):
     yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy))
     cama = CamaNameList(nml.read(f"{yy_path}/input_cmf.nam"))
     # now the cama file
@@ -219,9 +223,17 @@ def _update_cama_nml(b_setup, cf, basin_id, basin_path, dir_names, yy, init = Tr
     cama.readonly = True
     cama.write(f"{yy_path}")
 
-# must contains the control file name itself but without .py
-control_file_path = sys.argv[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--control-file', 
+    help="control file")
+args = parser.parse_args()
 # control_file_path = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/EEE/examples/mpr-htessel/agu_runs/control_file"
+control_file_path, _ = os.path.splitext(args.control_file)
+assert os.path.isfile(f"{control_file_path}.py"),\
+    f"Control file {control_file_path}.py was not found"
+
+
+control_file_path, _ = os.path.splitext(args.control_file)
 cf_path, cf_file = ntpath.split(control_file_path)
 sys.path.insert(0, cf_path)
 control_file = __import__(cf_file)
@@ -230,8 +242,8 @@ cf = control_file
 # get direcotry of the control file
 path, _ = ntpath.split(cf.__file__)
 os.chdir(path)
-mpr_exe = glob.glob(f'{cf.path_execs}/mpr/{cf.mpr_tf}/MPR-*')[0]
-htessel_exe = glob.glob(f'{cf.path_execs}/master1s*')[0]
+mpr_exe = glob.glob(f'{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*')[0]
+htessel_exe = glob.glob(f'{htpath.path_execs}/master1s*')[0]
 
 # some path settings
 dir_names = {'mpr' : 'mpr',
@@ -282,11 +294,11 @@ for basin_id in cf.training:
 
     # mpr
     print(f'    preparing mpr ...')
-    setup_mpr(cf, basin_id, basin_path, dir_names)
+    setup_mpr(cf, htpath, basin_id, basin_path, dir_names)
 
     # htessel
     print(f'    preparing htessel ...')
-    setup_htessel(cf, basin_id, basin_path, dir_names)
+    setup_htessel(cf, htpath, basin_id, basin_path, dir_names)
 
     # run script
     print(f'    writing run script ...')

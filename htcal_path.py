@@ -1,8 +1,11 @@
-"""list of paths needed to construct simulations"""
-path_grdc_data = "/data/esm/global_mod/data/processed/GRDC_time_series"
-path_grdc_alloc = "/data/htcal/data/processed/luts"
+import socket
 
-forcing_path = "/data/htcal/data/processed//forcings"
-static_path = "/data/htcal/data/processed/static/15min/ini_data"
 
-path_soilgrid = "/data/htcal/data/processed/mpr_in_data"
+def get_paths():
+    if any([x in socket.gethostname() for x in ['datascience', 'frontend']]):
+        import htcal_path_eve as htpath
+    elif any([x in socket.gethostname() for x in ['juwels']]):
+        import htcal_path_juwels as htpath
+    else:
+        raise Error('cannot import paths, check if running')
+    return htpath

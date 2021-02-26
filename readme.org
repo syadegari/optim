@@ -5,7 +5,7 @@ Prototype optimization routine using spotpy package
 * How to run
 * Todos
 ** TODO make sure that the reference time of the forcings is equal among all basins (i.e. th 31.12.LASTYEAR 18:00 h)
-** TODO Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
+** DONE Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
 ** TODO enable restart option
 ** TODO enable csv report from spotpy
 ** TODO add parameter constraints option
@@ -14,3 +14,26 @@ Prototype optimization routine using spotpy package
 ** TODO Regenerate the default_sim folder at the beginning of the optimization
    - Has to be called from driver.py
    - Maybe make a function out of prepare_domain so we can call it either via cmdline or inside python
+** TODO prepost: check if the specified data period has enough grdc data for kge calculation (abort or warn)
+
+** TODO Add submission script
+   - both juwels and eve work with slurm
+   - for ecmwf use qsub
+** DONE Add all the paths to htcal_path (for eve, juwels and ecmwf). Separate files for each cluster.
+* basins filtering for optimization
+  these basins have very little data in grdc (between 1985 ~ 2014). Dot not use them for optimization.
+  basin name     valid data points (days)
+  2467           1461
+  3268           1461
+  3556           1003
+  2158           1095
+  5198           1095
+  4351           1461
+  5816           1435
+  6527           1095
+  1984           192
+  4675           1461
+  6666           1461
+  5821           1410
+  6702           0
+  6134           1364
