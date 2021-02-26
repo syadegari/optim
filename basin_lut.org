@@ -1,0 +1,14 @@
+
+
+| basin | comment                         | groups | flag_calib | grdc_syear | grdc_eyear | optim_syear | optim_eyear | warmupdays | sensible_params |
+|-------+---------------------------------+--------+------------+------------+------------+-------------+-------------+------------+-----------------|
+|  6333 | Max snowfall                    |        | True       |            |            |             |             |            |                 |
+|  6144 | Max rainfall                    |        | True       |            |            |             |             |            |                 |
+|  2466 | Min rainfall                    |        | True       |            |            |             |             |            |                 |
+|  3516 | Max air temperature             |        | True       |            |            |             |             |            |                 |
+|  6301 | Min air temperature             |        | True       |            |            |             |             |            |                 |
+|  5362 | Min cvl (low vegetation cover)  |        | True       |            |            |             |             |            |                 |
+|  3932 | Max cvh (high vegetation cover) |        | True       |            |            |             |             |            |                 |
+|  3488 | Min cvh (high vegetation cover) |        | True       |            |            |             |             |            |                 |
+
+
