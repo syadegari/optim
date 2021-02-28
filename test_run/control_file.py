@@ -12,11 +12,6 @@ training = {
 
 validation = {}
 
-
-# this variable can be "single" or "multiple"
-forcing_files = 'single'
-assert forcing_files == 'single' or forcing_files == 'multiple'
-
 #
 #                    lower             upper             default
 #

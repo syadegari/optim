@@ -37,3 +37,33 @@ Prototype optimization routine using spotpy package
   5821           1410
   6702           0
   6134           1364
+* Misc notes
+** Some overall notes on what is used and how things are organized for development only
+
+   Repositories:
+   mprpy
+   mpr 
+   htessel
+   ecfpy
+
+   Data:
+   forcing
+   static
+   GRDC
+   soilgrid
+
+
+   default_sim/{basins}
+   iter_1/{basins}
+   iter_2/{basins}
+
+   mpr -> symlink
+   mpr.nml -> symlink
+   master1s -> symlink
+   mpr_global -> copy
+   input -> copy
+   input_cmf -> copy
+   soil params -> symlink
+
+   forcings -> path in the input
+

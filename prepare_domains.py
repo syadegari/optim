@@ -16,23 +16,6 @@ import htcal_path
 # all the global paths we need
 htpath = htcal_path.get_paths()
 
-# TODO: delete, or needed for Jules setup?
-# def get_forcing_file_single(y1, y2):
-#     assert y1 < y2
-#     if y1 + 1 == y2:
-#         return str(y1)
-#     else:
-#         return f"{str(y1)}_{str(y2-1)}"
-
-# TODO: delete, or needed for Jules setup?
-# def get_forcing_files(cf, basin_id):
-#     if cf.forcing_files == 'single':
-#         year_begin = cf.training[basin_id]['year_begin']
-#         year_end   = cf.training[basin_id]['year_end']
-#         return get_forcing_file_single(year_begin, year_end)
-#     else:
-#         raise Exception
-
 def run_command(cf, basin_path, dir_names):
     hostname = os.uname()[1]
     if hostname in ['datascience1', 'frontend1', 'frontend2']:
@@ -66,7 +49,7 @@ echo "htessel done"
                    basindir   = basin_path,
                    year_begin = cf.training[basin_id]['year_begin'],
                    year_end   = cf.training[basin_id]['year_end'])
-    elif hostname in ['NOIDEAHOWJULESHOSNAME LOOKSLIKE']:
+    elif 'juwels' in hostname:
         run_cmd="""
 echo 'JULES RUN COMMAND STILL MISSING'
         """
@@ -249,36 +232,6 @@ htessel_exe = glob.glob(f'{htpath.path_execs}/master1s*')[0]
 dir_names = {'mpr' : 'mpr',
              'model_run' : 'run'}
 
-"""
-Some overall notes on what is used and how things are organized for development only
-
-Repositories:
-mprpy
-mpr 
-htessel
-ecfpy
-
-Data:
-forcing
-static
-GRDC
-soilgrid
-
-
-default_sim/{basins}
-iter_1/{basins}
-iter_2/{basins}
-
-mpr -> symlink
-mpr.nml -> symlink
-master1s -> symlink
-mpr_global -> copy
-input -> copy
-input_cmf -> copy
-soil params -> symlink
-
-forcings -> path in the input
-"""
 # default_sim: this contains all the basins specified in the domain
 os.makedirs("default_sim")
 os.chdir("default_sim")
