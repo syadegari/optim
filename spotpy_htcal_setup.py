@@ -43,25 +43,61 @@ def create_basin_run_directory(path_root, path_sim, basins):
                         f"{path_sim}/basin_{basin_nr}", symlinks=True)
 
 
-def modify_basin_with_new_params(sim_path, basins, x):
+def modify_basin_with_new_params(sim_path, basins, control_file, x):
+    '''
+    modifies all the input files under sim_n (n ∈ ℕ)
+    we need to do that for each basin and in each basin change the mpr
+    and all the simulation years
+
+    test_run/
+    ├── default_sim
+    │   ├── basin_3269
+    │   │   ├── mpr
+    │   │   └── run
+    │   │       ├── 1999
+    │   │       └── 2000
+    │   └── basin_6333
+    │       ├── mpr
+    │       └── run
+    │           ├── 1999
+    │           └── 2000
+    ├── __pycache__
+    └── runs
+    └── sim_1      <=== sim_path (you are here!)
+        ├── basin_3269
+        │   ├── mpr
+        │   └── run
+        │       ├── 1999
+        │       └── 2000
+        └── basin_6333
+            ├── mpr
+            └── run
+                ├── 1999
+                └── 2000
+'''
     for basin_nr in basins:
         # open the htessel in the sim_path
         # change to basin directory
         parent_dir = os.getcwd()
         os.chdir(f"{sim_path}/basin_{basin_nr}")
-        #
-        htessel = HTESSELNameList(nml.read("input"))
-        mpr = MPRNameList(nml.read("mpr_global_parameter.nml"))
-        htessel.read_only = False
-        mpr.read_only = False
-        # modify_forcing_path(htessel, sim_path, basin_nr)
-        modify_params(htessel, mpr, dict(zip(x.name, [v for v in x])))
-        special_treatments(htessel)
-        htessel.read_only = True
-        mpr.read_only = True
-        # write the changes
-        htessel.nml.write(htessel.tag, force=True)
-        mpr.nml.write(mpr.tag, force=True)
+        # we open mpr and htessel files
+        year_range = range(control_file.training[basin_nr]['year_begin'],
+                           control_file.training[basin_nr]['year_end'] + 1)
+        htessel_inputs = [HTESSELNameList(nml.read(f"run/{year}/input"))\
+                          for year in year_range]
+        mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
+        for ht_input, year in zip(htessel_inputs, year_range):
+            
+            ht_input.read_only = False
+            mpr.read_only = False
+            # modify_forcing_path(htessel, sim_path, basin_nr)
+            modify_params(ht_input, mpr, dict(zip(x.name, [v for v in x])))
+            special_treatments(ht_input)
+            ht_input.read_only = True
+            mpr.read_only = True
+            # write the changes
+            ht_input.write(f"./run/{year}")
+            mpr.write("./mpr")
         # change to parent directory
         os.chdir(parent_dir)
 
@@ -93,6 +129,7 @@ def run_simulation(folder, num_threads=8):
               stderr=open('error', 'w'), env=my_env).communicate()
 
     os.chdir(parent_folder)
+
         
 class spot_setup_htcal(object):
     #
@@ -122,7 +159,6 @@ class spot_setup_htcal(object):
 
     def create_param_run_directory(self, path):
         # get all the simulation direcotories
-        # import pdb;pdb.set_trace()
         sim_folders = [f'{path}/runs/{x}' for x in get_dir(f'{path}/runs') if x.find('sim_') != -1]    
 
         if sim_folders == []:
@@ -148,17 +184,27 @@ class spot_setup_htcal(object):
         sim_path = self.create_param_run_directory(self.control_file_path)
         write_params_file(sim_path, x)
         create_basin_run_directory(self.control_file_path, sim_path, self.basins)
-        modify_basin_with_new_params(sim_path, self.basins, x)
+        modify_basin_with_new_params(sim_path, self.basins, self.control_file, x)
         #
+        # import pdb; pdb.set_trace()
         for basin_nr in self.basins:
             print(f'running basin_{basin_nr} in {sim_path} with updated parameters ...')
             run_simulation(f"{sim_path}/basin_{basin_nr}", num_threads=4)
         #
+        results = {}
+        for basin_nr in self.basins:
+            year_range = range(self.control_file.training[basin_nr]['year_begin'],
+                               self.control_file.training[basin_nr]['year_end'] + 1)
+            rivouts = []
+            for year in year_range:
+                rivouts.append(get_river_output(nc.Dataset(f"{sim_path}/basin_{basin_nr}/run/{year}/o_rivout_cmf.nc"), basin_nr))
+            results[basin_nr] = rivouts
+        # concat the restuls before sending back
+        # import pdb; pdb.set_trace()
         return {
-            basin_nr : get_river_output(nc.Dataset(f"{sim_path}/basin_{basin_nr}/o_rivout_cmf.nc"), basin_nr) \
-            for basin_nr in self.basins
+            basin_nr: pd.concat(results[basin_nr]).reset_index() for basin_nr in self.basins
         }
-        
+            
 
     def objectivefunction(self, simulation, evaluation):
         sim_folders = [f'{self.control_file_path}/runs/{x}' \

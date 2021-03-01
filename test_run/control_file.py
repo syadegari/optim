@@ -5,9 +5,10 @@
 mpr_tf = 'zacharias'
 
 # TODO: consider making 'warmup' optional (i.e. equal 0 on default)
+# year_end is inclusive
 training = {
-    3269: {'year_begin': 1999, 'year_end': 2000, 'warmup': 60},
-    6333: {'year_begin': 1999, 'year_end': 2000, 'warmup': 60}
+    3269: {'year_begin': 1999, 'year_end': 2000, 'warmup': 120},
+    6333: {'year_begin': 1999, 'year_end': 1999, 'warmup': 120}
 }
 
 validation = {}
