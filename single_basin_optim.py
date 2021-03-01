@@ -27,7 +27,7 @@ def write_control(basin, params, path, mpr_tf = 'zacharias'):
 # --------------------------------------------------
 #  -- EXPERIMENT SETTINGS --------------------------
 # --------------------------------------------------
-mpr_tf = {mpr_tf}
+mpr_tf = "{mpr_tf}"
 
 training = {{
     {basin_id}: {{'year_begin': {basin_syear}, 'year_end': {basin_eyear}, 'warmup': {basin_warmup}}}

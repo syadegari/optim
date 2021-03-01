@@ -47,6 +47,7 @@ cd {mprdir}
 echo "running mpr ..."
 ./mpr > ../mpr.log 2>&1
 echo "mpr done"
+cd ..
 
 module purge
 module load foss/2018b
@@ -55,13 +56,14 @@ module load netCDF-Fortran
 echo "running htessel ..."
 cd {htesseldir}
 for yy in $( seq {year_begin} {year_end} ); do
-    ${{yy}}
+    cd ${{yy}}
     echo -n "    ${{yy}} - "
     ./htessel >> ../../htessel.log  2>&1
     echo "done"
     cd ..
 done
 echo "htessel done"
+cd ..
 
         '''.format(mprdir     = dir_names['mpr'],
                    htesseldir = dir_names['model_run'],
