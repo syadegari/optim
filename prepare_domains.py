@@ -154,14 +154,14 @@ def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, 
     shutil.copyfile(f"{htpath.path_misc}/input_cmf.nam", f"{yy_path}/input_cmf.nam")
     # input htessel
     os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim", f"{yy_path}/surfclim")
-    os.symlink(f"{mpr_path}/mprin", f"{yy_path}/mprin")
+    os.symlink(f"../../mpr/mprin", f"{yy_path}/mprin")
     if init:
         os.symlink(f"{htpath.path_static}/basin_{basin_id}/soilinit", f"{yy_path}/soilinit")
     else:
-        prev_yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy - 1))
-        os.symlink(f"{prev_yy_path}/restartout.nc", f"{yy_path}/restartin.nc")
+        prev_yy = str(yy - 1)
+        os.symlink(f"../{prev_yy}/restartout.nc", f"{yy_path}/restartin.nc")
         # TODO: here is a critical part if the legs are not annual but e.g. monthly
-        os.symlink(f"{prev_yy_path}/restart{yy}010100.nc", f"{yy_path}/restartcmf.nc")
+        os.symlink(f"../{prev_yy}/restart{yy}010100.nc", f"{yy_path}/restartcmf.nc")
     # input cama
     for ff in [ 'rivpar.nc', 'rivclim.nc', 'inpmat.nc' ]:
         os.symlink(f"{htpath.path_static}/basin_{basin_id}/{ff}", f"{yy_path}/{ff}")
