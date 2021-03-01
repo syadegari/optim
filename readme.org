@@ -2,7 +2,13 @@
 Prototype optimization routine using spotpy package
 
 * Requirements
+  
 * How to run
+** setup the requred python venv:
+#+BEGIN_SRC sh
+  python3 -m pip install -r requirements.txt
+#+END_SRC
+ 
 * Todos
 ** TODO make sure that the reference time of the forcings is equal among all basins (i.e. th 31.12.LASTYEAR 18:00 h)
 ** DONE Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup

@@ -28,25 +28,28 @@ module load foss/2019b
 module load netCDF-Fortran
 cd {mprdir}
 echo "running mpr ..."
-./mpr > {basindir}/mpr.log 2>&1
+./mpr > ../mpr.log 2>&1
 echo "mpr done"
+cd ..
 
 module purge
 module load foss/2018b
 module load grib_api
 module load netCDF-Fortran
 echo "running htessel ..."
+cd {htesseldir}
 for yy in $( seq {year_begin} {year_end} ); do
+    cd ${{yy}}
     echo -n "    ${{yy}} - "
-    cd {htesseldir}/${{yy}}
-    ./htessel >> {basindir}/htessel.log  2>&1
+    ./htessel >> ../../htessel.log  2>&1
     echo "done"
+    cd ..
 done
 echo "htessel done"
+cd ..
 
-        '''.format(mprdir     = os.path.join(basin_path, dir_names['mpr']),
-                   htesseldir = os.path.join(basin_path, dir_names['model_run']),
-                   basindir   = basin_path,
+        '''.format(mprdir     = dir_names['mpr'],
+                   htesseldir = dir_names['model_run'],
                    year_begin = cf.training[basin_id]['year_begin'],
                    year_end   = cf.training[basin_id]['year_end'])
     elif 'juwels' in hostname:

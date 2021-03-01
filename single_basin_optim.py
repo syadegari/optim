@@ -1,6 +1,16 @@
-import lutreader
+from pathlib import Path
 import subprocess as sp
 import os
+import sys
+
+path_optim = (Path(os.path.dirname(os.path.realpath(__file__))))
+sys.path.append(str(path_optim))
+
+import lutreader
+import htcal_path
+
+# all the global paths we need
+htpath = htcal_path.get_paths()
 
 lut = lutreader.basin_lut('basin_lut.org')
 params = lutreader.param_lut('params.org')
@@ -8,10 +18,7 @@ print(lut)
 
 n_dds = 100
 
-base_dir = './'
-path_optim = ''
-path_pythonenv = ''
-path_control = ''
+base_run_dir = '/work/kelbling/htcal_optim/single_basin_optim/test'
 
 mpr_tf = 'zacharias'
 
@@ -20,7 +27,7 @@ def write_control(basin, params, path, mpr_tf = 'zacharias'):
 # --------------------------------------------------
 #  -- EXPERIMENT SETTINGS --------------------------
 # --------------------------------------------------
-mpr_tf = {mpr_tf}
+mpr_tf = "{mpr_tf}"
 
 training = {{
     {basin_id}: {{'year_begin': {basin_syear}, 'year_end': {basin_eyear}, 'warmup': {basin_warmup}}}
@@ -46,10 +53,10 @@ params = {{
                 p_default = pp['default']
             )
     cntrl += ' }'
-    # open(os.path.join(path, 'control_file.py'), 'w').write(run_programs)
-    print(cntrl)
+    open(os.path.join(path, 'control_file.py'), 'w').write(cntrl)
+    # print(cntrl)
 
-def submit_job(basin, path_optim, path_pythonenv, path_control, n_dds):
+def submit_job(basin, path_basin, path_pythonenv, path_optim, n_dds):
     submit = '''
 #!/usr/bin/bash
 
@@ -63,20 +70,21 @@ cd {path_optim}
 
 source {path_pythonenv}
 
-python3 ./prepare_domains.py -c {path_control}
-python3 ./driver.py -c /test_run/control_file.py -n {n_dds}
+python3 ./prepare_domains.py -c {path_basin}/control_file.py
+python3 ./driver.py -c {path_basin}/control_file.py -n {n_dds}
 '''.format(n_dds          = n_dds,
+           path_basin     = path_basin,
            path_optim     = path_optim,
-           path_pythonenv = path_pythonenv,
-           path_control   = path_control)
-    # open(os.path.join(path, 'optim.sub'), 'w').write(submit)
+           path_pythonenv = path_pythonenv)
+    open(os.path.join(path_basin, 'optim.sub'), 'w').write(submit)
     # sp.Popen("sbatch optim.sub", shell=True).communicate()
-    print(submit)
+    # print(submit)
 
 for _, basin in lut.lut.items():
-    # os.makedirs(base_dir)
-    write_control(basin, params, base_dir)
-    submit_job(basin['basin'], path_optim, path_pythonenv, path_control, n_dds)
+    path_basin = os.path.join(base_run_dir, 'basin_' + basin['basin'])
+    os.makedirs(path_basin)
+    write_control(basin, params, path_basin)
+    submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
 
 
 
