@@ -50,31 +50,43 @@ def modify_basin_with_new_params(sim_path, basins, x):
         parent_dir = os.getcwd()
         os.chdir(f"{sim_path}/basin_{basin_nr}")
         #
-        htessel = HTESSELNameList(nml.read("input"))
-        mpr = MPRNameList(nml.read("mpr_global_parameter.nml"))
-        htessel.read_only = False
+        mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
         mpr.read_only = False
-        # modify_forcing_path(htessel, sim_path, basin_nr)
-        modify_params(htessel, mpr, dict(zip(x.name, [v for v in x])))
-        special_treatments(htessel)
-        htessel.read_only = True
+        modify_mpr_params(mpr, dict(zip(x.name, [v for v in x])))
         mpr.read_only = True
-        # write the changes
-        htessel.nml.write(htessel.tag, force=True)
         mpr.nml.write(mpr.tag, force=True)
+
+        for htessel_path in glob.glob('run/*/input'):
+            htessel = HTESSELNameList(nml.read(htessel_path))
+            htessel.read_only = False
+            # modify_forcing_path(htessel, sim_path, basin_nr)
+            modify_htessel_params(htessel, dict(zip(x.name, [v for v in x])))
+            special_treatments(htessel)
+            htessel.read_only = True
+            # write the changes
+            htessel.nml.write(htessel.tag, force=True)
         # change to parent directory
         os.chdir(parent_dir)
 
 
-def modify_params(htessel, mpr, params_dict):
+# def modify_params(htessel, mpr, params_dict):
+#     for k, v in params_dict.items():
+#         if k in htessel.get_all_model_parameters():
+#             htessel[k] = v
+#         elif k in mpr.get_all_model_parameters():
+#             mpr[k] = v
+#         else:
+#             raise Exception 
+
+def modify_htessel_params(htessel, params_dict):
     for k, v in params_dict.items():
         if k in htessel.get_all_model_parameters():
             htessel[k] = v
-        elif k in mpr.get_all_model_parameters():
-            mpr[k] = v
-        else:
-            raise Exception 
 
+def modify_mpr_params(mpr, params_dict):
+    for k, v in params_dict.items():
+        if k in mpr.get_all_model_parameters():
+            mpr[k] = v
 
 def special_treatments(nmlist):
     if nmlist.tag == 'input':
