@@ -57,8 +57,7 @@ params = {{
     # print(cntrl)
 
 def submit_job(basin, path_basin, path_pythonenv, path_optim, n_dds):
-    submit = '''
-#!/usr/bin/bash
+    submit = '''#!/usr/bin/bash
 
 #SBATCH --time=08:00:00
 #SBATCH --output=~/LOG.run.%j.out
@@ -77,7 +76,8 @@ python3 ./driver.py -c {path_basin}/control_file.py -n {n_dds}
            path_optim     = path_optim,
            path_pythonenv = path_pythonenv)
     open(os.path.join(path_basin, 'optim.sub'), 'w').write(submit)
-    # sp.Popen("sbatch optim.sub", shell=True).communicate()
+    sub_path=os.path.join(path_basin, 'optim.sub')
+    sp.Popen(f"sbatch {sub_path}", shell=True).communicate()
     # print(submit)
 
 for _, basin in lut.lut.items():

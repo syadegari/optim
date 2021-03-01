@@ -103,24 +103,24 @@ def modify_basin_with_new_params(sim_path, basins, control_file, x):
         os.chdir(parent_dir)
 
 
-# def modify_params(htessel, mpr, params_dict):
-#     for k, v in params_dict.items():
-#         if k in htessel.get_all_model_parameters():
-#             htessel[k] = v
-#         elif k in mpr.get_all_model_parameters():
-#             mpr[k] = v
-#         else:
-#             raise Exception 
-
-def modify_htessel_params(htessel, params_dict):
+def modify_params(htessel, mpr, params_dict):
     for k, v in params_dict.items():
         if k in htessel.get_all_model_parameters():
             htessel[k] = v
-
-def modify_mpr_params(mpr, params_dict):
-    for k, v in params_dict.items():
-        if k in mpr.get_all_model_parameters():
+        elif k in mpr.get_all_model_parameters():
             mpr[k] = v
+        else:
+            raise Exception 
+
+# def modify_htessel_params(htessel, params_dict):
+#     for k, v in params_dict.items():
+#         if k in htessel.get_all_model_parameters():
+#             htessel[k] = v
+# 
+# def modify_mpr_params(mpr, params_dict):
+#     for k, v in params_dict.items():
+#         if k in mpr.get_all_model_parameters():
+#             mpr[k] = v
 
 def special_treatments(nmlist):
     if nmlist.tag == 'input':
