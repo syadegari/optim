@@ -2,7 +2,8 @@ import socket
 
 
 def get_paths():
-    if any([x in socket.gethostname() for x in ['datascience', 'frontend']]):
+    # if any([x in socket.gethostname() for x in ['datascience', 'frontend']]):
+    if True:
         import htcal_path_eve as htpath
     elif any([x in socket.gethostname() for x in ['juwels']]):
         import htcal_path_juwels as htpath

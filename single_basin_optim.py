@@ -60,10 +60,11 @@ def submit_job(basin, path_basin, path_pythonenv, path_optim, n_dds):
     submit = '''#!/usr/bin/bash
 
 #SBATCH --time=08:00:00
-#SBATCH --output=~/LOG.run.%j.out
-#SBATCH --error=~/LOG.run.%j.err
+#SBATCH --output={path_basin}/LOG.run.%j.out
+#SBATCH --error={path_basin}/LOG.run.%j.err
 #SBATCH --mem-per-cpu=16G
 #SBATCH --export=ALL
+#SBATCH --job-name=ht_sopt_{basin}
 
 cd {path_optim}
 
@@ -73,6 +74,7 @@ python3 ./prepare_domains.py -c {path_basin}/control_file.py
 python3 ./driver.py -c {path_basin}/control_file.py -n {n_dds}
 '''.format(n_dds          = n_dds,
            path_basin     = path_basin,
+           basin          = str(basin),
            path_optim     = path_optim,
            path_pythonenv = path_pythonenv)
     open(os.path.join(path_basin, 'optim.sub'), 'w').write(submit)

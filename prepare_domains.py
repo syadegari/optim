@@ -17,7 +17,8 @@ import htcal_path
 htpath = htcal_path.get_paths()
 
 def run_command(cf, basin_path, dir_names):
-    hostname = os.uname()[1]
+    # hostname = os.uname()[1]
+    hostname = 'frontend1'
     if hostname in ['datascience1', 'frontend1', 'frontend2']:
         # print('    Hostsystem: eve')
         run_cmd='''#!/bin/bash
