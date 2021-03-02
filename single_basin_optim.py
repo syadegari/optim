@@ -18,7 +18,7 @@ print(lut)
 
 n_dds = 100
 
-base_run_dir = '/work/kelbling/htcal_optim/single_basin_optim/test'
+base_run_dir = '/work/kelbling/htcal_optim/single_basin_optim/test2'
 
 mpr_tf = 'zacharias'
 
@@ -64,7 +64,7 @@ def submit_job(basin, path_basin, path_pythonenv, path_optim, n_dds):
 #SBATCH --error={path_basin}/LOG.run.%j.err
 #SBATCH --mem-per-cpu=16G
 #SBATCH --export=ALL
-#SBATCH --job-name=ht_sopt_{basin}
+#SBATCH --job-name={basin}_sopt_htcal
 
 cd {path_optim}
 
