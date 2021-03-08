@@ -17,11 +17,17 @@ params = lutreader.param_lut('params.org')
 
 n_dds = 1000
 
-base_run_dir = '/work/kelbling/htcal_optim/single_basin_optim/only_global'
+base_run_dir = '/work/kelbling/htcal_optim/single_basin_optim/only_mpr'
 
 # run multple optimizations with different default parameters
-# jitter = None
-jitter = [-2, -1, 1, 2]
+jitter = None
+# jitter = [-2, -1, 1, 2]
+
+# run multiple oprimizations with the min and max values of each iteration being moved towards the default value
+# decrease = None
+decrease = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+
 
 mpr_tf = 'zacharias'
 
@@ -75,6 +81,7 @@ source {path_pythonenv}
 
 python3 ./prepare_domains.py -c {path_basin}/control_file.py
 python3 ./driver.py -c {path_basin}/control_file.py -n {n_dds}
+python3 ./plots.py -p {path_basin}
 '''.format(n_dds          = n_dds,
            path_basin     = path_basin,
            basin          = str(basin),
@@ -85,18 +92,18 @@ python3 ./driver.py -c {path_basin}/control_file.py -n {n_dds}
     sp.Popen(f"sbatch {sub_path}", shell=True).communicate()
     # print(submit)
 
-if jitter is None:
+if jitter is None and decrease is None:
     for _, basin in lut.lut.items():
         path_basin = os.path.join(base_run_dir, 'basin_' + basin['basin'])
         os.makedirs(path_basin)
         write_control(basin, params, path_basin)
         submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
-else:
-    print('#################################')
-    print('#################################')
-    print('#################################')
-    print( 'Starting optimization for:')
-    params.print_lut()
+elif jitter is not None and decrease is None:
+    # print('#################################')
+    # print('#################################')
+    # print('#################################')
+    # print( 'Starting optimization for:')
+    # params.print_lut()
     for _, basin in lut.lut.items():
         path_basin = os.path.join(base_run_dir, 'default', 'basin_' + basin['basin'])
         os.makedirs(path_basin)
@@ -104,13 +111,37 @@ else:
         submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
     for jit in jitter:
         params.jitter_lut(jit)
-        print('#################################')
-        print('#################################')
-        print('#################################')
-        print( 'Starting optimization for:')
-        params.print_lut()
+        # print('#################################')
+        # print('#################################')
+        # print('#################################')
+        # print( 'Starting optimization for:')
+        # params.print_lut()
         for _, basin in lut.lut.items():
             path_basin = os.path.join(base_run_dir, f'jit_{jit}', 'basin_' + basin['basin'])
+            os.makedirs(path_basin)
+            write_control(basin, params, path_basin)
+            submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
+        params.reset_lut()
+elif jitter is None and decrease is not None:
+    # print('#################################')
+    # print('#################################')
+    # print('#################################')
+    # print( 'Starting optimization for:')
+    # params.print_lut()
+    for _, basin in lut.lut.items():
+        path_basin = os.path.join(base_run_dir, 'default', 'basin_' + basin['basin'])
+        os.makedirs(path_basin)
+        write_control(basin, params, path_basin)
+        submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
+    for ii in decrease:
+        params.decrease_interval(ii)
+        # print('#################################')
+        # print('#################################')
+        # print('#################################')
+        # print( 'Starting optimization for:')
+        # params.print_lut()
+        for _, basin in lut.lut.items():
+            path_basin = os.path.join(base_run_dir, f'decrease_{ii}', 'basin_' + basin['basin'])
             os.makedirs(path_basin)
             write_control(basin, params, path_basin)
             submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)

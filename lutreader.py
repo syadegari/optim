@@ -49,6 +49,20 @@ class param_lut():
         else:
             sys.exit('Bak lut already exists')
 
+    def decrease_interval(self, frac):
+        if self.lut_bak is None:
+            self.lut_bak = copy.deepcopy(self.lut)
+            for _ , pp in self.lut.items():
+                if pp['flag_optimize']:
+                    # pp['min'] = float(pp['min']) + frac * (float(pp['default']) - float(pp['min']))
+                    # pp['max'] = float(pp['min']) - frac * (float(pp['max']) + float(pp['default']))
+                    # min and max are somehow wrong i.e. max is min and vice versa...
+                    pp['min'] = float(pp['min']) - frac * (float(pp['min']) - float(pp['default']) )
+                    pp['max'] = float(pp['max']) + frac * (float(pp['default']) - float(pp['max']))
+        else:
+            sys.exit('Bak lut already exists')
+
+
     def print_lut(self):
         for _, pp in self.lut.items():
             if pp['flag_optimize']:

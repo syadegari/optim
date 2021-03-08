@@ -11,9 +11,12 @@ from pandas.plotting import table
 import argparse
 import os
 
+# after we readd the leading 'kge' in the resfiles uncomment the first def again
+# def get_kge(lines):
+#     return [float(re.findall('kge:\s+(.+)$', y)[0]) for y in 
+#             filter(lambda x: re.findall('kge:', x), lines)]
 def get_kge(lines):
-    return [float(re.findall('kge:\s+(.+)$', y)[0]) for y in 
-            filter(lambda x: re.findall('kge:', x), lines)]
+    return [float(re.findall('\[(.+)\s*\]', y)[0].split(' ')[0]) for y in filter(lambda x: re.findall('^[^p]', x), lines)]
 
 
 def get_params(lines):
@@ -35,24 +38,29 @@ def plot_table(ctrl_file):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--control-file', 
-    help="control file")
+parser.add_argument('-p', '--path', 
+    help="path to control file")
+# parser.add_argument('-c', '--control-file', 
+#     help="control file")
 args = parser.parse_args()
 
-assert os.path.isfile(f"{args.control_file}.py")
     
-path = '.'
-control_file = args.control_file
+path = args.path
+path_plots = os.path.join(path, 'plots')
+os.makedirs(path_plots)
+path_control_mod = os.path.join(path, 'control_file.py')
+assert os.path.isfile(f"{path_control_mod}")
+# control_file = args.control_file
 sys.path.insert(0, path)
-ctrl_file = __import__(control_file)
+ctrl_file = __import__('control_file')
 #
-run_folder = ctrl_file.runs_dir
+# run_folder = ctrl_file.runs_dir
+run_folder = os.path.join(path, 'runs')
 
-lines = open(f"{path}/{run_folder}/res.txt").readlines()
+lines = open(f"{run_folder}/res.txt").readlines()
 
 kges = get_kge(lines)
 param_sets = get_params(lines)
-
 plot_table(ctrl_file)
 
 params_dict = ctrl_file.params
@@ -71,8 +79,8 @@ ax.plot(kges)
 ax.set_title(f'KGE: best iteration, value = {argmax + 1}, {maxval:.6f}')
 ax.set_ylim(-0.41, 1)
 ax.plot([argmax], [kges[argmax]], 'o', color='b')
-fig.savefig(f'{run_folder}/KGE.png')
-
+fig.savefig(f'{path_plots}/KGE.png')
+plt.close('all')
 
 for param in params_dict:
     fig, ax = plt.subplots(1, 1)
@@ -82,5 +90,6 @@ for param in params_dict:
     ax.plot(np.arange(N), N * [params_dict[param]['boundaries']['min']])
     ax.plot(np.arange(N), N * [params_dict[param]['boundaries']['max']])
     ax.set_title(f'param: {param}')
-    fig.savefig(f'{run_folder}/{param}.png')
+    fig.savefig(f'{path_plots}/{param}.png')
+    plt.close('all')
 
