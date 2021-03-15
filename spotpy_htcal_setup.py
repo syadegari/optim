@@ -18,7 +18,7 @@ import f90nml as nml
 from pathlib import Path
 from subprocess import Popen
 from postproc import *
-
+import multiprocessing as mp
 
 
 # path -+
@@ -128,7 +128,8 @@ def special_treatments(nmlist):
     return nmlist
 
 
-def run_simulation(folder, num_threads=8):
+def run_simulation(folder, num_threads=4):
+    print(f'running {folder} with updated parameters ...')
     parent_folder = os.getcwd()
     os.chdir(folder)
 
@@ -160,7 +161,7 @@ class spot_setup_htcal(object):
         self.basins = self.control_file.training.keys()
         # prepare
         self.create_run_directory(self.control_file_path)
-      
+        self.nProc = 4
 
     def create_run_directory(self, path):
         assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
@@ -197,10 +198,10 @@ class spot_setup_htcal(object):
         modify_basin_with_new_params(sim_path, self.basins, self.control_file, x)
         #
         # import pdb; pdb.set_trace()
-        for basin_nr in self.basins:
-            print(f'running basin_{basin_nr} in {sim_path} with updated parameters ...')
-            run_simulation(f"{sim_path}/basin_{basin_nr}", num_threads=4)
-        #
+        pool = mp.Pool(processes=self.nProc)
+        pool.map(run_simulation, [f"{sim_path}/basin_{basin_nr}" for basin_nr in self.basins])
+        # 
+        # TODO: Results reading and concatanating can also be done concurrently
         results = {}
         for basin_nr in self.basins:
             year_range = range(self.control_file.training[basin_nr]['year_begin'],

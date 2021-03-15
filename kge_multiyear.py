@@ -59,7 +59,6 @@ parser.add_argument('-w', '--warmup', type=int  ,
 parser.add_argument('-p', '--path', type=str,
                     help='path to the basin where multiyear runs are stored')
 args = parser.parse_args()
-print(args)
 
 # print(kge_multiyear(6144, "/data/htcal/data/debug_optim/8smallbasins_default/basin_6144/runs/sim_33/basin_6144", 180))
 print(kge_multiyear(args.basin_number, args.path, args.warmup))
