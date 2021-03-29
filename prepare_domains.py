@@ -12,6 +12,7 @@ import subprocess as sp
 from numpy import mod
 import argparse
 import htcal_path
+import run_cmd.eve as run_cmd_eve
 
 # all the global paths we need
 htpath = htcal_path.get_paths()
@@ -21,43 +22,15 @@ def run_command(cf, basin_path, dir_names):
     hostname = 'frontend1'
     if hostname in ['datascience1', 'frontend1', 'frontend2']:
         # print('    Hostsystem: eve')
-        run_cmd='''#!/bin/bash
-set -e
-
-module purge
-module load foss/2019b
-module load netCDF-Fortran
-cd {mprdir}
-echo "running mpr ..."
-./mpr > ../mpr.log 2>&1
-echo "mpr done"
-cd ..
-
-module purge
-module load foss/2018b
-module load grib_api
-module load netCDF-Fortran
-echo "running htessel ..."
-cd {htesseldir}
-for yy in $( seq {year_begin} {year_end} ); do
-    cd ${{yy}}
-    echo -n "    ${{yy}} - "
-    ./htessel >> ../../htessel.log  2>&1
-    echo "done"
-    cd ..
-done
-echo "htessel done"
-cd ..
-
-        '''.format(mprdir     = dir_names['mpr'],
-                   htesseldir = dir_names['model_run'],
-                   year_begin = cf.training[basin_id]['year_begin'],
-                   year_end   = cf.training[basin_id]['year_end'])
-    elif 'juwels' in hostname:
-        run_cmd="""
-echo 'JULES RUN COMMAND STILL MISSING'
-        """
-    return(run_cmd)
+        run_cmd_mpr = run_cmd_eve.mpr.format(
+            dir_name=dir_names['mpr']
+        )
+        run_cmd_htessel = run_cmd_eve.htessel.format(
+            year_begin=cf.training[basin_id]['year_begin'],
+            year_end=cf.training[basin_id]['year_end'],
+            dir_name=dir_names['model_run']
+        )
+    return(run_cmd_mpr, run_cmd_htessel)
 
 class basin_setup():
     def __init__(self, syear, cf, htpath, basin_id):
@@ -105,13 +78,11 @@ def setup_mpr(cf, htpath, basin_id, basin_path, dir_names):
     shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr.nml", f"{mpr_path}/mpr.nml")
     shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr_global_parameter.nml", f"{mpr_path}/mpr_global_parameter.nml")
     # input
-    os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim",      f"{mpr_path}/surfclim")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/BLDFIE_M.nc", f"{mpr_path}/BLDFIE_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SNDPPT_M.nc", f"{mpr_path}/SNDPPT_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/CLYPPT_M.nc", f"{mpr_path}/CLYPPT_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/ORCDRC_M.nc", f"{mpr_path}/ORCDRC_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SLTPPT_M.nc", f"{mpr_path}/SLTPPT_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/TEXMHT_M.nc", f"{mpr_path}/TEXMHT_M.nc")
+    os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim", f"{mpr_path}/surfclim")
+    for soil_filename in ["BLDFIE_M.nc", "SNDPPT_M.nc", "CLYPPT_M.nc",
+                          "ORCDRC_M.nc", "SLTPPT_M.nc", "TEXMHT_M.nc"]:
+            os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/{soil_filename}", f"{mpr_path}/{soil_filename}")
+
 
 def setup_htessel(cf, htpath, basin_id, basin_path, dir_names):
     year_begin = cf.training[basin_id]['year_begin']
@@ -259,8 +230,12 @@ for basin_id in cf.training:
 
     # run script
     print(f'    writing run script ...')
-    open(os.path.join(basin_path, 'run_programs'), 'w').write(run_command(cf, basin_path, dir_names))
-    sp.Popen("chmod u+x run_programs", shell=True).communicate()
+    run_command(cf, basin_path, dir_names)
+    run_cmd_mpr, run_cmd_htessel = run_command(cf, basin_path, dir_names)
+    open(os.path.join(basin_path, 'run_mpr'), 'w').write(run_cmd_mpr)
+    open(os.path.join(basin_path, 'run_htessel'), 'w').write(run_cmd_htessel)
+    sp.Popen("chmod u+x run_mpr", shell=True).communicate()
+    sp.Popen("chmod u+x run_htessel", shell=True).communicate()
 
     os.chdir(exp_basedir)
 
