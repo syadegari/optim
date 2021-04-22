@@ -27,7 +27,12 @@ def penalty_basin(mprin, penalty_dict):
         penalty_coeff = penalty_dict[var_name]['lambda']
         val_scaled = scale_v(var, v_min=var_min, v_max=var_max)
         V = val_scaled.count()
-        error_penalty[var_name] = penalty_coeff * val_scaled.sum()/V
+        # check to remove any numerical error 
+        sum_val_scaled =  val_scaled.sum()
+        if np.isclose(sum_val_scaled, 0.0, atol=1e-8): 
+            sum_val_scaled = 0.0
+        #
+        error_penalty[var_name] = penalty_coeff * sum_val_scaled/V
     return error_penalty
 
 

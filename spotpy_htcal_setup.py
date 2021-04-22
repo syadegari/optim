@@ -223,7 +223,8 @@ class spot_setup_htcal(object):
             penalty_errors = calculate_penalty_error(self.basins,
                                                      self.control_file.penalty,
                                                      sim_path)
-            if np.array([v for _, v in penalty_errors.items()]).sum() != 0.0:
+            if not np.isclose(np.array([v for _, v in penalty_errors.items()]).sum(),
+                              0.0, atol=1e-8):
                 print('mprin thresholds violated, skipping htessel run')
                 print(penalty_errors)
                 for basin_nr in self.basins:
