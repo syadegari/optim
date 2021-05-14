@@ -206,7 +206,6 @@ class spot_setup_htcal(object):
         assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
         Path(f'{path}/runs').mkdir(exist_ok=True)
 
-
     def create_param_run_directory(self, path):
         # get all the simulation direcotories
         sim_folders = [f'{path}/runs/{x}' for x in get_dir(f'{path}/runs') if x.find('sim_') != -1]    
