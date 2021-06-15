@@ -15,12 +15,12 @@ def kge_multiyear(grdc_id, basin_path, warmup):
     rivouts = []
     for year in sim_folders:
         rivouts.append(get_river_output(nc.Dataset(f"{year}/o_rivout_cmf.nc"), grdc_id))
-        rivout_concat = pd.concat(rivouts).reset_index()
-        obs, mod = get_discharge(
-            get_grdc_discharge(grdc_id),
-            rivout_concat
-        )
-        kge_val = kge(obs[warmup : ], mod[warmup : ])
+    rivout_concat = pd.concat(rivouts).reset_index()
+    obs, mod = get_discharge(
+        get_grdc_discharge(grdc_id),
+        rivout_concat
+    )
+    kge_val = kge(obs[warmup : ], mod[warmup : ])
     return kge_val
 
 usage_example="""
