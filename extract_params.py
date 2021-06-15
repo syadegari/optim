@@ -53,9 +53,12 @@ def get_stats(result:list) -> list:
 # ------------------------------------------------------------------------------------- #
 #                                                                                       #
 parser = argparse.ArgumentParser()
-parser.add_argument('-p', '--path')
-parser.add_argument('-n', '--num-stations', nargs='+', type=int)
-parser.add_argument('-o', '--output-file', nargs='?', default='param_extract')
+parser.add_argument('-p', '--path',
+                    help='path to the root of optimized simulations')
+parser.add_argument('-n', '--num-stations', nargs='+', type=int,
+                    help='station numbers separated by space')
+parser.add_argument('-o', '--output-file', nargs='?', default='param_extract',
+                    help='name of the output file containing extracted param information (.json)')
 parser.add_argument('-v', '--verbose', nargs='?', const=True, default=False)
 args = parser.parse_args()
 #
@@ -84,7 +87,8 @@ for idx, num_station in enumerate(num_stations):
         control_file = reload(control_file)
     else:
         control_file = __import__('control_file')
-    print(control_file)
+    if verbose:
+        print('using the control file at: ', control_file.__file__)
     training = control_file.training
     #
     year_begin = training[str(num_station)]['year_begin']
@@ -121,4 +125,7 @@ for idx, num_station in enumerate(num_stations):
             '''
         )
 
+if verbose:
+    print('Writing the extracted parameter information to:')
+    print('  ', path_output)
 open(path_output, 'w').write(json.dumps(results, indent=4))
