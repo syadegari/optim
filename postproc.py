@@ -16,7 +16,7 @@ def get_forcing_date(force) -> datetime:
     return datetime.datetime.strptime(re.findall(r"since\s+([\w\-]+)", force['time'].units)[0], '%Y-%m-%d')
 
 
-def get_river_output(ncfile, basin_id, date=None) -> pd.DataFrame:
+def get_river_output(ncfile, grdc_id, date=None) -> pd.DataFrame:
     """
     date: y, m, d: same as IFYYYY, IFMM and IFDD
     """
@@ -26,7 +26,8 @@ def get_river_output(ncfile, basin_id, date=None) -> pd.DataFrame:
         date_begin = datetime.date(*date)
     date_begin += datetime.timedelta(days=1)
     #
-    rivout = get_river_discharge_at_gauge(basin_id, ncfile).data
+    # print(f'calculate rivout for grdc: {grdc_id}')
+    rivout = get_river_discharge_at_gauge(grdc_id, ncfile).data
     date_range = pd.date_range(start=date_begin, periods=len(rivout))
 #    return pd.DataFrame(index=date_range, data={'riv_output': rivout})
     return pd.DataFrame({'date': date_range, 'riv_output': rivout})
@@ -110,14 +111,16 @@ def find_station(glb_x, glb_y, ulc_lat, ulc_lon, res=0.25, debug=False) -> List[
         return None, None
 
 
-def get_river_discharge_at_gauge(basin_id, nc_file) -> nc.Dataset:
-    x1, y1, x2, y2 = extract_river_gauge_location(basin_id, nc_file)
+def get_river_discharge_at_gauge(grdc_id, nc_file) -> nc.Dataset:
+    x1, y1, x2, y2 = extract_river_gauge_location(grdc_id, nc_file)
     #
     out1 = nc_file['rivout'][:, y1, x1]
     if x2 is not None and y2 is not None:
         out2 = nc_file['rivout'][:, y2, x2]
     else:
         out2 = np.zeros_like(out1)
+    #print(f'rivout of gauge: {grdc_id}')
+    #print(out1 + out2)
     return out1 + out2    
 
 
@@ -126,29 +129,29 @@ def dates_are_continuous(df) -> bool:
     return len(ords) == max(ords) - min(ords) + 1
 
 
-def extract_river_gauge_location(basin_id, nc_file) -> List[int]:
-    grdc_id = get_grdc_id(htpath.path_grdc_alloc, basin_id)
+def extract_river_gauge_location(grdc_id, nc_file) -> List[int]:
+    # grdc_id = get_grdc_id(htpath.path_grdc_alloc, basin_id)
     df = pd.read_csv(f"{htpath.path_grdc_alloc}/GRDC_alloc_15min.txt", sep="\s+")
     #
     ulc_lon = nc_file['lon'][...].min()  # upper left corner
     ulc_lat = nc_file['lat'][...].max()  # upper left corner
     #
-    glb_x1 = df[df['ID'] == grdc_id]['ix1'].values[0]
-    glb_y1 = df[df['ID'] == grdc_id]['iy1'].values[0]
-    glb_x2 = df[df['ID'] == grdc_id]['ix2'].values[0]
-    glb_y2 = df[df['ID'] == grdc_id]['iy2'].values[0]
+    glb_x1 = df[df['ID'] == int(grdc_id)]['ix1'].values[0]
+    glb_y1 = df[df['ID'] == int(grdc_id)]['iy1'].values[0]
+    glb_x2 = df[df['ID'] == int(grdc_id)]['ix2'].values[0]
+    glb_y2 = df[df['ID'] == int(grdc_id)]['iy2'].values[0]
     #
     x1, y1 = find_station(glb_x1, glb_y1, ulc_lat, ulc_lon)
     x2, y2 = find_station(glb_x2, glb_y2, ulc_lat, ulc_lon)
     return x1, y1, x2, y2
 
 
-def get_grdc_discharge(basin_id) -> pd.DataFrame:
+def get_grdc_discharge(grdc_id) -> pd.DataFrame:
     def get_line(line):
         i1, i2, i3, i4, i5, i6 = line.split()
         return([datetime.date(int(i1), int(i2), int(i3)), int(i4), int(i5), float(i6)])
         
-    grdc_id = get_grdc_id(htpath.path_grdc_alloc, basin_id)
+    # grdc_id = get_grdc_id(htpath.path_grdc_alloc, grdc_id)
     
     # build a dataframe for query the date
     lines = open(f'{htpath.path_grdc_data}/{grdc_id}.day', 'r').readlines()[5:]

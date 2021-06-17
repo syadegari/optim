@@ -11,6 +11,7 @@ import htcal_path
 
 # all the global paths we need
 htpath = htcal_path.get_paths()
+gen_header = htcal_path.get_submitheader()
 
 lut = lutreader.basin_lut('basin_lut.org')
 params = lutreader.param_lut('params.org')
@@ -18,16 +19,6 @@ params = lutreader.param_lut('params.org')
 n_dds = 1000
 
 base_run_dir = '/work/kelbling/htcal_optim/single_basin_optim/only_mpr'
-
-# run multple optimizations with different default parameters
-jitter = None
-# jitter = [-2, -1, 1, 2]
-
-# run multiple oprimizations with the min and max values of each iteration being moved towards the default value
-# decrease = None
-decrease = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
-
-
 
 mpr_tf = 'zacharias'
 
@@ -65,16 +56,10 @@ params = {{
     open(os.path.join(path, 'control_file.py'), 'w').write(cntrl)
     # print(cntrl)
 
-def submit_job(basin, path_basin, path_pythonenv, path_optim, n_dds):
-    submit = '''#!/usr/bin/bash
-
-#SBATCH --time=80:00:00
-#SBATCH --output={path_basin}/LOG.run.%j.out
-#SBATCH --error={path_basin}/LOG.run.%j.err
-#SBATCH --mem-per-cpu=16G
-#SBATCH --export=ALL
-#SBATCH --job-name={basin}_sopt_htcal
-
+def submit_job(basin, path_basin, path_pythonenv, path_optim, n_dds, gen_header):
+    submit = gen_header(time = '80:00:00', run_path = path_basin,
+                        mem = '16G', nnodes = '8', jobname = f'{basin}_sopt_htcal')
+    submit += '''
 cd {path_optim}
 
 source {path_pythonenv}
@@ -92,59 +77,12 @@ python3 ./plots.py -p {path_basin}
     sp.Popen(f"sbatch {sub_path}", shell=True).communicate()
     # print(submit)
 
-if jitter is None and decrease is None:
-    for _, basin in lut.lut.items():
+for _, basin in lut.lut.items():
+    if basin['flag_calib']:
+        print(basin['grdc_id'])
         path_basin = os.path.join(base_run_dir, 'basin_' + basin['basin'])
         os.makedirs(path_basin)
         write_control(basin, params, path_basin)
-        submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
-elif jitter is not None and decrease is None:
-    # print('#################################')
-    # print('#################################')
-    # print('#################################')
-    # print( 'Starting optimization for:')
-    # params.print_lut()
-    for _, basin in lut.lut.items():
-        path_basin = os.path.join(base_run_dir, 'default', 'basin_' + basin['basin'])
-        os.makedirs(path_basin)
-        write_control(basin, params, path_basin)
-        submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
-    for jit in jitter:
-        params.jitter_lut(jit)
-        # print('#################################')
-        # print('#################################')
-        # print('#################################')
-        # print( 'Starting optimization for:')
-        # params.print_lut()
-        for _, basin in lut.lut.items():
-            path_basin = os.path.join(base_run_dir, f'jit_{jit}', 'basin_' + basin['basin'])
-            os.makedirs(path_basin)
-            write_control(basin, params, path_basin)
-            submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
-        params.reset_lut()
-elif jitter is None and decrease is not None:
-    # print('#################################')
-    # print('#################################')
-    # print('#################################')
-    # print( 'Starting optimization for:')
-    # params.print_lut()
-    for _, basin in lut.lut.items():
-        path_basin = os.path.join(base_run_dir, 'default', 'basin_' + basin['basin'])
-        os.makedirs(path_basin)
-        write_control(basin, params, path_basin)
-        submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
-    for ii in decrease:
-        params.decrease_interval(ii)
-        # print('#################################')
-        # print('#################################')
-        # print('#################################')
-        # print( 'Starting optimization for:')
-        # params.print_lut()
-        for _, basin in lut.lut.items():
-            path_basin = os.path.join(base_run_dir, f'decrease_{ii}', 'basin_' + basin['basin'])
-            os.makedirs(path_basin)
-            write_control(basin, params, path_basin)
-            submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds)
-        params.reset_lut()
+        submit_job(basin['basin'], path_basin, htpath.path_pythonenv, path_optim, n_dds, gen_header)
 
 

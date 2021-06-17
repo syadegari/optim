@@ -12,52 +12,26 @@ import subprocess as sp
 from numpy import mod
 import argparse
 import htcal_path
+import lutreader
 
 # all the global paths we need
 htpath = htcal_path.get_paths()
+run_cmd = htcal_path.runcommand()
 
-def run_command(cf, basin_path, dir_names):
+def run_command(cf, run_id, dir_names):
     # hostname = os.uname()[1]
     hostname = 'frontend1'
     if hostname in ['datascience1', 'frontend1', 'frontend2']:
         # print('    Hostsystem: eve')
-        run_cmd='''#!/bin/bash
-set -e
-
-module purge
-module load foss/2019b
-module load netCDF-Fortran
-cd {mprdir}
-echo "running mpr ..."
-./mpr > ../mpr.log 2>&1
-echo "mpr done"
-cd ..
-
-module purge
-module load foss/2018b
-module load grib_api
-module load netCDF-Fortran
-echo "running htessel ..."
-cd {htesseldir}
-for yy in $( seq {year_begin} {year_end} ); do
-    cd ${{yy}}
-    echo -n "    ${{yy}} - "
-    ./htessel >> ../../htessel.log  2>&1
-    echo "done"
-    cd ..
-done
-echo "htessel done"
-cd ..
-
-        '''.format(mprdir     = dir_names['mpr'],
-                   htesseldir = dir_names['model_run'],
-                   year_begin = cf.training[basin_id]['year_begin'],
-                   year_end   = cf.training[basin_id]['year_end'])
-    elif 'juwels' in hostname:
-        run_cmd="""
-echo 'JULES RUN COMMAND STILL MISSING'
-        """
-    return(run_cmd)
+        run_cmd_mpr = run_cmd.mpr.format(
+            dir_name=dir_names['mpr']
+        )
+        run_cmd_htessel = run_cmd.htessel.format(
+            year_begin=cf.training[run_id]['year_begin'],
+            year_end=cf.training[run_id]['year_end'],
+            dir_name=dir_names['model_run']
+        )
+    return(run_cmd_mpr, run_cmd_htessel)
 
 class basin_setup():
     def __init__(self, syear, cf, htpath, basin_id):
@@ -95,8 +69,8 @@ class basin_setup():
         else:
             self.htessel_nstop  += 8760
 
-def setup_mpr(cf, htpath, basin_id, basin_path, dir_names):
-    mpr_path = os.path.join(basin_path, dir_names['mpr'])
+def setup_mpr(cf, htpath, basin_id, grdc_id, run_path, dir_names):
+    mpr_path = os.path.join(run_path, dir_names['mpr'])
     os.makedirs(mpr_path)
     # executable
     # shutil.copy(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/MPR-*")[0], ntpath.split(glob.glob(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr")[0])[1])
@@ -105,30 +79,41 @@ def setup_mpr(cf, htpath, basin_id, basin_path, dir_names):
     shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr.nml", f"{mpr_path}/mpr.nml")
     shutil.copyfile(f"{htpath.path_execs}/mpr/{cf.mpr_tf}/mpr_global_parameter.nml", f"{mpr_path}/mpr_global_parameter.nml")
     # input
-    os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim",      f"{mpr_path}/surfclim")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/BLDFIE_M.nc", f"{mpr_path}/BLDFIE_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SNDPPT_M.nc", f"{mpr_path}/SNDPPT_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/CLYPPT_M.nc", f"{mpr_path}/CLYPPT_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/ORCDRC_M.nc", f"{mpr_path}/ORCDRC_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/SLTPPT_M.nc", f"{mpr_path}/SLTPPT_M.nc")
-    os.symlink(f"{htpath.path_soilgrid}/basin_{basin_id}/TEXMHT_M.nc", f"{mpr_path}/TEXMHT_M.nc")
+    if grdc_id is not None and os.path.isdir(f"{htpath.path_soilgrid}/station_{grdc_id}"):
+            mpr_data_in_dir = f"{htpath.path_soilgrid}/station_{grdc_id}"
+            os.symlink(f"{mpr_data_in_dir}/surfclim", f"{mpr_path}/surfclim")
+    else:
+            mpr_data_in_dir = f"{htpath.path_soilgrid}/basin_{basin_id}"
+            os.symlink(f"{htpath.path_static}/surfclim", f"{mpr_path}/surfclim")
+    for soil_filename in ["BLDFIE_M.nc", "SNDPPT_M.nc", "CLYPPT_M.nc",
+                          "ORCDRC_M.nc", "SLTPPT_M.nc", "TEXMHT_M.nc"]:
+            os.symlink(f"{mpr_data_in_dir}/{soil_filename}", f"{mpr_path}/{soil_filename}")
 
-def setup_htessel(cf, htpath, basin_id, basin_path, dir_names):
-    year_begin = cf.training[basin_id]['year_begin']
-    year_end   = cf.training[basin_id]['year_end']
+
+def setup_htessel(cf, htpath, basin_id, grdc_id, run_path, dir_names):
+    if grdc_id is not None:
+        run_id = grdc_id
+    else:
+        run_id = basin_id
+    year_begin = cf.training[run_id]['year_begin']
+    year_end   = cf.training[run_id]['year_end']
     b_setup = basin_setup(year_begin, cf, htpath, basin_id)
     # diminfo file
-    b_setup.write_diminfo(basin_path)
+    b_setup.write_diminfo(run_path)
     for yy in range(year_begin, year_end + 1):
         # print(f'        setting up year {yy}')
-        _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
-        _update_htessel_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
-        _update_cama_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = yy == year_begin)
+        _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, grdc_id, run_path, dir_names, yy, init = yy == year_begin)
+        _update_htessel_nml(b_setup, cf, htpath, basin_id, run_path, dir_names, yy, init = yy == year_begin)
+        _update_cama_nml(b_setup, cf, htpath, basin_id, run_path, dir_names, yy, init = yy == year_begin)
         b_setup.next_leg()
 
-def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = True):
-    yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy))
-    mpr_path = os.path.join(basin_path, dir_names['mpr'])
+def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, grdc_id, run_path, dir_names, yy, init = True):
+    yy_path = os.path.join(run_path, dir_names['model_run'], str(yy))
+    mpr_path = os.path.join(run_path, dir_names['mpr'])
+    if grdc_id is not None:
+        data_dir = f"station_{grdc_id}"
+    else:
+        data_dir = f"basin_{basin_id}"
     # print(f'        preparing directory: {yy_path}')
     os.makedirs(yy_path)
     # executable
@@ -137,10 +122,10 @@ def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, 
     shutil.copyfile(f"{htpath.path_misc}/input_htessel", f"{yy_path}/input")
     shutil.copyfile(f"{htpath.path_misc}/input_cmf.nam", f"{yy_path}/input_cmf.nam")
     # input htessel
-    os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim", f"{yy_path}/surfclim")
+    os.symlink(f"{htpath.path_static}/{data_dir}/surfclim", f"{yy_path}/surfclim")
     os.symlink(f"../../mpr/mprin", f"{yy_path}/mprin")
     if init:
-        os.symlink(f"{htpath.path_static}/basin_{basin_id}/soilinit", f"{yy_path}/soilinit")
+        os.symlink(f"{htpath.path_static}/{data_dir}/soilinit", f"{yy_path}/soilinit")
     else:
         prev_yy = str(yy - 1)
         os.symlink(f"../{prev_yy}/restartout.nc", f"{yy_path}/restartin.nc")
@@ -148,12 +133,12 @@ def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, basin_path, dir_names, 
         os.symlink(f"../{prev_yy}/restart{yy}010100.nc", f"{yy_path}/restartcmf.nc")
     # input cama
     for ff in [ 'rivpar.nc', 'rivclim.nc', 'inpmat.nc' ]:
-        os.symlink(f"{htpath.path_static}/basin_{basin_id}/{ff}", f"{yy_path}/{ff}")
+        os.symlink(f"{htpath.path_static}/{data_dir}/{ff}", f"{yy_path}/{ff}")
     # diminfo
-    os.symlink(f"{basin_path}/diminfo.txt", f"{yy_path}/diminfo.txt")
+    os.symlink(f"{run_path}/diminfo.txt", f"{yy_path}/diminfo.txt")
 
-def _update_htessel_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = True):
-    yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy))
+def _update_htessel_nml(b_setup, cf, htpath, basin_id, run_path, dir_names, yy, init = True):
+    yy_path = os.path.join(run_path, dir_names['model_run'], str(yy))
     htessel = HTESSELNameList(nml.read(f"{yy_path}/input"))
 
     htessel.read_only = False
@@ -184,8 +169,8 @@ def _update_htessel_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy
     htessel.read_only = True
     htessel.write(f"{yy_path}")
 
-def _update_cama_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, init = True):
-    yy_path = os.path.join(basin_path, dir_names['model_run'], str(yy))
+def _update_cama_nml(b_setup, cf, htpath, basin_id, run_path, dir_names, yy, init = True):
+    yy_path = os.path.join(run_path, dir_names['model_run'], str(yy))
     cama = CamaNameList(nml.read(f"{yy_path}/input_cmf.nam"))
     # now the cama file
     cama.read_only = False
@@ -213,6 +198,8 @@ def _update_cama_nml(b_setup, cf, htpath, basin_id, basin_path, dir_names, yy, i
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--control-file', 
     help="control file")
+parser.add_argument('-l', '--basin_lut', dest = 'basin_lut', default = 'basin_lut.org',
+    help = "basin lut")
 args = parser.parse_args()
 # control_file_path = "/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/EEE/examples/mpr-htessel/agu_runs/control_file"
 control_file_path, _ = os.path.splitext(args.control_file)
@@ -225,6 +212,8 @@ cf_path, cf_file = ntpath.split(control_file_path)
 sys.path.insert(0, cf_path)
 control_file = __import__(cf_file)
 cf = control_file
+
+basin_lut = lutreader.basin_lut(args.basin_lut)
 
 # get direcotry of the control file
 path, _ = ntpath.split(cf.__file__)
@@ -241,26 +230,37 @@ os.makedirs("default_sim")
 os.chdir("default_sim")
 exp_basedir = os.getcwd()
 # make directories for each basin
-for basin_id in cf.training:
+for training_id in cf.training:
+    basin_id, grdc_id = basin_lut.get_ids(training_id)
+    if grdc_id is None:
+        run_id = str(basin_id)
+        run_dir = f"basin_{basin_id}"
+    else:
+        run_id = str(grdc_id)
+        run_dir = f"station_{grdc_id}"
     # create basin dir
     print(f'Setting up default sim directories for basin {basin_id} in:')
-    basin_path = os.path.join(exp_basedir, f"basin_{basin_id}")
-    print(basin_path)
-    os.makedirs(basin_path)
-    os.chdir(basin_path)
+    run_path = os.path.join(exp_basedir, run_dir)
+    print(run_path)
+    os.makedirs(run_path)
+    os.chdir(run_path)
 
     # mpr
     print(f'    preparing mpr ...')
-    setup_mpr(cf, htpath, basin_id, basin_path, dir_names)
+    setup_mpr(cf, htpath, basin_id, grdc_id, run_path, dir_names)
 
     # htessel
     print(f'    preparing htessel ...')
-    setup_htessel(cf, htpath, basin_id, basin_path, dir_names)
+    setup_htessel(cf, htpath, basin_id, grdc_id, run_path, dir_names)
 
     # run script
     print(f'    writing run script ...')
-    open(os.path.join(basin_path, 'run_programs'), 'w').write(run_command(cf, basin_path, dir_names))
-    sp.Popen("chmod u+x run_programs", shell=True).communicate()
+    run_command(cf, run_id, dir_names)
+    run_cmd_mpr, run_cmd_htessel = run_command(cf, run_id, dir_names)
+    open(os.path.join(run_path, 'run_mpr'), 'w').write(run_cmd_mpr)
+    open(os.path.join(run_path, 'run_htessel'), 'w').write(run_cmd_htessel)
+    sp.Popen("chmod u+x run_mpr", shell=True).communicate()
+    sp.Popen("chmod u+x run_htessel", shell=True).communicate()
 
     os.chdir(exp_basedir)
 

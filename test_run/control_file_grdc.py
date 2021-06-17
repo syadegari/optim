@@ -7,11 +7,7 @@ mpr_tf = 'zacharias_res'
 # TODO: consider making 'warmup' optional (i.e. equal 0 on default)
 # year_end is inclusive
 training = {
-    3269: {'grdc_ids' : [2589390], 'year_begin': 2000, 'year_end': 2001, 'warmup': 30},
-    # 1892: {'grdc_ids' : [4149950], 'year_begin': 1999, 'year_end': 2001, 'warmup': 30},
-    6333: {'grdc_ids' : [2589240], 'year_begin': 2000, 'year_end': 2001, 'warmup': 120},
-    # 5294: {'grdc_ids' : [6233350], 'year_begin': 1999, 'year_end': 1999, 'warmup': 120},
-    # 3342: {'grdc_ids' : [4358600], 'year_begin': 1999, 'year_end': 1999, 'warmup': 120}
+    '6503300': {'year_begin': 1979, 'year_end': 1981, 'warmup': 30},
 }
 
 validation = {}
