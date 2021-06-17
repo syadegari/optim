@@ -8,16 +8,16 @@ def get__multiyear_dirs(path):
     return [x for x in os.listdir(path) if os.path.isdir(f'{path}/{x}') if re.match('\d{4}', x)]
 
 
-def kge_multiyear(basin_nr, basin_path, warmup):
+def kge_multiyear(grdc_id, basin_path, warmup):
     os.chdir(f"{basin_path}/run")
     sim_folders = [int(x) for x in get__multiyear_dirs('.')]
     sim_folders.sort()
     rivouts = []
     for year in sim_folders:
-        rivouts.append(get_river_output(nc.Dataset(f"{year}/o_rivout_cmf.nc"), basin_nr))
+        rivouts.append(get_river_output(nc.Dataset(f"{year}/o_rivout_cmf.nc"), grdc_id))
         rivout_concat = pd.concat(rivouts).reset_index()
         obs, mod = get_discharge(
-            get_grdc_discharge(basin_nr),
+            get_grdc_discharge(grdc_id),
             rivout_concat
         )
         kge_val = kge(obs[warmup : ], mod[warmup : ])
