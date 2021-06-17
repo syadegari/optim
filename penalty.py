@@ -36,15 +36,15 @@ def penalty_basin(mprin, penalty_dict):
     return error_penalty
 
 
-def calculate_penalty_error(basins, penalty_dict, sim_path):
+def calculate_penalty_error(run_dirs, penalty_dict, sim_path):
     # this is the error on all basins (averaged before it is sent back)
     penalties = {k: 0.0 for k in penalty_dict}   
-    for basin_nr in basins:
-        mprin_folder_path = f"{sim_path}/basin_{basin_nr}/mpr/"
+    for run_dir in run_dirs:
+        mprin_folder_path = f"{sim_path}/{run_dir}/mpr/"
         error_basin = penalty_basin(get_mprin(mprin_folder_path), penalty_dict)
         for k in penalty_dict:
             penalties[k] += error_basin[k]
-    return {k : v / len(basins) for k, v in penalties.items()}
+    return {k : v / len(run_dirs) for k, v in penalties.items()}
 
 def get_mprin(mprin_folder_path):
     print(f'opening {mprin_folder_path}/mprin')
