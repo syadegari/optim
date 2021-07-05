@@ -84,7 +84,8 @@ def setup_mpr(cf, htpath, basin_id, grdc_id, run_path, dir_names):
             os.symlink(f"{mpr_data_in_dir}/surfclim", f"{mpr_path}/surfclim")
     else:
             mpr_data_in_dir = f"{htpath.path_soilgrid}/basin_{basin_id}"
-            os.symlink(f"{htpath.path_static}/surfclim", f"{mpr_path}/surfclim")
+            os.symlink(f"{htpath.path_static}/basin_{basin_id}/surfclim",
+                       f"{mpr_path}/surfclim")
     for soil_filename in ["BLDFIE_M.nc", "SNDPPT_M.nc", "CLYPPT_M.nc",
                           "ORCDRC_M.nc", "SLTPPT_M.nc", "TEXMHT_M.nc"]:
             os.symlink(f"{mpr_data_in_dir}/{soil_filename}", f"{mpr_path}/{soil_filename}")
