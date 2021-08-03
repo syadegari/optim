@@ -74,7 +74,8 @@ def get_submitheader():
     return gen_header
 
 class runcommand():
-    def __init__(self):
+    def __init__(self, has_LAI_param : bool):
+        self.has_LAI_param = has_LAI_param
         socketname = socket.gethostname()
         if check_eve(socketname):
             header_htessel = '''#!/bin/bash
@@ -89,6 +90,7 @@ set -e
 module purge
 module load foss/2019b
 module load netCDF-Fortran
+module load NCO
                 '''
         elif check_ecmwf(socketname):
             header_htessel = '''#!/bin/bash
@@ -120,13 +122,26 @@ find |grep o_wat| xargs rm
 tail -n100 htessel.log > htessel_clipped.log
 rm -f htessel.log && mv htessel_clipped.log htessel.log
         '''
-        mpr_run = '''
+        mpr_run_without_LAI = '''
 cd {dir_name}
 echo "running mpr ..."
 ./mpr > ../mpr.log 2>&1
 echo "mpr done"
 cd ..
 '''
+        mpr_run_with_LAI = '''
+cd {dir_name}
+echo "running mpr ..."
+./mpr > ../mpr.log 2>&1
+echo "mpr done"
+ncrename -h -O -v Mlail_out,Mlail -v Mlaih_out,Mlaih mprin
+ncks -A -v Mlail,Mlaih mprin surfclim
+cd ..
+'''
+
         self.htessel = header_htessel + htessel_run
-        self.mpr     = header_mpr + mpr_run
+        if self.has_LAI_param:
+            self.mpr     = header_mpr + mpr_run_with_LAI
+        else:
+            self.mpr     = header_mpr + mpr_run_without_LAI
 

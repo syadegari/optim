@@ -16,10 +16,19 @@ import lutreader
 
 # all the global paths we need
 htpath = htcal_path.get_paths()
-run_cmd = htcal_path.runcommand()
 
 def run_command(cf, run_id, dir_names):
     # hostname = os.uname()[1]
+    #
+    try:
+        if 'mlail_scaling' in cf.params or 'mlaih_scaling' in cf.params:
+            has_LAI_param = True
+        else:
+            has_LAI_param = False
+    except NameError:
+        has_LAI_param = False
+    run_cmd = htcal_path.runcommand(has_LAI_param=has_LAI_param)
+    #
     hostname = 'frontend1'
     if hostname in ['datascience1', 'frontend1', 'frontend2']:
         # print('    Hostsystem: eve')
