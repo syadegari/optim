@@ -6,14 +6,14 @@ import spotpy
 from spotpy.algorithms import dds
 from spotpy_htcal_setup import spot_setup_htcal
 
-
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('-c', '--control-file', 
-    help="control file")
+                    help="control file, including the path")
 parser.add_argument('-n', '--num-sample',  
-    help="number of samples")
-parser.add_argument('-l', '--basin_lut', dest = 'basin_lut', default = 'basin_lut.org',
-    help = "basin lut")
+                    type=int, help="number of samples")
+parser.add_argument('-l', '--basin_lut', 
+                    dest = 'basin_lut', default = 'basin_lut.org',
+                    help = "basin lut")
 parser.add_argument('--clean-completed', dest='clean_completed',
                     action='store_true', default=False,
                     help='clean each completed simulation or not')
