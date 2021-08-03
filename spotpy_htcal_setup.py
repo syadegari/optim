@@ -154,10 +154,19 @@ def run_simulation(folder, num_threads=4):
 
     os.chdir(parent_folder)
 
-        
+
+def remove_all_but_last_sim(run_folder):
+    sim_nums = [int(re.match("sim_(\d+)", f)[1]) for f in os.listdir(run_folder) if f.find('sim_')!=-1]
+    sim_nums = sorted(sim_nums)
+    if sim_nums == []:
+        exit('At least one simulation should exist in runs folder!')
+    if len(sim_nums) > 1:
+        for sim_num in sim_nums[:-1]:
+            shutil.rmtree(f"{run_folder}/sim_{sim_num}")
+
 class spot_setup_htcal(object):
     #
-    def __init__(self, control_file, basin_lookup = 'basin_lut.org'):
+    def __init__(self, control_file, clean_completed, basin_lookup = 'basin_lut.org'):
         # import the control file
         control_file_path, control_file = ntpath.split(control_file)
         sys.path.insert(0, control_file_path)
@@ -201,6 +210,7 @@ class spot_setup_htcal(object):
         # prepare
         self.create_run_directory(self.control_file_path)
         self.nProc = 4
+        self.rm_sim_folder = clean_completed
 
     def create_run_directory(self, path):
         assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
@@ -310,6 +320,8 @@ class spot_setup_htcal(object):
             with open(f"{self.control_file_path}/runs/res.txt", 'a') as res_file:
                 res_file.write(f"{simulation}\n")
             #
+            if self.rm_sim_folder:
+                remove_all_but_last_sim(f"{self.control_file_path}/runs")
             return -15 + sum(list(simulation.values()))
         else:
             sim_folders = [f'{self.control_file_path}/runs/{x}' \
@@ -326,6 +338,8 @@ class spot_setup_htcal(object):
             print(f"kge: {kge_means}")
             with open(f"{self.control_file_path}/runs/res.txt", 'a') as res_file:
                 res_file.write(f"{kge_means}\n")
+            if self.rm_sim_folder:
+                remove_all_but_last_sim(f"{self.control_file_path}/runs")
             return kge_means[0]
 
 
