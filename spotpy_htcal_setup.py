@@ -166,7 +166,7 @@ def remove_all_but_last_sim(run_folder):
 
 class spot_setup_htcal(object):
     #
-    def __init__(self, control_file, clean_completed, basin_lookup = 'basin_lut.org'):
+    def __init__(self, control_file, restart, clean_completed, basin_lookup = 'basin_lut.org'):
         # import the control file
         control_file_path, control_file = ntpath.split(control_file)
         sys.path.insert(0, control_file_path)
@@ -174,12 +174,15 @@ class spot_setup_htcal(object):
         print(f"\nUsing control file: {control_file}\n")
         print(f"\nUsing basin lut: {basin_lookup}\n")
         #
+        self.restart = restart
         self.control_file_path = control_file_path
         self.control_file = control_file 
         self.params = []
         for param_name, param_values in self.control_file.params.items():
             lower, upper, defulat = param_values
-            self.params.append(spotpy.parameter.Uniform(param_name, lower, upper))
+            self.params.append(spotpy.parameter.Uniform(param_name,
+                                                        np.array(lower),
+                                                        np.array(upper)))
 
         cf_key_ids = self.control_file.training.keys()
         if len(cf_key_ids) == 1:
@@ -213,8 +216,9 @@ class spot_setup_htcal(object):
         self.rm_sim_folder = clean_completed
 
     def create_run_directory(self, path):
-        assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
-        Path(f'{path}/runs').mkdir(exist_ok=True)
+        if not self.restart:
+            assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
+            Path(f'{path}/runs').mkdir(exist_ok=True)
 
     def create_param_run_directory(self, path):
         # get all the simulation direcotories
