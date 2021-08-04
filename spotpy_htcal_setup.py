@@ -340,6 +340,8 @@ class spot_setup_htcal(object):
                 res_file.write(f"{kge_means}\n")
             if self.rm_sim_folder:
                 remove_all_but_last_sim(f"{self.control_file_path}/runs")
+            if np.nan in kge_means:
+                exit('Aborting the optimizer. Nan has been encountered in KGE results')
             return kge_means[0]
 
 
