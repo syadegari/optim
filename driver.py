@@ -4,9 +4,9 @@ import argparse
 import re
 import os.path
 import shutil
+import pathlib
 import sys
-sys.path.insert(0, './spotpy/')
-import spotpy
+sys.path.insert(0, f'{pathlib.Path(__file__).parent.resolve()}/spotpy/')
 from spotpy.algorithms import dds
 from spotpy_htcal_setup import spot_setup_htcal
 import numpy as np
