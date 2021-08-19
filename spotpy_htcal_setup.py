@@ -166,7 +166,8 @@ def remove_all_but_last_sim(run_folder):
 
 class spot_setup_htcal(object):
     #
-    def __init__(self, control_file, restart, clean_completed, basin_lookup = 'basin_lut.org'):
+    def __init__(self, control_file, restart:bool, clean_completed:bool,
+                 nthreads:int, basin_lookup = 'basin_lut.org'):
         # import the control file
         control_file_path, control_file = ntpath.split(control_file)
         sys.path.insert(0, control_file_path)
@@ -212,7 +213,7 @@ class spot_setup_htcal(object):
                 self.grdc[ii] = str(self.grdc[ii])
         # prepare
         self.create_run_directory(self.control_file_path)
-        self.nProc = 4
+        self.nthreads = nthreads
         self.rm_sim_folder = clean_completed
 
     def create_run_directory(self, path):
@@ -287,7 +288,7 @@ class spot_setup_htcal(object):
                 os.chdir(f"{sim_path}/{run_dir}")
                 #
                 my_env = os.environ.copy()
-                my_env['OMP_NUM_THREADS'] = str(4)
+                my_env['OMP_NUM_THREADS'] = str(self.nthreads)
                 p = Popen('./run_htessel', shell=True,
                           stdout=open('output_htessel', 'w'),
                           stderr=open('error_htessel', 'w'), env=my_env).communicate()

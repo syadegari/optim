@@ -25,6 +25,9 @@ parser.add_argument('-r', '--restart', dest='restart',
 parser.add_argument('--clean-completed', dest='clean_completed',
                     action='store_true', default=False,
                     help='clean each completed simulation or not')
+parser.add_argument('--nthreads', dest='nthreads', nargs='?',
+                    default=4, type=int,
+                    help='default number of threads for htessel')
 args = parser.parse_args()
 
 control_file_path, _ = os.path.splitext(args.control_file)
@@ -68,7 +71,11 @@ if args.restart:
     print(f'  {max_params}\n')
 
 
-spot_setup = spot_setup_htcal(control_file_path, args.restart, args.clean_completed, args.basin_lut)
+spot_setup = spot_setup_htcal(control_file_path, 
+                              args.restart, 
+                              args.clean_completed, 
+                              args.nthreads,
+                              args.basin_lut)
 
 sampler = dds(spot_setup, dbname="htcal", save_sim=False)
 
