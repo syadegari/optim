@@ -145,7 +145,7 @@ def _setup_htessel_yy_dir(b_setup, cf, htpath, basin_id, grdc_id, run_path, dir_
     for ff in [ 'rivpar.nc', 'rivclim.nc', 'inpmat.nc' ]:
         os.symlink(f"{htpath.path_static}/{data_dir}/{ff}", f"{yy_path}/{ff}")
     # diminfo
-    os.symlink(f"{run_path}/diminfo.txt", f"{yy_path}/diminfo.txt")
+    os.symlink("../../diminfo.txt", f"{yy_path}/diminfo.txt")
 
 def _update_htessel_nml(b_setup, cf, htpath, basin_id, run_path, dir_names, yy, init = True):
     yy_path = os.path.join(run_path, dir_names['model_run'], str(yy))
