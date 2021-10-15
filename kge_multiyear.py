@@ -48,17 +48,17 @@ the multiyear runs should be stored
 
 python kge_multiyear.py -p /data/htcal/data/debug_optim/8smallbasins_default/basin_6144/runs/sim_33/basin_6144 -w 180 -n 6144
 """
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="KGE output for multiyear runs",
+                                    epilog=usage_example,
+                                    formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('-n', '--basin_number', type=int,
+                        help="basin number (a four digit integer)")
+    parser.add_argument('-w', '--warmup', type=int  ,
+                        help="warmup days")
+    parser.add_argument('-p', '--path', type=str,
+                        help='path to the basin where multiyear runs are stored')
+    args = parser.parse_args()
 
-parser = argparse.ArgumentParser(description="KGE output for multiyear runs",
-                                 epilog=usage_example,
-                                 formatter_class=argparse.RawTextHelpFormatter)
-parser.add_argument('-n', '--basin_number', type=int,
-                    help="basin number (a four digit integer)")
-parser.add_argument('-w', '--warmup', type=int  ,
-                    help="warmup days")
-parser.add_argument('-p', '--path', type=str,
-                    help='path to the basin where multiyear runs are stored')
-args = parser.parse_args()
-
-# print(kge_multiyear(6144, "/data/htcal/data/debug_optim/8smallbasins_default/basin_6144/runs/sim_33/basin_6144", 180))
-print(kge_multiyear(args.basin_number, args.path, args.warmup))
+    # print(kge_multiyear(6144, "/data/htcal/data/debug_optim/8smallbasins_default/basin_6144/runs/sim_33/basin_6144", 180))
+    print(kge_multiyear(args.basin_number, args.path, args.warmup))
