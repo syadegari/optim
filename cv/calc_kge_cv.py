@@ -14,6 +14,7 @@ sys.path.insert(0, parent_dir)
 from kge_multiyear import kge_multiyear
 #
 
+
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('-p', '--path', 
                     help='path to CV folder')
@@ -21,11 +22,17 @@ parser.add_argument('-s', '--skip-days',
                     type=int,
                     default=365,
                     help='warmup days that are skipped when calculating KGE')
+parser.add_argument('-n', '--ncpus',
+                    type=int,
+                    default=8,
+                    help='Number of concurrent jobs')
+
 args = parser.parse_args()
 #
 # cv_folder = '../../single_basin_optim_2/cv'
 cv_folder = args.path
 skip_days = args.skip_days
+ncpus = args.ncpus
 
 def get_kge(st, sub_st, kges):
     with Path(f'{sub_st}/default_sim/{sub_st}'):
@@ -41,7 +48,7 @@ with Path(cv_folder):
         kges = mp.Manager().dict()
         with Path(st):
             sub_sts = grep(os.listdir(), '.*station_\d+')
-            pool = mp.Pool(36)
+            pool = mp.Pool(ncpus)
             pool.starmap(get_kge, 
                          zip(repeat(st, len(sub_sts)),
                              sub_sts,
