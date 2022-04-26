@@ -8,7 +8,7 @@ def scale(v, v_min, v_max):
     v -= v_bar
     v_min -= v_bar
     v_max -= v_bar
-
+    #
     if v_min <= v <= v_max:
         return 0.0
     elif v > v_max:
@@ -45,6 +45,7 @@ def calculate_penalty_error(run_dirs, penalty_dict, sim_path):
         for k in penalty_dict:
             penalties[k] += error_basin[k]
     return {k : v / len(run_dirs) for k, v in penalties.items()}
+
 
 def get_mprin(mprin_folder_path):
     print(f'opening {mprin_folder_path}/mprin')
