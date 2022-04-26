@@ -140,24 +140,6 @@ def special_treatments(nmlist):
     return nmlist
 
 
-def run_simulation(folder, num_threads=4):
-    #print(f'running {folder} with updated parameters ...')
-    parent_folder = os.getcwd()
-    os.chdir(folder)
-
-    my_env = os.environ.copy()
-    my_env['OMP_NUM_THREADS'] = str(num_threads)
-    p = Popen('./run_programs', shell=True,
-              stdout=open('output', 'w'),
-              stderr=open('error', 'w'), env=my_env).communicate()
-
-    p = Popen('./run_programs', shell=True,
-              stdout=open('output', 'w'),
-              stderr=open('error', 'w'), env=my_env).communicate()
-
-    os.chdir(parent_folder)
-
-
 def remove_all_but_last_sim(run_folder):
     sim_nums = [int(re.match("sim_(\d+)", f)[1]) for f in os.listdir(run_folder) if f.find('sim_')!=-1]
     sim_nums = sorted(sim_nums)
@@ -175,6 +157,26 @@ def mpi_debug(name):
     print(f'time of executation: {datetime.datetime.now().strftime("%H:%M:%S")}')
     print(f'in directory {os.getcwd()}')
     print('----------')
+
+
+def run_htessel_jobs(path_sim):
+    if DEBUG:
+        mpi_debug('before HTESSEL')
+    out, err = Popen('./run_htessel',
+                     shell=True,
+                     cwd=path_sim).communicate()
+    if DEBUG:
+        mpi_debug('after HTESSEL')
+
+
+def run_mpr_jobs(path_sim):
+    if DEBUG:
+        mpi_debug('before MPR')
+    out, err = Popen('./run_mpr',
+                     shell=True,
+                     cwd=path_sim).communicate()
+    if DEBUG:
+        mpi_debug('after MPR')
 
 
 class spot_setup_htcal(object):
