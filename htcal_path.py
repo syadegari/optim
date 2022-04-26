@@ -59,8 +59,22 @@ def get_submitheader():
                 queue          = queue,
                 path_pythonenv = path_pythonenv)
             return(header)
-        print('not implemented yet')
     elif cluster_name == 'juwels':
+            header = '''#!/usr/bin/bash
+#SBATCH --time={time}
+#SBATCH --output={run_path}/LOG.run.%j.out
+#SBATCH --error={run_path}/LOG.run.%j.err
+#SBATCH --mem-per-cpu={mem}
+#SBATCH --cpus-per-task={nnodes}
+#SBATCH --export=ALL
+#SBATCH --job-name={jobname}
+        '''.format(
+            time           = time,
+            run_path       = run_path,
+            basin          = str(basin),
+            mem            = mem,
+            path_pythonenv = path_pythonenv)
+            return(header)
     else:
         raise Error(f'cannot create header, unknown cluster: {cluster_name}')
     return gen_header
