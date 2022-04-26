@@ -264,21 +264,15 @@ class spot_setup_htcal(object):
         write_params_file(sim_path, x)
         create_basin_run_directory(self.control_file_path, sim_path, self.run_dirs)
         modify_basin_with_new_params(sim_path, self.run_ids, self.run_dirs, self.control_file, x)
-        #
-        #
-        # run programs. Only run htessel if
-        #                         1- No penalty exists in the control
-        #                         2- When penalty exist, run when no penalty term is activated
-        for run_dir in self.run_dirs:
-            print(f'running mpr in {run_dir} in {sim_path} with updated parameters ...')
-            parent_folder = os.getcwd()
-            os.chdir(f"{sim_path}/{run_dir}")
-            #
-            p = Popen('./run_mpr', shell=True,
-                      stdout=open('output_mpr', 'w'),
-                      stderr=open('error_mpr', 'w')).communicate()
-            os.chdir(parent_folder)
-        #
+
+        paths = [f'{sim_path}/{run_dir}' for run_dir in self.run_dirs]
+
+        print('running mpr jobs with CommExec ...')
+        print(paths)
+        # run mpr jobs
+        with futures.MPIPoolExecutor() as executor:
+            res = executor.map(run_mpr_jobs, paths)
+        #  check the penalties for each variable specified in `penalty` dict
         run_htessel = False
         try:
             penalty_errors = calculate_penalty_error(self.run_dirs,
@@ -286,29 +280,23 @@ class spot_setup_htcal(object):
                                                      sim_path)
             if not np.isclose(np.array([v for _, v in penalty_errors.items()]).sum(),
                               0.0, atol=1e-8):
-                print('mprin thresholds violated, skipping htessel run')
-                print(penalty_errors)
                 for run_dir in self.run_dirs:
                     shutil.rmtree(f'{sim_path}/{run_dir}/run')
+                print('mprin thresholds violated, skipping htessel run')
+                print(penalty_errors)
                 return penalty_errors
             else:
                 run_htessel = True
         except AttributeError:
             print('no penalty formulation is found, running htessel')
             run_htessel = True
+        # run programs. Only run htessel if
+        #                         1- No penalty exists in the control
+        #                         2- When penalty exist, run when no penalty term is activated
+        # run htessel jobs
         if run_htessel:
-            for run_dir in self.run_dirs:
-                print(f'running htessel in {run_dir} in {sim_path} with updated parameters ...')
-                parent_folder = os.getcwd()
-                os.chdir(f"{sim_path}/{run_dir}")
-                #
-                my_env = os.environ.copy()
-                my_env['OMP_NUM_THREADS'] = str(self.nthreads)
-                p = Popen('./run_htessel', shell=True,
-                          stdout=open('output_htessel', 'w'),
-                          stderr=open('error_htessel', 'w'), env=my_env).communicate()
-                os.chdir(parent_folder)
-        #
+            with futures.MPICommExecutor() as executor:
+                res = executor.map(run_htessel_jobs, paths)
             results = {}
             for ii, run_id in enumerate(self.run_ids):
                 run_dir = self.run_dirs[ii]
