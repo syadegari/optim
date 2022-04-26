@@ -1,0 +1,4 @@
+{
+    "comment": "`cluster` is one of `eve`, `juwels` or `ecmwf`"
+    "cluster": "eve"
+}

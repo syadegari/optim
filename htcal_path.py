@@ -1,32 +1,24 @@
 import socket
+import json
+import pathlib
 
-def check_eve(word):
-    if '.' in word:
-        word = word[-10:]
-    return word in ['frontend1', 'frontend2', 'eve.ufz.de', 'datascience1']
+config = json.load(open((f'{pathlib.Path(__file__).parent.resolve()}/config.json')))
+cluster_name = config['cluster'].lower()
 
-def check_ecmwf(word):
-    return word[:3] in ['cca', 'ccb'] or word in ['ecgb11']
-
-def check_jules(word):
-    return False
 
 def get_paths():
-    socketname = socket.gethostname()
-    print(f'setting up paths for: {socketname}')
-    if check_eve(socketname):
+    if cluster_name == 'eve':
         import htcal_path_eve as htpath
-    elif check_ecmwf(socketname):
+    elif cluster_name == 'ecmwf':
         import htcal_path_ecmwf as htpath
-    elif check_jules(socketname):
+    elif cluster_name == 'juwels':
         import htcal_path_juwels as htpath
     else:
         raise Error('cannot import paths, check if running')
     return htpath
 
 def get_submitheader():
-    socketname = socket.gethostname()
-    if check_eve(socketname):
+    if cluster_name == 'eve':
         def gen_header(time, run_path, mem, nnodes, jobname):
             header = '''#!/usr/bin/bash
 #SBATCH --time={time}
@@ -43,7 +35,7 @@ def get_submitheader():
             mem            = mem,
             path_pythonenv = path_pythonenv)
             return(header)
-    elif check_ecmwf(socketname):
+    elif cluster_name == 'ecmwf':
         def gen_header(time, run_path, mem, nnodes, jobname):
             if nnodes == 1:
                 queue = 'ns'
@@ -67,17 +59,16 @@ def get_submitheader():
                 queue          = queue,
                 path_pythonenv = path_pythonenv)
             return(header)
-    elif check_jules(socketname):
         print('not implemented yet')
+    elif cluster_name == 'juwels':
     else:
-        raise Error('cannot create header, unknown cluster: {socketname}')
+        raise Error(f'cannot create header, unknown cluster: {cluster_name}')
     return gen_header
 
 class runcommand():
     def __init__(self, has_LAI_param : bool):
         self.has_LAI_param = has_LAI_param
-        socketname = socket.gethostname()
-        if check_eve(socketname):
+        if cluster_name == 'eve':
             header_htessel = '''#!/bin/bash
 set -e
 module purge
@@ -92,17 +83,18 @@ module load foss/2019b
 module load netCDF-Fortran
 module load NCO
                 '''
-        elif check_ecmwf(socketname):
+        elif cluster_name == 'ecmwf':
             header_htessel = '''#!/bin/bash
 set -e
                 '''
             header_mpr = '''#!/bin/bash
 set -e
                 '''
-        elif check_jules(socketname):
+
+        elif cluster_name == 'juwels':
             print('not implemented yet')
         else:
-            raise Error('cannot create script, unknown cluster: {socketname}')
+            raise Error(f'cannot create script, unknown cluster: {cluster_name}')
         htessel_run = '''
 echo "running htessel ..."
 cd {dir_name}
