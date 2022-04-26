@@ -238,7 +238,6 @@ class spot_setup_htcal(object):
 
 
     def simulation(self, x):
-        # TODO: replace this after fixing the csv-file problem
         with open(f"{self.control_file_path}/runs/res.txt", 'a') as res_file:
             print("parameters: ", [_ for _ in x], file=res_file)
         print("parameters: ", [_ for _ in x])
