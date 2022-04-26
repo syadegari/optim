@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import argparse
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList
