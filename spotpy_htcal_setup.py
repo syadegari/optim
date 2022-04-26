@@ -9,6 +9,8 @@ import os
 import os.path
 import re
 import shutil
+import socket
+import datetime
 #
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList
@@ -17,9 +19,12 @@ import f90nml as nml
 from pathlib import Path
 from subprocess import Popen
 from postproc import *
+import mpi4py.futures as futures
 from penalty import calculate_penalty_error
 #
 from lutreader import basin_lut
+
+DEBUG = False
 
 
 # path -+
@@ -161,6 +166,16 @@ def remove_all_but_last_sim(run_folder):
     if len(sim_nums) > 1:
         for sim_num in sim_nums[:-1]:
             shutil.rmtree(f"{run_folder}/sim_{sim_num}")
+
+def mpi_debug(name):
+    print('----------')
+    print(f'executing {name}' )
+    print(f'executing on machine {socket.gethostname()}')
+    print(f'threads available: {os.environ["OMP_NUM_THREADS"]}')
+    print(f'time of executation: {datetime.datetime.now().strftime("%H:%M:%S")}')
+    print(f'in directory {os.getcwd()}')
+    print('----------')
+
 
 class spot_setup_htcal(object):
     #
