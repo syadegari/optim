@@ -54,7 +54,7 @@ def create_basin_run_directory(path_root, path_sim, run_dirs):
                         f"{path_sim}/{run_dir}", symlinks=True)
 
 
-def modify_basin_with_new_params(sim_path, run_ids, run_dirs, control_file, x):
+def modify_basin_with_new_params(sim_path, grdcs, x):
     '''
     modifies all the input files under sim_n (n ∈ ℕ)
     we need to do that for each basin and in each basin change the mpr
@@ -86,32 +86,27 @@ def modify_basin_with_new_params(sim_path, run_ids, run_dirs, control_file, x):
                 ├── 1999
                 └── 2000
 '''
-    for ii, run_id in enumerate(run_ids):
-        run_dir = run_dirs[ii]
-        # open the htessel in the sim_path
-        # change to basin directory
-        parent_dir = os.getcwd()
-        os.chdir(f"{sim_path}/{run_dir}")
-        # we open mpr and htessel files
-        year_range = range(control_file.training[run_id]['year_begin'],
-                           control_file.training[run_id]['year_end'] + 1)
-        htessel_inputs = [HTESSELNameList(nml.read(f"run/{year}/input"))\
-                          for year in year_range]
-        mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
-        for ht_input, year in zip(htessel_inputs, year_range):
-            
-            ht_input.read_only = False
-            mpr.read_only = False
-            # modify_forcing_path(htessel, sim_path, run_id)
-            modify_params(ht_input, mpr, dict(zip(x.name, [v for v in x])))
-            special_treatments(ht_input)
-            ht_input.read_only = True
-            mpr.read_only = True
-            # write the changes
-            ht_input.write(f"./run/{year}")
-            mpr.write("./mpr")
-        # change to parent directory
-        os.chdir(parent_dir)
+    # import is here to prevent the clash with Path from pathlib
+    from path import Path
+
+    # looping on grdcs can be ineffiecient (in case of multi-stations
+    # in a single basin, which is not supported at the moment) but still
+    # correct. We just modify the same files more than once.
+    for grdc in grdcs:
+        year_range = range(grdc.year_begin, grdc.year_end + 1)
+        with Path(f'{sim_path}/{grdc.run_dir}'):
+            htessel_inputs = [HTESSELNameList(nml.read(f"run/{year}/input"))\
+                              for year in year_range]
+            mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
+            for ht_input, year in zip(htessel_inputs, year_range):
+                ht_input.read_only, mpr.read_only = False, False
+                # modify_forcing_path(htessel, sim_path, run_id)
+                modify_params(ht_input, mpr, dict(zip(x.name, [v for v in x])))
+                special_treatments(ht_input)
+                ht_input.read_only, mpr.read_only = True, True
+                # write the changes
+                ht_input.write(f"./run/{year}")
+                mpr.write("./mpr")
 
 
 def modify_params(htessel, mpr, params_dict):
@@ -297,7 +292,7 @@ class spot_setup_htcal(object):
         sim_path = self.create_param_run_directory(self.control_file_path)
         write_params_file(sim_path, x)
         create_basin_run_directory(self.control_file_path, sim_path, self.run_dirs)
-        modify_basin_with_new_params(sim_path, self.run_ids, self.run_dirs, self.control_file, x)
+        modify_basin_with_new_params(sim_path, self.grdcs, x)
 
         paths = [f'{sim_path}/{run_dir}' for run_dir in self.run_dirs]
 
