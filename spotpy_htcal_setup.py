@@ -327,26 +327,19 @@ class spot_setup_htcal(object):
             with futures.MPICommExecutor() as executor:
                 _ = executor.map(run_htessel_jobs, paths)
             results = {}
-            for ii, run_id in enumerate(self.run_ids):
-                run_dir = self.run_dirs[ii]
-                # print(f'Getting rivout for basin: {basin_nr}')
-                year_range = range(self.control_file.training[run_id]['year_begin'],
-                                   self.control_file.training[run_id]['year_end'] + 1)
-                # for grdc_id in self.control_file.training[basin_nr]['grdc_ids']:
-                # TODO: HERE WE NEED A FIX, ELSE NO MULTIBASIN WILL RUN
-                for grdc_id in self.grdc:
-                    # print(f'    grdc_no: {grdc_id}')
-                    rivouts = []
-                    for year in year_range:
-                        rivouts.append(get_river_output(nc.Dataset(f"{sim_path}/{run_dir}/run/{year}/o_rivout_cmf.nc"), grdc_id))
-                    # print(rivouts)
-                    results[str(grdc_id)] = rivouts
-            # concat the restuls before sending back
-            # print(results)
-            return {
-                str(grdc_id): pd.concat(results[str(grdc_id)]).reset_index() for grdc_id in self.grdc
-            }
-            
+            for grdc in self.grdcs:
+                year_range = range(grdc.year_begin, grdc.year_end + 1)
+                rivouts = []
+                for year in year_range:
+                    rivouts.append(
+                        get_river_output(nc.Dataset(f"{sim_path}/{grdc.run_dir}/run/{year}/o_rivout_cmf.nc"),
+                                         grdc.grdc_id)
+                    )
+                results[str(grdc.grdc_id)] = rivouts
+            # concatenante the restuls before sending back
+            # import pdb; pdb.set_trace()
+            return {k: pd.concat(v).reset_index() for k, v in results.items()}
+
 
     def objectivefunction(self, simulation, evaluation):
         # get a key from the simulation
