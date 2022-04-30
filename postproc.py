@@ -38,9 +38,18 @@ def get_grdc_id(path_grdc_alloc, basin_nr) -> int:
     return df[df['basin_15min'] == basin_nr]['ID'].values[0]
 
 
-def get_discharge(df_obs, df_mod, date_begin=None, date_end=None) -> List[pd.Series]:
-    """returns pair of observation and simulation for the basin 
-    at the appropriate slice of time"""
+def get_discharge(df_obs: pd.DataFrame, df_mod: pd.DataFrame,
+                  date_begin=None, date_end=None) -> List[pd.Series]:
+    """Returns a pair of observation and simulation for the basin
+    at the appropriate slice of time
+
+    Args:
+        df_obs: dataframe of discharge observation
+        df_mod: dataframe of discharge simulation
+    Returns:
+        pair of dataframes for observation and simulation
+        the two should have the same start and end date
+    """
     if date_begin is None:
         begin = df_mod['date'].iloc[0]
     else:
