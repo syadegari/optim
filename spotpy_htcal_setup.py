@@ -11,6 +11,7 @@ import re
 import shutil
 import socket
 import datetime
+from collections import namedtuple
 #
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList
@@ -179,6 +180,10 @@ def run_mpr_jobs(path_sim):
         mpi_debug('after MPR')
 
 
+def get_run_dirs(grdcs:list):
+    return list({grdc.run_dir for grdc in grdcs})
+
+
 class spot_setup_htcal(object):
     #
     def __init__(self, control_file, restart:bool, clean_completed:bool,
@@ -199,33 +204,62 @@ class spot_setup_htcal(object):
             self.params.append(spotpy.parameter.Uniform(param_name,
                                                         np.array(lower),
                                                         np.array(upper)))
-
-        cf_key_ids = self.control_file.training.keys()
-        if len(cf_key_ids) == 1:
-            blut = basin_lut(basin_lookup)
-            bid, gid = blut.get_ids(list(cf_key_ids)[0])
-            if gid is not None:
-                self.run_ids = [gid]
-                self.run_dirs = [f"station_{gid}"]
-                self.grdc   = [gid]
-                self.basins = [bid]
+        blut = basin_lut(basin_lookup)
+        #
+        # We want to turn the training dictionary "inside-out". Consider the following example:
+        #
+        # training = {
+        # '4145130': {'year_begin': 1979, 'year_end': 1981,
+        #             'warmup': 120}, # single grdc
+        # '5226800': {'year_begin': 1984, 'year_end': 1986,
+        #             'warmup': 120}, # single grdc
+        # '3269': {'grdc_ids' : [2589390], 'year_begin': 2000, 'year_end': 2001,
+        #          'warmup': 120}, # basin with single station
+        # }
+        #
+        # it creates three directories as follows:
+        #
+        # station_4145130
+        # station_5226800
+        # basin_3269
+        #
+        # Each contains a simulation with specified years. We need to run each simulation
+        # once and at the same time access the specified station number (grdc_num) for
+        # calculation of objective function. Each entry in `grdcs` list has this structure,
+        # namely, grdc_id, run_directory, years and warmup. Iterating on this list we can
+        # change the parameters of each simulation and calculate the objective function of
+        # each grdc station. We also extract the run directories and store it in `self.run_dirs`
+        # for ease of use, for example when running the simulations of mpr and htessel.
+        #
+        GRDC = namedtuple('GRDC',
+                  ['grdc_id',
+                   'run_dir',
+                   'year_begin',
+                   'year_end',
+                   'warmup'])
+        training = self.control_file.training
+        self.grdcs = []
+        for k in training.keys():
+            basin_id, grdc_id = blut.get_ids(k)
+            year_begin = training[k]['year_begin']
+            year_end = training[k]['year_end']
+            warmup = training[k]['warmup']
+            #
+            if grdc_id is None:
+                assert basin_id == k
+                assert len(training[k]['grdc_ids']) == 1,  'Multi-station is not supported'
+                run_dir = f'basin_{basin_id}'
+                grdc_id = str(training[k]['grdc_ids'][0])
             else:
-                self.run_ids = [bid]
-                self.run_dirs = [f"basin_{bid}"]
-                self.grdc = self.control_file.training[bid]['grdc_ids']
-                for ii, _ in enumerate(self.grdc):
-                    self.grdc[ii] = str(self.grdc[ii])
-                self.basins = [bid]
-        else:
-            self.run_ids = cf_key_ids
-            self.run_dirs = [f"station_{ii}" for ii in cf_key_ids]
-            self.grdc   = []
-            self.basins = []
-            for basin in self.run_ids:
-                self.grdc.extend(self.control_file.training[basin]['grdc_ids'])
-                self.basins.extend([basin for i in range(len(self.control_file.training[basin]['grdc_ids']))])
-            for ii, _ in enumerate(self.grdc):
-                self.grdc[ii] = str(self.grdc[ii])
+                grdc_id = grdc_id
+                run_dir = f'station_{grdc_id}'
+            self.grdcs.append(
+                GRDC(grdc_id,
+                     run_dir,
+                     year_begin,
+                     year_end,
+                     warmup))
+        self.run_dirs = get_run_dirs(self.grdcs)
         # prepare
         self.create_run_directory(self.control_file_path)
         self.nthreads = nthreads
