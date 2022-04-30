@@ -271,7 +271,7 @@ class spot_setup_htcal(object):
         print(paths)
         # run mpr jobs
         with futures.MPIPoolExecutor() as executor:
-            res = executor.map(run_mpr_jobs, paths)
+            _ = executor.map(run_mpr_jobs, paths)
         #  check the penalties for each variable specified in `penalty` dict
         run_htessel = False
         try:
@@ -296,7 +296,7 @@ class spot_setup_htcal(object):
         # run htessel jobs
         if run_htessel:
             with futures.MPICommExecutor() as executor:
-                res = executor.map(run_htessel_jobs, paths)
+                _ = executor.map(run_htessel_jobs, paths)
             results = {}
             for ii, run_id in enumerate(self.run_ids):
                 run_dir = self.run_dirs[ii]
