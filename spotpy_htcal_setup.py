@@ -243,8 +243,8 @@ class spot_setup_htcal(object):
             if grdc_id is None:
                 assert basin_id == k
                 assert len(training[k]['grdc_ids']) == 1,  'Multi-station is not supported'
-                run_dir = f'basin_{basin_id}'
                 grdc_id = str(training[k]['grdc_ids'][0])
+                run_dir = f'basin_{basin_id}'
             else:
                 grdc_id = grdc_id
                 run_dir = f'station_{grdc_id}'
