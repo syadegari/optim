@@ -119,15 +119,6 @@ def modify_params(htessel, mpr, params_dict):
         else:
             raise Exception(f'{k}, {v} pair was not found')
 
-# def modify_htessel_params(htessel, params_dict):
-#     for k, v in params_dict.items():
-#         if k in htessel.get_all_model_parameters():
-#             htessel[k] = v
-# 
-# def modify_mpr_params(mpr, params_dict):
-#     for k, v in params_dict.items():
-#         if k in mpr.get_all_model_parameters():
-#             mpr[k] = v
 
 def special_treatments(nmlist):
     if nmlist.tag == 'input':
