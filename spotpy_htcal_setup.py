@@ -61,24 +61,24 @@ def modify_basin_with_new_params(sim_path, run_ids, run_dirs, control_file, x):
 
     test_run/
     ├── default_sim
-    │   ├── basin_3269
-    │   │   ├── mpr
-    │   │   └── run
-    │   │       ├── 1999
-    │   │       └── 2000
-    │   └── basin_6333
-    │       ├── mpr
-    │       └── run
-    │           ├── 1999
-    │           └── 2000
+    │   ├── basin_3269
+    │   │   ├── mpr
+    │   │   └── run
+    │   │       ├── 1999
+    │   │       └── 2000
+    │   └── basin_6333
+    │       ├── mpr
+    │       └── run
+    │           ├── 1999
+    │           └── 2000
     ├── __pycache__
     └── runs
     └── sim_1      <=== sim_path (you are here!)
         ├── basin_3269
-        │   ├── mpr
-        │   └── run
-        │       ├── 1999
-        │       └── 2000
+        │   ├── mpr
+        │   └── run
+        │       ├── 1999
+        │       └── 2000
         └── basin_6333
             ├── mpr
             └── run
