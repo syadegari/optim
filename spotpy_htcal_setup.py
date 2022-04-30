@@ -377,5 +377,3 @@ class spot_setup_htcal(object):
         return {
             grdc.grdc_id : get_grdc_discharge(grdc.grdc_id) for grdc in self.grdcs
         }
-
-# setup = spot_setup_htcal("/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/self.control_file.py")
