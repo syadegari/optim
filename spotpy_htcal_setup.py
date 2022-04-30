@@ -260,14 +260,14 @@ class spot_setup_htcal(object):
         self.nthreads = nthreads
         self.rm_sim_folder = clean_completed
 
-    def create_run_directory(self, path):
+    def create_run_directory(self, root_path):
         if not self.restart:
-            assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
-            Path(f'{path}/runs').mkdir(exist_ok=True)
+            assert not os.path.isdir(f"{root_path}/runs"), f"runs directory exists."
+            Path(f'{root_path}/runs').mkdir(exist_ok=True)
 
-    def create_param_run_directory(self, path):
+    def create_param_run_directory(self, root_path):
         # get all the simulation direcotories
-        sim_folders = [f'{path}/runs/{x}' for x in get_dir(f'{path}/runs') if x.find('sim_') != -1]    
+        sim_folders = [f'{root_path}/runs/{x}' for x in get_dir(f'{root_path}/runs') if x.find('sim_') != -1]
 
         if sim_folders == []:
             sim_number = 1
@@ -275,8 +275,8 @@ class spot_setup_htcal(object):
             # get the last sim folder
             sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders]) + 1
 
-        Path(f'{path}/runs/sim_{sim_number}').mkdir()
-        return f'{path}/runs/sim_{sim_number}'
+        Path(f'{root_path}/runs/sim_{sim_number}').mkdir()
+        return f'{root_path}/runs/sim_{sim_number}'
 
         
     def parameters(self):
