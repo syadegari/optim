@@ -354,9 +354,7 @@ class spot_setup_htcal(object):
                 remove_all_but_last_sim(f"{self.control_file_path}/runs")
             return -15 + sum(list(simulation.values()))
         else:
-            sim_folders = [f'{self.control_file_path}/runs/{x}' \
-                           for x in get_dir(f'{self.control_file_path}/runs') if x.find('sim_') != -1]
-            sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders])
+            #
             kges = {}
             for grdc in self.grdcs:
                 grdc_id = grdc.grdc_id
