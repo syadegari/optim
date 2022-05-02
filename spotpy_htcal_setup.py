@@ -358,10 +358,10 @@ class spot_setup_htcal(object):
                            for x in get_dir(f'{self.control_file_path}/runs') if x.find('sim_') != -1]
             sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders])
             kges = {}
-            for ii, grdc_id in enumerate(self.grdc):
+            for grdc in self.grdcs:
+                grdc_id = grdc.grdc_id
+                warmup = grdc.warmup
                 obs, mod = get_discharge(evaluation[grdc_id], simulation[grdc_id])
-                warmup = self.control_file.training[self.run_ids[ii]]['warmup']
-                # import pdb; pdb.set_trace()
                 kges[grdc_id] = kge(obs[warmup : ], mod[warmup : ], components=True)
             # compute all the components of kge and write them into log but only return the kge itself
             kge_means = np.array(list(kges.values())).mean(axis=0)
