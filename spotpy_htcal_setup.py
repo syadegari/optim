@@ -181,8 +181,12 @@ def get_run_dirs(grdcs:list):
 
 class spot_setup_htcal(object):
     #
-    def __init__(self, control_file, restart:bool, clean_completed:bool,
-                 nthreads:int, basin_lookup = 'basin_lut.org'):
+    def __init__(self,
+                 control_file,
+                 restart:bool,
+                 clean_completed:bool,
+                 nthreads:int,
+                 basin_lookup='basin_lut.org'):
         # import the control file
         control_file_path, control_file = ntpath.split(control_file)
         sys.path.insert(0, control_file_path)
