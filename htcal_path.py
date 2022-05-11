@@ -144,7 +144,8 @@ ncrename -h -O -v Mlail_out,Mlail -v Mlaih_out,Mlaih mprin
 ncks -A -v Mlail,Mlaih mprin surfclim
 cd ..
 '''
-
+        self.header_htessel = header_htessel
+        self.header_mpr = header_mpr
         self.htessel = header_htessel + htessel_run
         if self.has_LAI_param:
             self.mpr     = header_mpr + mpr_run_with_LAI

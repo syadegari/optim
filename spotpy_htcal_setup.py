@@ -9,6 +9,9 @@ import os
 import os.path
 import re
 import shutil
+import socket
+import datetime
+from collections import namedtuple
 #
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList
@@ -17,9 +20,12 @@ import f90nml as nml
 from pathlib import Path
 from subprocess import Popen
 from postproc import *
+import mpi4py.futures as futures
 from penalty import calculate_penalty_error
 #
 from lutreader import basin_lut
+
+DEBUG = False
 
 
 # path -+
@@ -48,7 +54,7 @@ def create_basin_run_directory(path_root, path_sim, run_dirs):
                         f"{path_sim}/{run_dir}", symlinks=True)
 
 
-def modify_basin_with_new_params(sim_path, run_ids, run_dirs, control_file, x):
+def modify_basin_with_new_params(sim_path, grdcs, x):
     '''
     modifies all the input files under sim_n (n ∈ ℕ)
     we need to do that for each basin and in each basin change the mpr
@@ -56,56 +62,51 @@ def modify_basin_with_new_params(sim_path, run_ids, run_dirs, control_file, x):
 
     test_run/
     ├── default_sim
-    │   ├── basin_3269
-    │   │   ├── mpr
-    │   │   └── run
-    │   │       ├── 1999
-    │   │       └── 2000
-    │   └── basin_6333
-    │       ├── mpr
-    │       └── run
-    │           ├── 1999
-    │           └── 2000
+    │   ├── basin_3269
+    │   │   ├── mpr
+    │   │   └── run
+    │   │       ├── 1999
+    │   │       └── 2000
+    │   └── basin_6333
+    │       ├── mpr
+    │       └── run
+    │           ├── 1999
+    │           └── 2000
     ├── __pycache__
     └── runs
     └── sim_1      <=== sim_path (you are here!)
         ├── basin_3269
-        │   ├── mpr
-        │   └── run
-        │       ├── 1999
-        │       └── 2000
+        │   ├── mpr
+        │   └── run
+        │       ├── 1999
+        │       └── 2000
         └── basin_6333
             ├── mpr
             └── run
                 ├── 1999
                 └── 2000
 '''
-    for ii, run_id in enumerate(run_ids):
-        run_dir = run_dirs[ii]
-        # open the htessel in the sim_path
-        # change to basin directory
-        parent_dir = os.getcwd()
-        os.chdir(f"{sim_path}/{run_dir}")
-        # we open mpr and htessel files
-        year_range = range(control_file.training[run_id]['year_begin'],
-                           control_file.training[run_id]['year_end'] + 1)
-        htessel_inputs = [HTESSELNameList(nml.read(f"run/{year}/input"))\
-                          for year in year_range]
-        mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
-        for ht_input, year in zip(htessel_inputs, year_range):
-            
-            ht_input.read_only = False
-            mpr.read_only = False
-            # modify_forcing_path(htessel, sim_path, run_id)
-            modify_params(ht_input, mpr, dict(zip(x.name, [v for v in x])))
-            special_treatments(ht_input)
-            ht_input.read_only = True
-            mpr.read_only = True
-            # write the changes
-            ht_input.write(f"./run/{year}")
-            mpr.write("./mpr")
-        # change to parent directory
-        os.chdir(parent_dir)
+    # import is here to prevent the clash with Path from pathlib
+    from path import Path
+
+    # looping on grdcs can be ineffiecient (in case of multi-stations
+    # in a single basin, which is not supported at the moment) but still
+    # correct. We just modify the same files more than once.
+    for grdc in grdcs:
+        year_range = range(grdc.year_begin, grdc.year_end + 1)
+        with Path(f'{sim_path}/{grdc.run_dir}'):
+            htessel_inputs = [HTESSELNameList(nml.read(f"run/{year}/input"))\
+                              for year in year_range]
+            mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
+            for ht_input, year in zip(htessel_inputs, year_range):
+                ht_input.read_only, mpr.read_only = False, False
+                # modify_forcing_path(htessel, sim_path, run_id)
+                modify_params(ht_input, mpr, dict(zip(x.name, [v for v in x])))
+                special_treatments(ht_input)
+                ht_input.read_only, mpr.read_only = True, True
+                # write the changes
+                ht_input.write(f"./run/{year}")
+                mpr.write("./mpr")
 
 
 def modify_params(htessel, mpr, params_dict):
@@ -126,24 +127,6 @@ def special_treatments(nmlist):
     return nmlist
 
 
-def run_simulation(folder, num_threads=4):
-    #print(f'running {folder} with updated parameters ...')
-    parent_folder = os.getcwd()
-    os.chdir(folder)
-
-    my_env = os.environ.copy()
-    my_env['OMP_NUM_THREADS'] = str(num_threads)
-    p = Popen('./run_programs', shell=True,
-              stdout=open('output', 'w'),
-              stderr=open('error', 'w'), env=my_env).communicate()
-
-    p = Popen('./run_programs', shell=True,
-              stdout=open('output', 'w'),
-              stderr=open('error', 'w'), env=my_env).communicate()
-
-    os.chdir(parent_folder)
-
-
 def remove_all_but_last_sim(run_folder):
     sim_nums = [int(re.match("sim_(\d+)", f)[1]) for f in os.listdir(run_folder) if f.find('sim_')!=-1]
     sim_nums = sorted(sim_nums)
@@ -153,10 +136,48 @@ def remove_all_but_last_sim(run_folder):
         for sim_num in sim_nums[:-1]:
             shutil.rmtree(f"{run_folder}/sim_{sim_num}")
 
+def mpi_debug(name):
+    print('----------')
+    print(f'executing {name}' )
+    print(f'executing on machine {socket.gethostname()}')
+    print(f'threads available: {os.environ["OMP_NUM_THREADS"]}')
+    print(f'time of executation: {datetime.datetime.now().strftime("%H:%M:%S")}')
+    print(f'in directory {os.getcwd()}')
+    print('----------')
+
+
+def run_htessel_jobs(path_sim):
+    if DEBUG:
+        mpi_debug('before HTESSEL')
+    out, err = Popen('./run_htessel',
+                     shell=True,
+                     cwd=path_sim).communicate()
+    if DEBUG:
+        mpi_debug('after HTESSEL')
+
+
+def run_mpr_jobs(path_sim):
+    if DEBUG:
+        mpi_debug('before MPR')
+    out, err = Popen('./run_mpr',
+                     shell=True,
+                     cwd=path_sim).communicate()
+    if DEBUG:
+        mpi_debug('after MPR')
+
+
+def get_run_dirs(grdcs:list):
+    return list({grdc.run_dir for grdc in grdcs})
+
+
 class spot_setup_htcal(object):
     #
-    def __init__(self, control_file, restart:bool, clean_completed:bool,
-                 nthreads:int, basin_lookup = 'basin_lut.org'):
+    def __init__(self,
+                 control_file,
+                 restart:bool,
+                 clean_completed:bool,
+                 nthreads:int,
+                 basin_lookup='basin_lut.org'):
         # import the control file
         control_file_path, control_file = ntpath.split(control_file)
         sys.path.insert(0, control_file_path)
@@ -173,46 +194,75 @@ class spot_setup_htcal(object):
             self.params.append(spotpy.parameter.Uniform(param_name,
                                                         np.array(lower),
                                                         np.array(upper)))
-
-        cf_key_ids = self.control_file.training.keys()
-        if len(cf_key_ids) == 1:
-            blut = basin_lut(basin_lookup)
-            bid, gid = blut.get_ids(list(cf_key_ids)[0])
-            if gid is not None:
-                self.run_ids = [gid]
-                self.run_dirs = [f"station_{gid}"]
-                self.grdc   = [gid]
-                self.basins = [bid]
+        blut = basin_lut(basin_lookup)
+        #
+        # We want to turn the training dictionary "inside-out". Consider the following example:
+        #
+        # training = {
+        # '4145130': {'year_begin': 1979, 'year_end': 1981,
+        #             'warmup': 120}, # single grdc
+        # '5226800': {'year_begin': 1984, 'year_end': 1986,
+        #             'warmup': 120}, # single grdc
+        # '3269': {'grdc_ids' : [2589390], 'year_begin': 2000, 'year_end': 2001,
+        #          'warmup': 120}, # basin with single station
+        # }
+        #
+        # it creates three directories as follows:
+        #
+        # station_4145130
+        # station_5226800
+        # basin_3269
+        #
+        # Each contains a simulation with specified years. We need to run each simulation
+        # once and at the same time access the specified station number (grdc_num) for
+        # calculation of objective function. Each entry in `grdcs` list has this structure,
+        # namely, grdc_id, run_directory, years and warmup. Iterating on this list we can
+        # change the parameters of each simulation and calculate the objective function of
+        # each grdc station. We also extract the run directories and store it in `self.run_dirs`
+        # for ease of use, for example when running the simulations of mpr and htessel.
+        #
+        GRDC = namedtuple('GRDC',
+                  ['grdc_id',
+                   'run_dir',
+                   'year_begin',
+                   'year_end',
+                   'warmup'])
+        training = self.control_file.training
+        self.grdcs = []
+        for k in training.keys():
+            basin_id, grdc_id = blut.get_ids(k)
+            year_begin = training[k]['year_begin']
+            year_end = training[k]['year_end']
+            warmup = training[k]['warmup']
+            #
+            if grdc_id is None:
+                assert basin_id == k
+                assert len(training[k]['grdc_ids']) == 1,  'Multi-station is not supported'
+                grdc_id = str(training[k]['grdc_ids'][0])
+                run_dir = f'basin_{basin_id}'
             else:
-                self.run_ids = [bid]
-                self.run_dirs = [f"basin_{bid}"]
-                self.grdc = self.control_file.training[bid]['grdc_ids']
-                for ii, _ in enumerate(self.grdc):
-                    self.grdc[ii] = str(self.grdc[ii])
-                self.basins = [bid]
-        else:
-            self.run_ids = cf_key_ids
-            self.run_dirs = [f"station_{ii}" for ii in cf_key_ids]
-            self.grdc   = []
-            self.basins = []
-            for basin in self.run_ids:
-                self.grdc.extend(self.control_file.training[basin]['grdc_ids'])
-                self.basins.extend([basin for i in range(len(self.control_file.training[basin]['grdc_ids']))])
-            for ii, _ in enumerate(self.grdc):
-                self.grdc[ii] = str(self.grdc[ii])
+                grdc_id = grdc_id
+                run_dir = f'station_{grdc_id}'
+            self.grdcs.append(
+                GRDC(grdc_id,
+                     run_dir,
+                     year_begin,
+                     year_end,
+                     warmup))
+        self.run_dirs = get_run_dirs(self.grdcs)
         # prepare
         self.create_run_directory(self.control_file_path)
         self.nthreads = nthreads
         self.rm_sim_folder = clean_completed
 
-    def create_run_directory(self, path):
+    def create_run_directory(self, root_path):
         if not self.restart:
-            assert not os.path.isdir(f"{path}/runs"), f"runs directory exists."        
-            Path(f'{path}/runs').mkdir(exist_ok=True)
+            assert not os.path.isdir(f"{root_path}/runs"), f"runs directory exists."
+            Path(f'{root_path}/runs').mkdir(exist_ok=True)
 
-    def create_param_run_directory(self, path):
+    def create_param_run_directory(self, root_path):
         # get all the simulation direcotories
-        sim_folders = [f'{path}/runs/{x}' for x in get_dir(f'{path}/runs') if x.find('sim_') != -1]    
+        sim_folders = [f'{root_path}/runs/{x}' for x in get_dir(f'{root_path}/runs') if x.find('sim_') != -1]
 
         if sim_folders == []:
             sim_number = 1
@@ -220,8 +270,8 @@ class spot_setup_htcal(object):
             # get the last sim folder
             sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders]) + 1
 
-        Path(f'{path}/runs/sim_{sim_number}').mkdir()
-        return f'{path}/runs/sim_{sim_number}'
+        Path(f'{root_path}/runs/sim_{sim_number}').mkdir()
+        return f'{root_path}/runs/sim_{sim_number}'
 
         
     def parameters(self):
@@ -236,22 +286,16 @@ class spot_setup_htcal(object):
         sim_path = self.create_param_run_directory(self.control_file_path)
         write_params_file(sim_path, x)
         create_basin_run_directory(self.control_file_path, sim_path, self.run_dirs)
-        modify_basin_with_new_params(sim_path, self.run_ids, self.run_dirs, self.control_file, x)
-        #
-        #
-        # run programs. Only run htessel if
-        #                         1- No penalty exists in the control
-        #                         2- When penalty exist, run when no penalty term is activated
-        for run_dir in self.run_dirs:
-            print(f'running mpr in {run_dir} in {sim_path} with updated parameters ...')
-            parent_folder = os.getcwd()
-            os.chdir(f"{sim_path}/{run_dir}")
-            #
-            p = Popen('./run_mpr', shell=True,
-                      stdout=open('output_mpr', 'w'),
-                      stderr=open('error_mpr', 'w')).communicate()
-            os.chdir(parent_folder)
-        #
+        modify_basin_with_new_params(sim_path, self.grdcs, x)
+
+        paths = [f'{sim_path}/{run_dir}' for run_dir in self.run_dirs]
+
+        print('running mpr jobs with CommExec ...')
+        print(paths)
+        # run mpr jobs
+        with futures.MPIPoolExecutor() as executor:
+            _ = executor.map(run_mpr_jobs, paths)
+        #  check the penalties for each variable specified in `penalty` dict
         run_htessel = False
         try:
             penalty_errors = calculate_penalty_error(self.run_dirs,
@@ -259,50 +303,37 @@ class spot_setup_htcal(object):
                                                      sim_path)
             if not np.isclose(np.array([v for _, v in penalty_errors.items()]).sum(),
                               0.0, atol=1e-8):
-                print('mprin thresholds violated, skipping htessel run')
-                print(penalty_errors)
                 for run_dir in self.run_dirs:
                     shutil.rmtree(f'{sim_path}/{run_dir}/run')
+                print('mprin thresholds violated, skipping htessel run')
+                print(penalty_errors)
                 return penalty_errors
             else:
                 run_htessel = True
         except AttributeError:
             print('no penalty formulation is found, running htessel')
             run_htessel = True
+        # run programs. Only run htessel if
+        #                         1- No penalty exists in the control
+        #                         2- When penalty exist, run when no penalty term is activated
+        # run htessel jobs
         if run_htessel:
-            for run_dir in self.run_dirs:
-                print(f'running htessel in {run_dir} in {sim_path} with updated parameters ...')
-                parent_folder = os.getcwd()
-                os.chdir(f"{sim_path}/{run_dir}")
-                #
-                my_env = os.environ.copy()
-                my_env['OMP_NUM_THREADS'] = str(self.nthreads)
-                p = Popen('./run_htessel', shell=True,
-                          stdout=open('output_htessel', 'w'),
-                          stderr=open('error_htessel', 'w'), env=my_env).communicate()
-                os.chdir(parent_folder)
-        #
+            with futures.MPICommExecutor() as executor:
+                _ = executor.map(run_htessel_jobs, paths)
             results = {}
-            for ii, run_id in enumerate(self.run_ids):
-                run_dir = self.run_dirs[ii]
-                # print(f'Getting rivout for basin: {basin_nr}')
-                year_range = range(self.control_file.training[run_id]['year_begin'],
-                                   self.control_file.training[run_id]['year_end'] + 1)
-                # for grdc_id in self.control_file.training[basin_nr]['grdc_ids']:
-                # TODO: HERE WE NEED A FIX, ELSE NO MULTIBASIN WILL RUN
-                for grdc_id in self.grdc:
-                    # print(f'    grdc_no: {grdc_id}')
-                    rivouts = []
-                    for year in year_range:
-                        rivouts.append(get_river_output(nc.Dataset(f"{sim_path}/{run_dir}/run/{year}/o_rivout_cmf.nc"), grdc_id))
-                    # print(rivouts)
-                    results[str(grdc_id)] = rivouts
-            # concat the restuls before sending back
-            # print(results)
-            return {
-                str(grdc_id): pd.concat(results[str(grdc_id)]).reset_index() for grdc_id in self.grdc
-            }
-            
+            for grdc in self.grdcs:
+                year_range = range(grdc.year_begin, grdc.year_end + 1)
+                rivouts = []
+                for year in year_range:
+                    rivouts.append(
+                        get_river_output(nc.Dataset(f"{sim_path}/{grdc.run_dir}/run/{year}/o_rivout_cmf.nc"),
+                                         grdc.grdc_id)
+                    )
+                results[str(grdc.grdc_id)] = rivouts
+            # concatenante the restuls before sending back
+            # import pdb; pdb.set_trace()
+            return {k: pd.concat(v).reset_index() for k, v in results.items()}
+
 
     def objectivefunction(self, simulation, evaluation):
         # get a key from the simulation
@@ -317,14 +348,12 @@ class spot_setup_htcal(object):
                 remove_all_but_last_sim(f"{self.control_file_path}/runs")
             return -15 + sum(list(simulation.values()))
         else:
-            sim_folders = [f'{self.control_file_path}/runs/{x}' \
-                           for x in get_dir(f'{self.control_file_path}/runs') if x.find('sim_') != -1]
-            sim_number = max([int(re.findall(r".+sim_(\d+)", x)[0]) for x in sim_folders])
+            #
             kges = {}
-            for ii, grdc_id in enumerate(self.grdc):
+            for grdc in self.grdcs:
+                grdc_id = grdc.grdc_id
+                warmup = grdc.warmup
                 obs, mod = get_discharge(evaluation[grdc_id], simulation[grdc_id])
-                warmup = self.control_file.training[self.run_ids[ii]]['warmup']
-                # import pdb; pdb.set_trace()
                 kges[grdc_id] = kge(obs[warmup : ], mod[warmup : ], components=True)
             # compute all the components of kge and write them into log but only return the kge itself
             kge_means = np.array(list(kges.values())).mean(axis=0)
@@ -340,7 +369,5 @@ class spot_setup_htcal(object):
 
     def evaluation(self):
         return {
-            grdc_id : get_grdc_discharge(grdc_id) for grdc_id in self.grdc
+            grdc.grdc_id : get_grdc_discharge(grdc.grdc_id) for grdc in self.grdcs
         }
-
-# setup = spot_setup_htcal("/p/home/jusers/yadegarivarnamkhasti1/juwels/project/build/optim/self.control_file.py")
