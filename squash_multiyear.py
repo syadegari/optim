@@ -145,11 +145,11 @@ def main():
     parser.add_argument('-c', '--control-file', help="control file")
     parser.add_argument('-l', '--basin-lut', default='basin_lut.org', help="")
     parser.add_argument('-s', '--squashed-forcings', default='squashed_forcings', help="")
-    parser.add_argument('-v', '--verbose', nargs='?', const=False, default=True)
+    parser.add_argument('-q', '--quiet', nargs='?', const=False, default=True)
     args = parser.parse_args()
 
     # retrieve path and sanity check
-    verbose = args.verbose
+    verbose = args.quiet
     squashed_forcings = args.squashed_forcings
     control_file_path, _ = os.path.splitext(args.control_file)
     assert os.path.isfile(f"{control_file_path}.py"),\
