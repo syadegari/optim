@@ -66,9 +66,9 @@ def htessel_run_cmd(year_begin, year_end):
     run_cmd = '''
 echo "running squashed htessel between {year_begin} - {year_end}"
 cd run/{year_begin}
-
+#
 ./htessel >> ../../htessel.log  2>&1
-echo "done"
+#
 tail -n100 log_CaMa.txt > log_CaMa_clipped.txt
 rm log_CaMa.txt && mv log_CaMa_clipped.txt log_CaMa.txt
 echo "htessel done"
