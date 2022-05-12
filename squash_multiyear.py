@@ -7,6 +7,8 @@ from collections import namedtuple
 import shutil
 import subprocess as sp
 import multiprocessing as mp
+import pprint
+import copy
 
 from htessel_namelist import HTESSELNameList
 from cama_namelist import CamaNameList
@@ -150,6 +152,33 @@ def replace_htessel_exec(htessel_exec_name):
     )
 
 
+def update_control_file(cf, path_root):
+    """change the year range in control file and save it with '_squash.py' """
+
+    # change year_end for each basin/station
+    training = copy.deepcopy(getattr(cf, 'training'))
+    for k, v in training.items():
+        training[k]['year_end'] = v['year_begin']
+
+    names = [name for name in dir(cf) if not name.startswith('__')]
+
+    with open(f'{path_root}/control_file_squash.py', 'w') as f:
+        pp = pprint.PrettyPrinter(indent=4, stream=f)
+        #
+        # write back the modified training dictionary
+        #
+        print('training= \\', file=f)
+        pp.pprint(training)
+        print('', file=f)
+        #
+        # write back all variables as are except training
+        #
+        for name in list(set(names) - {'training'}):
+            print(f'{name}= \\', file=f)
+            pp.pprint(getattr(cf, name))
+            print('', file=f)
+
+
 def print_if(msg, flag:bool):
     if flag:
         print(msg)
@@ -202,6 +231,9 @@ def main():
 
     path_root, _ = ntpath.split(cf.__file__)
     path_root_abs = os.path.abspath(path_root)
+
+    print('creating a new control flie for squashed runs')
+    update_control_file(cf, path_root)
 
     grdcs = get_info(cf, basin_lut(args.basin_lut))
     run_dirs = {grdc.run_dir: (grdc.year_begin, grdc.year_end) for grdc in grdcs}
