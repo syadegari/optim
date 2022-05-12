@@ -263,6 +263,11 @@ def main():
                  cwd=path_root).communicate()
         # TODO: make a function from this part
         with Path(f'{path_root}/{squashed_forcings}/{run_dir}'):
+            #
+            # For each year in `run` directory copy the forcing
+            # to local `squash_forcings` directory.
+            # Forcing path is read from copied input files.
+            #
             with Path('run'):
                 for year in range(yb, ye + 1):
                     with Path(year):
@@ -271,7 +276,7 @@ def main():
                             print_if(f'copy forcing {forcing_name}: {ht_file[forcing_kw]}', verbose)
                             shutil.copy(ht_file[forcing_kw], '../..')
             #
-            #
+            # This block merges copied forcings of multi-year
             #
             merge_cmd_list = []
             merged_names = []
@@ -292,8 +297,8 @@ def main():
                     merge_forcing, merge_cmd_list
                 )
             #
+            # Now that merge is done, remove everything except the merged files.
             #
-            # remove everything except the merged files
             all_except_merged = [f for f in os.listdir() if f not in merged_names]
             for f in all_except_merged:
                 if os.path.isdir(f):
