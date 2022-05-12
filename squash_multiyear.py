@@ -141,11 +141,22 @@ def print_if(msg, flag:bool):
 
 def main():
     # argument parsing
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser.add_argument('-c', '--control-file', help="control file")
-    parser.add_argument('-l', '--basin-lut', default='basin_lut.org', help="")
-    parser.add_argument('-s', '--squashed-forcings', default='squashed_forcings', help="")
-    parser.add_argument('-q', '--quiet', nargs='?', const=False, default=True)
+    parser.add_argument('-l', '--basin-lut',
+                        default='basin_lut.org',
+                        help="Path to (including the fliename) 'basin_lut.org'"
+                        )
+    parser.add_argument('-s', '--squashed-forcings',
+                        default='squashed_forcings',
+                        help="Name of the folder where squashed forcings are placed."
+                        )
+    parser.add_argument('-q', '--quiet',
+                        nargs='?', const=False, default=True,
+                        help='Suppresses the information printed'
+                        )
     args = parser.parse_args()
 
     # retrieve path and sanity check
