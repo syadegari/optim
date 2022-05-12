@@ -94,6 +94,12 @@ def merge_forcing(merge_str):
                 stderr=sp.PIPE).communicate()
 
 
+def disable_wbcheck_param():
+    return {
+        'LEWBCHECK': False
+    }
+
+
 def htessel_params(n_time_steps:int, year_begin:int, year_end:int):
     return {
     # start or restart
@@ -157,6 +163,10 @@ def main():
                         nargs='?', const=False, default=True,
                         help='Suppresses the information printed'
                         )
+    parser.add_argument('--disable-wbcheck',
+                    nargs='?', const=True, default=False,
+                    help='Disables water balance check'
+                    )
     args = parser.parse_args()
 
     # retrieve path and sanity check
@@ -280,6 +290,9 @@ def main():
                     n_time = nc_file.variables['time'].shape[0]
                 update_input_file(ht_file,
                                   **htessel_params(n_time, yb, ye))
+                if args.disable_wbcheck:
+                    update_input_file(ht_file,
+                                      **disable_wbcheck_param())
                 update_input_file(cama_file,
                                   **cama_params(yb, ye))
                 ht_file.read_only, cama_file.read_only = True, True
