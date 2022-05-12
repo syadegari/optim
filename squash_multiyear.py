@@ -7,6 +7,8 @@ from collections import namedtuple
 import shutil
 import subprocess as sp
 import multiprocessing as mp
+import pprint
+import copy
 
 from htessel_namelist import HTESSELNameList
 from cama_namelist import CamaNameList
@@ -94,6 +96,12 @@ def merge_forcing(merge_str):
                 stderr=sp.PIPE).communicate()
 
 
+def disable_wbcheck_param():
+    return {
+        'LEWBCHECK': False
+    }
+
+
 def htessel_params(n_time_steps:int, year_begin:int, year_end:int):
     return {
     # start or restart
@@ -135,17 +143,74 @@ def cama_params(year_begin:int, year_end:int):
     }
 
 
+def replace_htessel_exec(htessel_exec_name):
+    htcal_paths = htcal_path.get_paths()
+    #
+    shutil.copy(
+        f'{htcal_paths.path_execs}/{htessel_exec_name}'  ,
+        'htessel'
+    )
+
+
+def update_control_file(cf, path_root):
+    """change the year range in control file and save it with '_squash.py' """
+
+    # change year_end for each basin/station
+    training = copy.deepcopy(getattr(cf, 'training'))
+    for k, v in training.items():
+        training[k]['year_end'] = v['year_begin']
+
+    names = [name for name in dir(cf) if not name.startswith('__')]
+
+    with open(f'{path_root}/control_file_squash.py', 'w') as f:
+        pp = pprint.PrettyPrinter(indent=4, stream=f)
+        #
+        # write back the modified training dictionary
+        #
+        print('training= \\', file=f)
+        pp.pprint(training)
+        print('', file=f)
+        #
+        # write back all variables as are except training
+        #
+        for name in list(set(names) - {'training'}):
+            print(f'{name}= \\', file=f)
+            pp.pprint(getattr(cf, name))
+            print('', file=f)
+
+
 def print_if(msg, flag:bool):
     if flag:
         print(msg)
 
 def main():
     # argument parsing
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser.add_argument('-c', '--control-file', help="control file")
-    parser.add_argument('-l', '--basin-lut', default='basin_lut.org', help="")
-    parser.add_argument('-s', '--squashed-forcings', default='squashed_forcings', help="")
-    parser.add_argument('-q', '--quiet', nargs='?', const=False, default=True)
+    parser.add_argument('-l', '--basin-lut',
+                        default='basin_lut.org',
+                        help="Path to (including the fliename) 'basin_lut.org'"
+                        )
+    parser.add_argument('-s', '--squashed-forcings',
+                        default='squashed_forcings',
+                        help="Name of the folder where squashed forcings are placed."
+                        )
+    parser.add_argument('-q', '--quiet',
+                        nargs='?', const=False, default=True,
+                        help='Suppresses the information printed'
+                        )
+    parser.add_argument('--disable-wbcheck',
+                    nargs='?', const=True, default=False,
+                    help='Disables water balance check'
+                    )
+    parser.add_argument('--htessel-exec',
+                    nargs='?', const="", default="default",
+                    help='Replaces with an executable other than the default.\n \
+                    Executable should be available in exec folder.\n \
+                    With "default" uses the executable that is defined in htcal_path.'
+                    )
     args = parser.parse_args()
 
     # retrieve path and sanity check
@@ -166,6 +231,9 @@ def main():
 
     path_root, _ = ntpath.split(cf.__file__)
     path_root_abs = os.path.abspath(path_root)
+
+    print('creating a new control flie for squashed runs')
+    update_control_file(cf, path_root)
 
     grdcs = get_info(cf, basin_lut(args.basin_lut))
     run_dirs = {grdc.run_dir: (grdc.year_begin, grdc.year_end) for grdc in grdcs}
@@ -248,12 +316,14 @@ def main():
         #  4- We update the `run_htessel` for multiyear run.
         #
         with Path(f'{path_root}/default_sim/{run_dir}/run'):
+
             # remove all yrs except the first year
             first_year = yb
             rest_years = range(yb + 1, ye + 1)
             for year in rest_years:
                 print_if(f'removing year {year}', verbose)
                 shutil.rmtree(str(year))
+
             with Path(str(first_year)):
                 ht_file = HTESSELNameList(nml.read('input'))
                 cama_file = CamaNameList(nml.read('input_cmf.nam'))
@@ -267,13 +337,21 @@ def main():
                 path_merged_output = ht_file[forcing_names['LWdown']]
                 with nc.Dataset(path_merged_output) as nc_file:
                     n_time = nc_file.variables['time'].shape[0]
+                #
                 update_input_file(ht_file,
                                   **htessel_params(n_time, yb, ye))
+                if args.disable_wbcheck:
+                    update_input_file(ht_file,
+                                      **disable_wbcheck_param())
                 update_input_file(cama_file,
                                   **cama_params(yb, ye))
+                #
                 ht_file.read_only, cama_file.read_only = True, True
                 ht_file.write()
                 cama_file.write()
+                # replace the exec if specified
+                if args.htessel_exec != 'default':
+                    replace_htessel_exec(args.htessel_exec)
             with open('../run_htessel', 'w') as f:
                 print_if('Replace HTESSEL run script', verbose)
                 f.write(
