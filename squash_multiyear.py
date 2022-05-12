@@ -316,12 +316,14 @@ def main():
         #  4- We update the `run_htessel` for multiyear run.
         #
         with Path(f'{path_root}/default_sim/{run_dir}/run'):
+
             # remove all yrs except the first year
             first_year = yb
             rest_years = range(yb + 1, ye + 1)
             for year in rest_years:
                 print_if(f'removing year {year}', verbose)
                 shutil.rmtree(str(year))
+
             with Path(str(first_year)):
                 ht_file = HTESSELNameList(nml.read('input'))
                 cama_file = CamaNameList(nml.read('input_cmf.nam'))
@@ -335,6 +337,7 @@ def main():
                 path_merged_output = ht_file[forcing_names['LWdown']]
                 with nc.Dataset(path_merged_output) as nc_file:
                     n_time = nc_file.variables['time'].shape[0]
+                #
                 update_input_file(ht_file,
                                   **htessel_params(n_time, yb, ye))
                 if args.disable_wbcheck:
@@ -342,6 +345,7 @@ def main():
                                       **disable_wbcheck_param())
                 update_input_file(cama_file,
                                   **cama_params(yb, ye))
+                #
                 ht_file.read_only, cama_file.read_only = True, True
                 ht_file.write()
                 cama_file.write()
