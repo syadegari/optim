@@ -141,6 +141,15 @@ def cama_params(year_begin:int, year_end:int):
     }
 
 
+def replace_htessel_exec(htessel_exec_name):
+    htcal_paths = htcal_path.get_paths()
+    #
+    shutil.copy(
+        f'{htcal_paths.path_execs}/{htessel_exec_name}'  ,
+        'htessel'
+    )
+
+
 def print_if(msg, flag:bool):
     if flag:
         print(msg)
@@ -166,6 +175,12 @@ def main():
     parser.add_argument('--disable-wbcheck',
                     nargs='?', const=True, default=False,
                     help='Disables water balance check'
+                    )
+    parser.add_argument('--htessel-exec',
+                    nargs='?', const="", default="default",
+                    help='Replaces with an executable other than the default.\n \
+                    Executable should be available in exec folder.\n \
+                    With "default" uses the executable that is defined in htcal_path.'
                     )
     args = parser.parse_args()
 
@@ -298,6 +313,9 @@ def main():
                 ht_file.read_only, cama_file.read_only = True, True
                 ht_file.write()
                 cama_file.write()
+                # replace the exec if specified
+                if args.htessel_exec != 'default':
+                    replace_htessel_exec(args.htessel_exec)
             with open('../run_htessel', 'w') as f:
                 print_if('Replace HTESSEL run script', verbose)
                 f.write(
