@@ -8,6 +8,7 @@ import pathlib
 import sys
 sys.path.insert(0, f'{pathlib.Path(__file__).parent.resolve()}/spotpy/')
 from spotpy.algorithms import dds
+sys.path.insert(0, f'{pathlib.Path(__file__).parent.resolve()}/')
 from spotpy_htcal_setup import spot_setup_htcal
 import numpy as np
 
