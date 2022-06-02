@@ -1,3 +1,7 @@
+'''
+This module should be kept here for path-related reasons
+'''
+
 import os
 from path import Path
 import re
@@ -7,6 +11,7 @@ from typing import List, Any, Tuple
 import ntpath
 import sys
 import copy
+import pathlib
 
 
 
@@ -139,3 +144,12 @@ def import_control_file(control_file:str) -> Tuple[Any, str, str]:
     sys.path = sys_path_before_insert
     
     return control_file, cf_path, cf_file
+
+
+def get_station_number(station:str) -> str:
+    return re.match('station_(\d+)', station)[1]
+
+
+def get_optim_path() -> str:
+    '''gets absolute path of the optim package'''
+    return pathlib.Path(__file__).parent.resolve()
