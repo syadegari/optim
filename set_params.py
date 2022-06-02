@@ -8,8 +8,8 @@ import os
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-f', '--file')
-parser.add_argument('-j', '--json-file')
+parser.add_argument('-f', '--file', help='Absolute path to nml file')
+parser.add_argument('-j', '--json-file', help='Absolute path to param file')
 args = parser.parse_args()
 
 file_arg = args.file
