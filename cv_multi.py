@@ -41,7 +41,7 @@ def parse_arguments():
                         )
     parser.add_argument('--squash-sim',
                     nargs='?', const=True, default=False,
-                    help='Disables water balance check'
+                    help='Squash multiyear simulation'
                     )
     parser.add_argument('--disable-wbcheck',
                     nargs='?', const=True, default=False,
