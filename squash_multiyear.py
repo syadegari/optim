@@ -75,6 +75,9 @@ tail -n100 log_CaMa.txt > log_CaMa_clipped.txt
 rm log_CaMa.txt && mv log_CaMa_clipped.txt log_CaMa.txt
 echo "htessel done"
 cd ../..
+
+tail -n100 htessel.log > htessel_clipped.log
+rm -f htessel.log && mv htessel_clipped.log htessel.log
 '''
     res = htcal_path.runcommand(has_LAI_param=False)
     #
@@ -292,7 +295,7 @@ def main():
                 merged_names.append(merge_output)
                 print_if(f'Merge forcing {forcing_name} for yrs {yb} ... {ye}', verbose)
             #
-            with mp.Pool(8) as pool:
+            with mp.Pool(min(8, mp.cpu_count())) as pool:
                 pool.map(
                     merge_forcing, merge_cmd_list
                 )
