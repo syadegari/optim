@@ -124,7 +124,6 @@ def modify_params(htessel, mpr, params_dict):
 def special_treatments(nmlist):
     if nmlist.tag == 'input':
         nmlist['rez0ice'] = int(nmlist['rez0ice'])
-    return nmlist
 
 
 def remove_all_but_last_sim(run_folder):
