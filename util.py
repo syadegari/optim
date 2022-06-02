@@ -1,7 +1,20 @@
+'''
+This module should be kept here for path-related reasons
+'''
+
 import os
 from path import Path
 import re
 from functools import partial, reduce
+from dataclasses import dataclass
+from typing import List, Any, Tuple
+import ntpath
+import sys
+import copy
+import pathlib
+
+
+
 
 def compose(*functions):
     def compose2(f, g):
@@ -56,7 +69,7 @@ def check_htessel_multiyear_finished(path_to_sim) -> bool:
                 yr_files = os.listdir(yr)
                 if not 'o_rivout_cmf.nc' in yr_files: return False
         return True
-    
+
 
 def check_job_multiyear_finished(path_to_sim: str) -> bool:
     return check_mpr_finished(path_to_sim) and check_htessel_multiyear_finished(path_to_sim)
@@ -88,7 +101,7 @@ def warn_after_first_call(msg):
         return g
     return f
 
-from dataclasses import dataclass
+
 @dataclass
 class bcolors:
     '''https://stackoverflow.com/questions/287871/how-to-print-colored-text-in-python'''
@@ -100,3 +113,43 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+
+def get_first_true(true_list:List[bool],
+                    obj_list:List[Any]) -> Any:
+    return next(pair for pair in zip(true_list, obj_list) if pair[0])[1]
+
+
+def import_control_file(control_file:str) -> Tuple[Any, str, str]:
+    '''
+    control_file: path to control file including the name of the control file
+    returns:
+        control_file: module of control file
+        cf_path: path to control file not including the file
+        cf_file: name of the control file without extention
+        
+    
+    cf, cf_path, cf_name = import_control_file(control_file_path)
+    '''
+    control_file_path, _ = os.path.splitext(control_file)
+    
+    assert os.path.isfile(f"{control_file_path}.py"),\
+    f"Control file {control_file_path}.py was not found"
+    
+    cf_path, cf_file = ntpath.split(control_file_path)
+    
+    sys_path_before_insert = copy.deepcopy(sys.path)
+    sys.path.insert(0, cf_path)
+    control_file = __import__(cf_file)
+    sys.path = sys_path_before_insert
+    
+    return control_file, cf_path, cf_file
+
+
+def get_station_number(station:str) -> str:
+    return re.match('station_(\d+)', station)[1]
+
+
+def get_optim_path() -> str:
+    '''gets absolute path of the optim package'''
+    return pathlib.Path(__file__).parent.resolve()
