@@ -1,31 +1,9 @@
-
-Prototype optimization routine using spotpy package
-
-* Requirements
-  
 * How to run
 ** setup the requred python venv:
 #+BEGIN_SRC sh
   python3 -m pip install -r requirements.txt
 #+END_SRC
  
-* Todos
-** TODO make sure that the reference time of the forcings is equal among all basins (i.e. th 31.12.LASTYEAR 18:00 h)
-** DONE Complete the simulation, objectivefunction and evaluation routines for a multi-basin setup
-** TODO enable restart option
-** TODO enable csv report from spotpy
-** TODO add parameter constraints option
-** TODO Move the paths from control file to a central location
-** TODO check the duration for valid grdc measures.
-** TODO Regenerate the default_sim folder at the beginning of the optimization
-   - Has to be called from driver.py
-   - Maybe make a function out of prepare_domain so we can call it either via cmdline or inside python
-** TODO prepost: check if the specified data period has enough grdc data for kge calculation (abort or warn)
-
-** TODO Add submission script
-   - both juwels and eve work with slurm
-   - for ecmwf use qsub
-** DONE Add all the paths to htcal_path (for eve, juwels and ecmwf). Separate files for each cluster.
 * basins filtering for optimization
   these basins have very little data in grdc (between 1985 ~ 2014). Dot not use them for optimization.
   basin name     valid data points (days)
@@ -43,33 +21,4 @@ Prototype optimization routine using spotpy package
   5821           1410
   6702           0
   6134           1364
-* Misc notes
-** Some overall notes on what is used and how things are organized for development only
-
-   Repositories:
-   mprpy
-   mpr 
-   htessel
-   ecfpy
-
-   Data:
-   forcing
-   static
-   GRDC
-   soilgrid
-
-
-   default_sim/{basins}
-   iter_1/{basins}
-   iter_2/{basins}
-
-   mpr -> symlink
-   mpr.nml -> symlink
-   master1s -> symlink
-   mpr_global -> copy
-   input -> copy
-   input_cmf -> copy
-   soil params -> symlink
-
-   forcings -> path in the input
 
