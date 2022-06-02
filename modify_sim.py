@@ -1,6 +1,7 @@
 import f90nml as nml
 from typing import Any, List
 import os
+import re
 
 from htessel_namelist import HTESSELNameList
 from mpr_namelist import MPRNameList
@@ -10,7 +11,7 @@ from util import get_first_true
 
 
 def _get_year_range(directory:str) -> List[int]:
-    return [s for s in os.listdir(directory) if re.match('^\d{4}$', s)]
+    return [int(s) for s in os.listdir(directory) if re.match('^\d{4}$', s)]
 
 
 def _which_namelist(namelists:List[AbstractNameList],
@@ -44,7 +45,7 @@ def _special_treatments(ht_namelist:HTESSELNameList) -> None:
 def modify_sim_param(params:dict):
     '''
     ├── default_sim/sim
-    │   ├── basin/station_3269   <= we are here
+    │   ├── basin/station_3269   <= we must be here in the caller
     │   │   ├── mpr
     │   │   └── run
     │   │       ├── 1999
@@ -56,11 +57,11 @@ def modify_sim_param(params:dict):
     htessel_inputs = [HTESSELNameList(nml.read(f"run/{year}/input")) \
                       for year in year_range]
     mpr = MPRNameList(nml.read("mpr/mpr_global_parameter.nml"))
-    for ht_input in htessel_inputs:
+    for ht_input, year in zip(htessel_inputs, year_range):
         ht_input.read_only, mpr.read_only = False, False
         _modify_params([ht_input, mpr], params)
         _special_treatments(ht_input)
         ht_input.read_only, mpr.read_only = True, True
         # write the changes
-        ht_input.write()
-        mpr.write()
+        ht_input.write(f'./run/{year}')
+        mpr.write('./mpr')
