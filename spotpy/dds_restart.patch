@@ -1,0 +1,60 @@
+[1mdiff --git a/spotpy/algorithms/dds.py b/spotpy/algorithms/dds.py[m
+[1mindex 1cd368b..fc2c542 100644[m
+[1m--- a/spotpy/algorithms/dds.py[m
+[1m+++ b/spotpy/algorithms/dds.py[m
+[36m@@ -224,15 +224,15 @@[m [mclass dds(_algorithm):[m
+         self.np_random = f_rand[m
+         self.dds_generator.np_random = f_rand[m
+ [m
+[31m-    def get_next_x_curr(self):[m
+[32m+[m[32m    def get_next_x_curr(self, init_iter_num):[m
+         """[m
+         Fake a generator to run self.repeat to use multiprocessing[m
+         """[m
+         # We need to shift position and length of the sampling process[m
+[31m-        for rep in range(self.generator_repetitions):[m
+[32m+[m[32m        for rep in range(init_iter_num, self.generator_repetitions):[m
+             yield rep, self.calculate_next_s_test(self.params_max, rep, self.generator_repetitions, self.r)[m
+ [m
+[31m-    def sample(self, repetitions, trials=1, x_initial=np.array([])):[m
+[32m+[m[32m    def sample(self, repetitions, trials=1, x_initial=np.array([]), init_iter_num=0):[m
+         """[m
+         Samples from the DDS Algorithm.[m
+ [m
+[36m@@ -302,8 +302,9 @@[m [mclass dds(_algorithm):[m
+             # important to set this field `generator_repetitions` so that[m
+             # method `get_next_s_test` can generate exact parameters[m
+             self.generator_repetitions = repetions_left[m
+[32m+[m[32m            print('repitition left:', self.generator_repetitions)[m
+             self.params_max = params_max[m
+[31m-            for rep, x_curr, simulations in self.repeat(self.get_next_x_curr()):[m
+[32m+[m[32m            for rep, x_curr, simulations in self.repeat(self.get_next_x_curr(init_iter_num)):[m
+ [m
+                 like = self.postprocessing(rep, x_curr, simulations, chains=trial)[m
+                 if like > objectivefunction_max:[m
+[36m@@ -388,7 +389,9 @@[m [mclass dds(_algorithm):[m
+         randompar = self.np_random.rand(amount_params)[m
+         probability_neighborhood = 1.0 - np.log(rep + 1) / np.log(rep_limit)[m
+         dvn_count = 0  # counter for how many decision variables vary in neighbour[m
+[31m-[m
+[32m+[m[32m        #[m
+[32m+[m[32m        print('rep, rep_limit and probability are:', rep, rep_limit, f'{probability_neighborhood:.4e}')[m
+[32m+[m[32m        #[m
+         for j in range(amount_params):[m
+             if randompar[j] < probability_neighborhood:  # then j th DV selected to vary in neighbour[m
+                 dvn_count = dvn_count + 1[m
+[1mdiff --git a/spotpy/parameter.py b/spotpy/parameter.py[m
+[1mindex c786172..d94682b 100644[m
+[1m--- a/spotpy/parameter.py[m
+[1m+++ b/spotpy/parameter.py[m
+[36m@@ -196,8 +196,8 @@[m [mclass Base(object):[m
+         if self.rndfunc:[m
+             # Get the standard arguments for the parameter or create them[m
+             param_args = arghelper.attributes(['step', 'optguess', 'minbound', 'maxbound'], as_dict=True)[m
+[31m-            # Draw one sample of size 1000[m
+[31m-            sample = self(size=1000)[m
+[32m+[m[32m            # Draw one sample of size 1000000[m
+[32m+[m[32m            sample = self(size=1000000)[m
+             self.step = param_args.get('step', _round_sig(np.percentile(sample, 50) - np.percentile(sample, 40)))[m
+             self.optguess = param_args.get('optguess', _round_sig(np.median(sample)))[m
+             self.minbound = param_args.get('minbound', _round_sig(np.min(sample)))[m
