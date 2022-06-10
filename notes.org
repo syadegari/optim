@@ -1,9 +1,3 @@
-* How to run
-** setup the requred python venv:
-#+BEGIN_SRC sh
-  python3 -m pip install -r requirements.txt
-#+END_SRC
- 
 * basins filtering for optimization
   these basins have very little data in grdc (between 1985 ~ 2014). Dot not use them for optimization.
   basin name     valid data points (days)
