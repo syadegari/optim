@@ -100,14 +100,38 @@ module load NCO
         elif cluster_name == 'ecmwf':
             header_htessel = '''#!/bin/bash
 set -e
+prgenvswitchto gnu
+module load fcm
+module load gcc/6.3.0
+module load eccodes
+module load netcdf4/4.6.2
+module load hdf5/1.10.4
+module load szip
                 '''
             header_mpr = '''#!/bin/bash
 set -e
+prgenvswitchto gnu
+module load gcc/6.3.0
+module load netcdf4/4.6.2
+module load hdf5/1.10.4
+module load szip
+module load nco
                 '''
-
         elif cluster_name == 'juwels':
             print('not implemented yet')
         else:
+            """
+            # modules from MPR load script on ATOS
+            module load gcc/11.2.0
+            openmpi/4.1.1.1
+            netcdf4-parallel/4.7.4
+    
+            # modules from original HTESSEL load script on ATOS
+            git clone ssh://git@git.ecmwf.int/~nemk/ifs-source.git htessel
+            prgenvswitchto gnu && module load fcm gcc openmpi netcdf4-parallel hdf5 ecmwf-toolbox
+            export OSM_COMP="gnu"
+            export OSM_BUILD="opt"
+            """
             raise Error(f'cannot create script, unknown cluster: {cluster_name}')
         htessel_run = '''
 echo "running htessel ..."
