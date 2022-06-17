@@ -13,12 +13,14 @@ def get_paths():
         import htcal_path_ecmwf as htpath
     elif cluster_name == 'juwels':
         import htcal_path_juwels as htpath
+    elif cluster_name == 'atos':
+        import htcal_path_atos as htpath
     else:
         raise Error('cannot import paths, check if running')
     return htpath
 
 def get_submitheader():
-    if cluster_name == 'eve':
+    if cluster_name in ['eve', 'atos']:
         def gen_header(time, run_path, mem, nnodes, jobname):
             header = '''#!/usr/bin/bash
 #SBATCH --time={time}
@@ -117,21 +119,27 @@ module load hdf5/1.10.4
 module load szip
 module load nco
                 '''
+        elif cluster_name == 'atos':
+            header_htessel = '''#!/bin/bash
+set -e
+prgenvswitchto gnu
+module load gcc/8.4.1
+module load ecmwf-toolbox
+module load fcm
+module load netcdf4/4.7.4
+module load hdf5/1.10.6
+                '''
+            header_mpr = '''#!/bin/bash
+set -e
+prgenvswitchto gnu
+module load gcc/8.4.1
+module load netcdf4/4.7.4
+module load hdf5/1.10.6
+module load nco
+                '''
         elif cluster_name == 'juwels':
             print('not implemented yet')
         else:
-            """
-            # modules from MPR load script on ATOS
-            module load gcc/11.2.0
-            openmpi/4.1.1.1
-            netcdf4-parallel/4.7.4
-    
-            # modules from original HTESSEL load script on ATOS
-            git clone ssh://git@git.ecmwf.int/~nemk/ifs-source.git htessel
-            prgenvswitchto gnu && module load fcm gcc openmpi netcdf4-parallel hdf5 ecmwf-toolbox
-            export OSM_COMP="gnu"
-            export OSM_BUILD="opt"
-            """
             raise Error(f'cannot create script, unknown cluster: {cluster_name}')
         htessel_run = '''
 echo "running htessel ..."
