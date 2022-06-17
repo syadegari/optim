@@ -32,7 +32,7 @@ if __name__ == '__main__':
                         help='clean each completed simulation or not')
     parser.add_argument('--nthreads', dest='nthreads', nargs='?',
                         default=4, type=int,
-                        help='default number of threads for htessel')
+                        help='[DEPRECATED] default number of threads for htessel')
     args = parser.parse_args()
 
     control_file_path, _ = os.path.splitext(args.control_file)
