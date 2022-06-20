@@ -21,3 +21,4 @@ six==1.15.0
 spotpy==1.5.14
 urllib3==1.26.3
 xarray==0.16.2
+mpi4py==3.1.3
