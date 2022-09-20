@@ -96,7 +96,8 @@ def setup_mpr(cf, htpath, basin_id, grdc_id, run_path, dir_names):
             shutil.copyfile(f"{htpath.path_static}/basin_{basin_id}/surfclim",
                             f"{mpr_path}/surfclim")
     for soil_filename in ["BLDFIE_M.nc", "SNDPPT_M.nc", "CLYPPT_M.nc",
-                          "ORCDRC_M.nc", "SLTPPT_M.nc", "TEXMHT_M.nc"]:
+                          "ORCDRC_M.nc", "SLTPPT_M.nc", "TEXMHT_M.nc",
+                          "classunit.nc", "land_cover.nc", "slope.nc"]:
             os.symlink(f"{mpr_data_in_dir}/{soil_filename}", f"{mpr_path}/{soil_filename}")
 
 

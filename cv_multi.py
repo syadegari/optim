@@ -57,7 +57,7 @@ def parse_arguments():
                     )
     parser.add_argument('--calculate-kge',
                     nargs='?', const=True, default=False,
-                    help='Calculates kge'
+                    help='Calculates kge (NOT IMPLEMENTED YET!)'
                     )
     return parser.parse_args()    
 
