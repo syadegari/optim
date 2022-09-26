@@ -217,8 +217,8 @@ def get_best_param_set(res_file_lines:list, cf_params:dict) -> Tuple[float, int,
 
 def create_cv_folder(cv_folder_path:str) -> None:
     # use the folder if it exists
-    if not os.path.exists(f'{args.cv_folder_path}/CV/'):
-        os.makedirs(f'{args.cv_folder_path}/CV/',)
+    if not os.path.exists(f'{cv_folder_path}/CV/'):
+        os.makedirs(f'{cv_folder_path}/CV/',)
     # path_root_abs = os.path.abspath(path_root)
 
 
