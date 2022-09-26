@@ -43,6 +43,7 @@ def parse_arguments():
                     nargs='?', const=True, default=False,
                     help='Squash multiyear simulation'
                     )
+    # TODO: --disable-wbcheck should be available without --squash option as well
     parser.add_argument('--disable-wbcheck',
                     nargs='?', const=True, default=False,
                     help='Disables water balance check.\n \
@@ -162,6 +163,7 @@ def run_htessel(name):
 
 
 def worker_fn(cv_info:dict,
+              cv_folder: str,
               cf_address: str,
               param_set:dict,
               squash_sim:bool,
@@ -180,16 +182,17 @@ def worker_fn(cv_info:dict,
                 (include filename and extension)
     param_set: best param set from optimization
     '''
-    with Path(cv_info['station']).mkdir():
-        if DEBUG: print(f'in worker: {cv_info}')
-        create_default_sim(cv_info, cf_address)
-        modify_params(cv_info['station'], param_set)
-        if squash_sim:
-            run_squash(disable_wb_check, htessel_exec)
-        run_mpr(cv_info['station'])
-        run_htessel(cv_info['station'])
-        if calculate_kge:
-            calculate_and_write_kge()
+    with Path(cv_folder):
+        with Path(cv_info['station']).mkdir():
+            if DEBUG: print(f'in worker: {cv_info}')
+            create_default_sim(cv_info, cf_address)
+            modify_params(cv_info['station'], param_set)
+            if squash_sim:
+                run_squash(disable_wb_check, htessel_exec)
+            run_mpr(cv_info['station'])
+            run_htessel(cv_info['station'])
+            if calculate_kge:
+                calculate_and_write_kge()
 
 
 def parse_params(param_str:str, cf_params:dict) -> dict:
@@ -217,14 +220,16 @@ def get_best_param_set(res_file_lines:list, cf_params:dict) -> Tuple[float, int,
 
 def create_cv_folder(cv_folder_path:str) -> None:
     # use the folder if it exists
-    if not os.path.exists(f'{cv_folder_path}/CV/'):
-        os.makedirs(f'{cv_folder_path}/CV/',)
+    cv_folder = f'{cv_folder_path}/CV/'
+    if not os.path.exists(cv_folder):
+        os.makedirs(cv_folder)
+    return cv_folder
     # path_root_abs = os.path.abspath(path_root)
 
 
 def write_best_param_set(path_root:str,
                           cv_folder_path:str,
-                          optim_params:dict) -> None:
+                          optim_params:dict) -> dict:
     # read res.txt
     with open(f'{path_root}/runs/res.txt') as f:
         lines = f.readlines()
@@ -242,6 +247,7 @@ def write_best_param_set(path_root:str,
             f,
             indent=4
         )
+    return best_param_set
 
 
 def main():
@@ -250,7 +256,7 @@ def main():
 
     cf, path_root, cf_name = import_control_file(args.control_file)
 
-    create_cv_folder(args.cv_folder_path)
+    cv_folder_path = create_cv_folder(args.cv_folder_path)
 
     grdcs = get_info(cf, basin_lut(args.basin_lut))
     run_dirs = {grdc.run_dir: (grdc.year_begin, grdc.year_end) for grdc in grdcs}
@@ -268,27 +274,27 @@ def main():
         } for st in cv_
     ]
     #
-    write_best_param_set(path_root,
-                         args.cv_folder_path,
-                         cf.params)
+    best_param_set = write_best_param_set(path_root,
+                                          args.cv_folder_path,
+                                          cf.params)
     #
     path_worker = copy.deepcopy(sys.path)
     path_worker.insert(0, get_optim_path())
     #
-    with Path(f'{args.cv_folder_path}/CV'):
-        with futures.MPIPoolExecutor(path=path_worker) as pool:
-            pool.starmap(
-                worker_fn,
-                zip(cv_,
-                    repeat(f'{path_root}/{cf_name}.py', len(cv_)),
-                    repeat(best_param_set, len(cv_)),
-                    repeat(args.squash_sim, len(cv_)),
-                    repeat(args.disable_wbcheck, len(cv_)),
-                    repeat(args.htessel_exec, len(cv_)),
-                    repeat(args.calculate_kge, len(cv_))
-                    )
+    with futures.MPIPoolExecutor(path=path_worker) as pool:
+        pool.starmap(
+            worker_fn,
+            zip(cv_,
+                repeat(cv_folder_path, len(cv_)),
+                repeat(f'{path_root}/{cf_name}.py', len(cv_)),
+                repeat(best_param_set, len(cv_)),
+                repeat(args.squash_sim, len(cv_)),
+                repeat(args.disable_wbcheck, len(cv_)),
+                repeat(args.htessel_exec, len(cv_)),
+                repeat(args.calculate_kge, len(cv_))
             )
-    #
+        )
+            #
     if args.calculate_kge:
         gather_kge()
 
