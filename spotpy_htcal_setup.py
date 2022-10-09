@@ -323,6 +323,14 @@ class spot_setup_htcal(object):
             for grdc in self.grdcs:
                 year_range = range(grdc.year_begin, grdc.year_end + 1)
                 rivouts = []
+                # this is where we have to do try except for when htessel fails
+                #
+                # try:
+                #    for year in year_range:
+                #        ... collect the river outputs
+                # except:
+                #    return {'failed_htessel': -100} => this will be processed in objectivefunction method
+                #
                 for year in year_range:
                     rivouts.append(
                         get_river_output(nc.Dataset(f"{sim_path}/{grdc.run_dir}/run/{year}/o_rivout_cmf.nc"),
