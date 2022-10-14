@@ -332,18 +332,21 @@ class spot_setup_htcal(object):
             # except:
             #    return {'failed_htessel': -100} => this will be processed in objectivefunction method
             #
-            for grdc in self.grdcs:
-                year_range = range(grdc.year_begin, grdc.year_end + 1)
-                rivouts = []
-                for year in year_range:
-                    rivouts.append(
-                        get_river_output(nc.Dataset(f"{sim_path}/{grdc.run_dir}/run/{year}/o_rivout_cmf.nc"),
-                                         grdc.grdc_id)
-                    )
-                results[str(grdc.grdc_id)] = rivouts
-            # concatenante the restuls before sending back
-            # import pdb; pdb.set_trace()
-            return {k: pd.concat(v).reset_index() for k, v in results.items()}
+            try:
+                for grdc in self.grdcs:
+                    year_range = range(grdc.year_begin, grdc.year_end + 1)
+                    rivouts = []
+                    for year in year_range:
+                        rivouts.append(
+                            get_river_output(nc.Dataset(f"{sim_path}/{grdc.run_dir}/run/{year}/o_rivout_cmf.nc"),
+                                             grdc.grdc_id)
+                        )
+                    results[str(grdc.grdc_id)] = rivouts
+                # concatenante the restuls before sending back
+                # import pdb; pdb.set_trace()
+                return {k: pd.concat(v).reset_index() for k, v in results.items()}
+            except:
+                return {'failed_htessel': -100}
 
 
     def objectivefunction(self, simulation, evaluation):
