@@ -1,0 +1,4 @@
+* resubmit optimizations
+for f in $(ls); do echo $f; cd $f; sbatch submit_optim.sh -r; cd ..; done
+* how many jobs are running
+squeue --me -l|perl -ne 'print if /^ +\d+/'|wc -l

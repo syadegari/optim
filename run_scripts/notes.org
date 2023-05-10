@@ -1,0 +1,176 @@
+* Why we're doing this study
+- We have completed the water bucket system, both MPR and htessel modifications
+- A single optimization run with 7 basins shows a slight improvement with bucket system (The CDF is better than the one obtained from LUT). 
+- We would like to test this further by running several multibasin optimizations with and without water bucket system and compare the CDF of validation sets in both cases. 
+
+* What is studied
+** Two groups: with `water bucket system` and `without water bucket system`. These are two subfolders at the root of the directory
+** Each group: 10 optimization runs, each called set_{i} with i = (1,...,10), each with 7 basins
+   basins are randomly drawned from ma set of 153 basins, which is the same as the ones used for single basin optimization
+** DDS optimization: For each parameter 100 iterations
+** In both groups water balance is disabled
+** No penalty is used
+** branch "crash_tolerance" is used.
+
+* Specifications
+** old scheme (without bucket system) control.py
+#+BEGIN_SRC python
+  mpr_tf = 'zacharias_res_new'
+
+  validation = {}
+
+  penalty = {}
+
+  params=\
+  {   'a5': [0.5025, 1.4175, 0.96],
+      'a6': [1.3864, 2.2936, 1.84],
+      'b5': [0.003, 0.013, 0.0063],
+      'b6': [-0.1548, -0.1086, -0.1317],
+      'c5': [0.006, 0.026, 0.0125],
+      'c6': [0.0023, 0.011, 0.0067],
+      'hveg_rsm_scaling': [0.5, 2.0, 1.0],
+      'lveg_rsm_scaling': [0.5, 2.0, 1.0],
+      'mlaih_scaling': [0.8, 1.2, 1.0],
+      'mlail_scaling': [0.8, 1.2, 1.0],
+      'ralamsn': [1.692, 2.068, 1.88],
+      'ralfmaxsn': [0.765, 0.935, 0.85],
+      'ralfminsn': [0.45, 0.55, 0.5],
+      'rhominsna': [98.1, 119.9, 109.0],
+      'rkerst3': [0.9, 1.1, 1.0],
+      'rsigormax': [900.0, 1100.0, 1000.0],
+      'rsigormin': [90.0, 110.0, 100.0],
+      'rsndtoverc': [0.0162, 0.0198, 0.018],
+      'rsrdep': [0.125, 1.95, 0.5],
+      'rtf1': [272.1, 276.0, 276.0],
+      'rtf2': [268.0, 272.0, 272.0],
+      'rvinter': [0.45, 0.55, 0.5],
+      'rvlamsk_desert': [13.5, 16.5, 15.0],
+      'thetar_1': [0.01, 0.03, 0.02],
+      'thetar_4': [0.01, 0.03, 0.02],
+      'zach_thetas_1': [0.0, 1.0, 0.5],
+      'zach_thetas_2': [-0.01, 0.01, 0.0],
+      'zach_thetas_3': [-0.5, 0.5, 0.0],
+      'zach_thetas_4': [0.0, 1.0, 0.5],
+      'zach_thetas_5': [-0.01, 0.01, 0.0],
+      'zach_thetas_6': [-0.5, 0.5, 0.0],
+      'zach_vga_1': [-10.0, 10.0, 0.0],
+      'zach_vga_2': [-0.1, 0.1, 0.0],
+      'zach_vga_3': [-0.5, 0.5, 0.0],
+      'zach_vga_4': [-0.1, 0.1, 0.0],
+      'zach_vga_5': [-10.0, 10.0, 0.0],
+      'zach_vga_6': [-0.1, 0.1, 0.0],
+      'zach_vga_7': [-0.5, 0.5, 0.0],
+      'zach_vga_8': [-0.1, 0.1, 0.0],
+      'zach_vgn_1': [-10.0, 10.0, 0.0],
+      'zach_vgn_10': [-5.0, 5.0, 0.0],
+      'zach_vgn_2': [-10.0, 10.0, 0.0],
+      'zach_vgn_3': [-5.0, 5.0, 0.0],
+      'zach_vgn_4': [-10.0, 10.0, 0.0],
+      'zach_vgn_5': [-5.0, 5.0, 0.0],
+      'zach_vgn_6': [-10.0, 10.0, 0.0],
+      'zach_vgn_7': [-10.0, 10.0, 0.0],
+      'zach_vgn_8': [-5.0, 5.0, 0.0],
+      'zach_vgn_9': [-10.0, 10.0, 0.0]}
+#+END_SRC
+
+** new scheme (with bucket system) control.py
+#+BEGIN_SRC python
+  mpr_tf = 'zacharias_mhm'
+
+  validation = {}
+
+  penalty = {}
+
+  params=\
+  {   
+      'orgMatterContent_forest': [0.0, 20.0, 3.4],
+      'orgMatterContent_pervious': [0.0, 1.0, 0.1], 
+      'orgMatterContent_impervious': [0.0, 4.0, 0.6],
+      # 'BulkDens_OrgMatter', 
+      'PTF_Ks_constant': [-1.2, -0.285, -0.585], 
+      'PTF_Ks_sand': [0.006, 0.026, 0.0125],
+      'PTF_Ks_clay': [0.003, 0.013, 0.0063], 
+      # 'Ks_c_base', 
+      # 'PTF_Ks_curveSlope': [60.96, 60.96, 60.96], 
+      # 'FieldCap_c1',
+      # 'FieldCap_c2', 
+      'exponentSlowInterflow': [0.05, 0.3, 0.125], 
+      'fastInterflowRecession_forest': [1.0, 3.0, 1.5],
+      'interflowRecession_slope': [0.0, 10.0, 7.0], 
+      'slowInterflowRecession_Ks': [1.0, 30.0, 15.0],
+      'rechargeCoefficient': [0.0, 50.0, 35.0], 
+      'base_flow_geo_unit_01': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_02': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_03': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_04': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_05': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_06': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_07': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_08': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_09': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_10': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_11': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_12': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_13': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_14': [1.0, 1000.0, 100.0],
+      'base_flow_geo_unit_15': [1.0, 1000.0, 100.0], 
+      'base_flow_geo_unit_16': [1.0, 1000.0, 100.0],
+      'interflowStorageCapacityFactor': [75.0, 200.0, 85.0],
+      'a5': [0.5025, 1.4175, 0.96],
+      'a6': [1.3864, 2.2936, 1.84],
+      'b5': [0.003, 0.013, 0.0063],
+      'b6': [-0.1548, -0.1086, -0.1317],
+      'c5': [0.006, 0.026, 0.0125],
+      'c6': [0.0023, 0.011, 0.0067],
+      'hveg_rsm_scaling': [0.5, 2.0, 1.0],
+      'lveg_rsm_scaling': [0.5, 2.0, 1.0],
+      'mlaih_scaling': [0.8, 1.2, 1.0],
+      'mlail_scaling': [0.8, 1.2, 1.0],
+      'ralamsn': [1.692, 2.068, 1.88],
+      'ralfmaxsn': [0.765, 0.935, 0.85],
+      'ralfminsn': [0.45, 0.55, 0.5],
+      'rhominsna': [98.1, 119.9, 109.0],
+      'rkerst3': [0.9, 1.1, 1.0],
+      'rsigormax': [900.0, 1100.0, 1000.0],
+      'rsigormin': [90.0, 110.0, 100.0],
+      'rsndtoverc': [0.0162, 0.0198, 0.018],
+      'rsrdep': [0.125, 1.95, 0.5],
+      'rtf1': [272.1, 276.0, 276.0],
+      'rtf2': [268.0, 272.0, 272.0],
+      'rvinter': [0.45, 0.55, 0.5],
+      'rvlamsk_desert': [13.5, 16.5, 15.0],
+      'thetar_1': [0.01, 0.03, 0.02],
+      'thetar_4': [0.01, 0.03, 0.02],
+      'zach_thetas_1': [0.0, 1.0, 0.5],
+      'zach_thetas_2': [-0.01, 0.01, 0.0],
+      'zach_thetas_3': [-0.5, 0.5, 0.0],
+      'zach_thetas_4': [0.0, 1.0, 0.5],
+      'zach_thetas_5': [-0.01, 0.01, 0.0],
+      'zach_thetas_6': [-0.5, 0.5, 0.0],
+      'zach_vga_1': [-10.0, 10.0, 0.0],
+      'zach_vga_2': [-0.1, 0.1, 0.0],
+      'zach_vga_3': [-0.5, 0.5, 0.0],
+      'zach_vga_4': [-0.1, 0.1, 0.0],
+      'zach_vga_5': [-10.0, 10.0, 0.0],
+      'zach_vga_6': [-0.1, 0.1, 0.0],
+      'zach_vga_7': [-0.5, 0.5, 0.0],
+      'zach_vga_8': [-0.1, 0.1, 0.0],
+      'zach_vgn_1': [-10.0, 10.0, 0.0],
+      'zach_vgn_10': [-5.0, 5.0, 0.0],
+      'zach_vgn_2': [-10.0, 10.0, 0.0],
+      'zach_vgn_3': [-5.0, 5.0, 0.0],
+      'zach_vgn_4': [-10.0, 10.0, 0.0],
+      'zach_vgn_5': [-5.0, 5.0, 0.0],
+      'zach_vgn_6': [-10.0, 10.0, 0.0],
+      'zach_vgn_7': [-10.0, 10.0, 0.0],
+      'zach_vgn_8': [-5.0, 5.0, 0.0],
+      'zach_vgn_9': [-10.0, 10.0, 0.0]}
+#+END_SRC
+** both groups are squashed 
+** sets of basins are specified in a file at the root (stations_study.json)
+** sketch of runs
+- read station list
+- fill up the st-dictionary
+- create control file
+- call prepare_domain and squash
+- create submit script (name the simulation properly and specify 100 iterations per parameter)
